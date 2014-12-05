@@ -1,4 +1,4 @@
-update=12/4/2014 12:05:01 PM
+update=Fri 05 Dec 2014 06:56:39 AM MSK
 version=1
 last_client=eeschema
 [cvpcb]
@@ -87,3 +87,6 @@ LibName30=valves
 LibName31=stm32f100rct6b
 LibName32=cp2102
 LibName33=micro-usb-b
+LibName34=crystal-4pin
+LibName35=mcp1703t-3302e
+LibName36=ncp3063
