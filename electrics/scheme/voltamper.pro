@@ -1,4 +1,4 @@
-update=Fri 05 Dec 2014 06:56:39 AM MSK
+update=12/5/2014 4:27:25 PM
 version=1
 last_client=eeschema
 [cvpcb]
@@ -90,3 +90,5 @@ LibName33=micro-usb-b
 LibName34=crystal-4pin
 LibName35=mcp1703t-3302e
 LibName36=ncp3063
+LibName37=my_comps
+LibName38=tda2030a
