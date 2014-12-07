@@ -1,0 +1,42 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 13.04.2 ] */
+
+/* [wxMaxima: input   start ] */
+kill( all );
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+eq: (Vin-Vpp)/R1 + Vin/R2 + (Vin-Vout)/Rfb = 0;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve( [eq], [Vout]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+expand(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+factor(%);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst(R, R1, %);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst(2*R, R2, %);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst(2*R, Rfb, %);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ratsimp(%);
+/* [wxMaxima: input   end   ] */
+
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$
