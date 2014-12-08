@@ -3396,4 +3396,6 @@ Wire Wire Line
 Wire Wire Line
 	9550 1150 9550 1000
 Connection ~ 10000 1150
+Text Notes 29400 19700 0    60   ~ 0
+Here opamps in 1:1 mode because later voltage \nis mixed using resistor voltage divider. And \nbecause of this it needs isolation.
 $EndSCHEMATC
