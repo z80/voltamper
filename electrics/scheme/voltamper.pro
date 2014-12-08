@@ -1,4 +1,4 @@
-update=12/5/2014 4:27:25 PM
+update=Mon 08 Dec 2014 08:58:58 AM MSK
 version=1
 last_client=eeschema
 [cvpcb]
@@ -92,3 +92,4 @@ LibName35=mcp1703t-3302e
 LibName36=ncp3063
 LibName37=my_comps
 LibName38=tda2030a
+LibName39=spartan-sip-9007
