@@ -1,4 +1,4 @@
-update=12/8/2014 10:17:11 AM
+update=12/9/2014 1:33:08 PM
 version=1
 last_client=pcbnew
 [general]
@@ -100,3 +100,4 @@ LibName20=do-214
 LibName21=RLB0914
 LibName22=sparta-sip-9007
 LibName23=TDA2030A
+LibName24=cp2102
