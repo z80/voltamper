@@ -2525,14 +2525,10 @@ Wire Wire Line
 	24150 18200 24150 14650
 Text Notes 23950 18650 1    60   ~ 0
 This resistor protects two (voltage and current) \ninputs from short circuit when both relays are on.
-Text Label 24450 14250 0    60   ~ 0
-curr-1
 Text Label 24450 14450 0    60   ~ 0
-curr-2
+curr-1
 Text Label 23950 14450 0    60   ~ 0
 volt-1
-Text Label 23950 14250 0    60   ~ 0
-volt-2
 $Comp
 L SPARTAN-SIP-9007 U12
 U 1 1 5485F981
@@ -2556,8 +2552,6 @@ Wire Wire Line
 	31100 12950 31700 12950
 Text Label 30700 12900 1    60   ~ 0
 aux-1
-Text Label 30900 12900 1    60   ~ 0
-aux-2
 $Comp
 L NPN Q6
 U 1 1 54860521
@@ -2603,8 +2597,6 @@ Text Label 18500 16500 1    60   ~ 0
 volt-1
 Wire Wire Line
 	18500 15250 18500 16000
-Text Label 18500 15950 1    60   ~ 0
-volt-2
 Text Label 18500 15400 1    60   ~ 0
 v+
 Text Label 17100 16850 0    60   ~ 0
@@ -2654,8 +2646,6 @@ Text Label 20300 16500 1    60   ~ 0
 curr-1
 Wire Wire Line
 	20300 15250 20300 16000
-Text Label 20300 15950 1    60   ~ 0
-curr-2
 Text Label 20300 15400 1    60   ~ 0
 v+
 Text Label 18900 16850 0    60   ~ 0
@@ -2705,8 +2695,6 @@ Text Label 22050 16500 1    60   ~ 0
 aux-1
 Wire Wire Line
 	22050 15250 22050 16000
-Text Label 22050 15950 1    60   ~ 0
-aux-2
 Text Label 22050 15400 1    60   ~ 0
 v+
 Text Label 20650 16850 0    60   ~ 0
@@ -3745,4 +3733,10 @@ Wire Wire Line
 Wire Wire Line
 	5750 19650 5750 19550
 Connection ~ 5750 19550
+Text Label 23950 14250 0    60   ~ 0
+v+
+Text Label 24450 14250 0    60   ~ 0
+v+
+Text Label 30900 12900 1    60   ~ 0
+v+
 $EndSCHEMATC
