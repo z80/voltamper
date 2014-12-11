@@ -45,7 +45,7 @@ $Descr A1 33110 23386
 encoding utf-8
 Sheet 1 1
 Title ""
-Date "10 dec 2014"
+Date "11 dec 2014"
 Rev ""
 Comp ""
 Comment1 ""
@@ -1453,22 +1453,6 @@ F 3 "" H 15700 3500 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	15400 2700 15400 2900
-Connection ~ 15400 2700
-Wire Wire Line
-	15400 3300 15400 3500
-$Comp
-L GND #PWR033
-U 1 1 54851BEB
-P 15400 3500
-F 0 "#PWR033" H 15400 3500 30  0001 C CNN
-F 1 "GND" H 15400 3430 30  0001 C CNN
-F 2 "" H 15400 3500 60  0000 C CNN
-F 3 "" H 15400 3500 60  0000 C CNN
-	1    15400 3500
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
 	17200 2800 17300 2800
 Wire Wire Line
 	17300 2800 17300 3500
@@ -1961,17 +1945,6 @@ F 1 "330u" H 18950 2200 50  0000 L CNN
 F 2 "~" H 18900 2300 60  0000 C CNN
 F 3 "~" H 18900 2300 60  0000 C CNN
 	1    18900 2300
-	1    0    0    -1  
-$EndComp
-$Comp
-L CP1 C18
-U 1 1 548572D5
-P 15400 3100
-F 0 "C18" H 15450 3200 50  0000 L CNN
-F 1 "330u" H 15450 3000 50  0000 L CNN
-F 2 "~" H 15400 3100 60  0000 C CNN
-F 3 "~" H 15400 3100 60  0000 C CNN
-	1    15400 3100
 	1    0    0    -1  
 $EndComp
 Text Label 18600 14850 1    60   ~ 0
