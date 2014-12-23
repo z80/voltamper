@@ -1,0 +1,1491 @@
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"hal_lld.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 9F010000 		.text
+  20      02001901 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.section	.text.hal_lld_backup_domain_init,"ax",%progbits
+  24              		.align	2
+  25              		.p2align 4,,15
+  26              		.thumb
+  27              		.thumb_func
+  28              		.type	hal_lld_backup_domain_init, %function
+  29              	hal_lld_backup_domain_init:
+  30              	.LFB63:
+  31              		.file 1 "../chibios_2.6.3/os/hal/platforms/STM32F1xx/hal_lld.c"
+  32              		.loc 1 49 0
+  33              		.cfi_startproc
+  34              		@ args = 0, pretend = 0, frame = 0
+  35              		@ frame_needed = 0, uses_anonymous_args = 0
+  36 0000 08B5     		push	{r3, lr}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 8
+  39              		.loc 1 52 0
+  40 0002 4FF4E043 		mov	r3, #28672
+  41              		.cfi_offset 14, -4
+  42              		.cfi_offset 3, -8
+  43 0006 C4F20003 		movt	r3, 16384
+  44 000a 4FF4E042 		mov	r2, #28672
+  45 000e C4F20002 		movt	r2, 16384
+  46 0012 1268     		ldr	r2, [r2, #0]
+  47 0014 42F48072 		orr	r2, r2, #256
+  48 0018 1A60     		str	r2, [r3, #0]
+  49              		.loc 1 56 0
+  50 001a 4FF48053 		mov	r3, #4096
+  51 001e C4F20203 		movt	r3, 16386
+  52 0022 1B6A     		ldr	r3, [r3, #32]
+  53 0024 03F44073 		and	r3, r3, #768
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 2
+
+
+  54 0028 B3F5407F 		cmp	r3, #768
+  55 002c 0DD0     		beq	.L2
+  56              		.loc 1 58 0
+  57 002e 4FF48053 		mov	r3, #4096
+  58 0032 C4F20203 		movt	r3, 16386
+  59 0036 4FF48032 		mov	r2, #65536
+  60 003a 1A62     		str	r2, [r3, #32]
+  61              		.loc 1 59 0
+  62 003c 4FF48053 		mov	r3, #4096
+  63 0040 C4F20203 		movt	r3, 16386
+  64 0044 4FF00002 		mov	r2, #0
+  65 0048 1A62     		str	r2, [r3, #32]
+  66              	.L2:
+  67              		.loc 1 72 0
+  68 004a 4FF48053 		mov	r3, #4096
+  69 004e C4F20203 		movt	r3, 16386
+  70 0052 1B6A     		ldr	r3, [r3, #32]
+  71 0054 03F40043 		and	r3, r3, #32768
+  72 0058 002B     		cmp	r3, #0
+  73 005a 19D1     		bne	.L1
+  74              		.loc 1 74 0
+  75 005c 4FF48053 		mov	r3, #4096
+  76 0060 C4F20203 		movt	r3, 16386
+  77 0064 4FF48052 		mov	r2, #4096
+  78 0068 C4F20202 		movt	r2, 16386
+  79 006c 126A     		ldr	r2, [r2, #32]
+  80 006e 42F44072 		orr	r2, r2, #768
+  81 0072 1A62     		str	r2, [r3, #32]
+  82              		.loc 1 77 0
+  83 0074 FFF7FEFF 		bl	rtc_lld_set_prescaler
+  84              		.loc 1 80 0
+  85 0078 4FF48053 		mov	r3, #4096
+  86 007c C4F20203 		movt	r3, 16386
+  87 0080 4FF48052 		mov	r2, #4096
+  88 0084 C4F20202 		movt	r2, 16386
+  89 0088 126A     		ldr	r2, [r2, #32]
+  90 008a 42F40042 		orr	r2, r2, #32768
+  91 008e 1A62     		str	r2, [r3, #32]
+  92              	.L1:
+  93              		.loc 1 84 0
+  94 0090 08BD     		pop	{r3, pc}
+  95              		.cfi_endproc
+  96              	.LFE63:
+  97              		.size	hal_lld_backup_domain_init, .-hal_lld_backup_domain_init
+  98 0092 00BFAFF3 		.section	.text.hal_lld_init,"ax",%progbits
+  98      0080AFF3 
+  98      0080AFF3 
+  98      0080
+  99              		.align	2
+ 100              		.p2align 4,,15
+ 101              		.global	hal_lld_init
+ 102              		.thumb
+ 103              		.thumb_func
+ 104              		.type	hal_lld_init, %function
+ 105              	hal_lld_init:
+ 106              	.LFB64:
+ 107              		.loc 1 99 0
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 3
+
+
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 0
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111 0000 08B5     		push	{r3, lr}
+ 112              	.LCFI1:
+ 113              		.cfi_def_cfa_offset 8
+ 114              		.loc 1 102 0
+ 115 0002 4FF48053 		mov	r3, #4096
+ 116              		.cfi_offset 14, -4
+ 117              		.cfi_offset 3, -8
+ 118 0006 C4F20203 		movt	r3, 16386
+ 119 000a 1B69     		ldr	r3, [r3, #16]
+ 120 000c 4FF48053 		mov	r3, #4096
+ 121 0010 C4F20203 		movt	r3, 16386
+ 122 0014 4FF0FF32 		mov	r2, #-1
+ 123 0018 1A61     		str	r2, [r3, #16]
+ 124 001a 4FF48053 		mov	r3, #4096
+ 125 001e C4F20203 		movt	r3, 16386
+ 126 0022 4FF00002 		mov	r2, #0
+ 127 0026 1A61     		str	r2, [r3, #16]
+ 128              		.loc 1 103 0
+ 129 0028 4FF48053 		mov	r3, #4096
+ 130 002c C4F20203 		movt	r3, 16386
+ 131 0030 DB68     		ldr	r3, [r3, #12]
+ 132 0032 4FF48053 		mov	r3, #4096
+ 133 0036 C4F20203 		movt	r3, 16386
+ 134 003a 4FF0FF32 		mov	r2, #-1
+ 135 003e DA60     		str	r2, [r3, #12]
+ 136 0040 4FF48053 		mov	r3, #4096
+ 137 0044 C4F20203 		movt	r3, 16386
+ 138 0048 4FF00002 		mov	r2, #0
+ 139 004c DA60     		str	r2, [r3, #12]
+ 140              		.loc 1 106 0
+ 141 004e 4EF21003 		movw	r3, #57360
+ 142 0052 CEF20003 		movt	r3, 57344
+ 143 0056 45F6BF52 		movw	r2, #23999
+ 144 005a 5A60     		str	r2, [r3, #4]
+ 145              		.loc 1 107 0
+ 146 005c 4EF21003 		movw	r3, #57360
+ 147 0060 CEF20003 		movt	r3, 57344
+ 148 0064 4FF00002 		mov	r2, #0
+ 149 0068 9A60     		str	r2, [r3, #8]
+ 150              		.loc 1 108 0
+ 151 006a 4EF21003 		movw	r3, #57360
+ 152 006e CEF20003 		movt	r3, 57344
+ 153 0072 4FF00702 		mov	r2, #7
+ 154 0076 1A60     		str	r2, [r3, #0]
+ 155              		.loc 1 113 0
+ 156 0078 4EF6F053 		movw	r3, #60912
+ 157 007c CEF20003 		movt	r3, 57344
+ 158 0080 4EF6F052 		movw	r2, #60912
+ 159 0084 CEF20002 		movt	r2, 57344
+ 160 0088 D268     		ldr	r2, [r2, #12]
+ 161 008a 42F08072 		orr	r2, r2, #16777216
+ 162 008e DA60     		str	r2, [r3, #12]
+ 163              		.loc 1 114 0
+ 164 0090 4FF48053 		mov	r3, #4096
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 4
+
+
+ 165 0094 CEF20003 		movt	r3, 57344
+ 166 0098 4FF48052 		mov	r2, #4096
+ 167 009c CEF20002 		movt	r2, 57344
+ 168 00a0 1268     		ldr	r2, [r2, #0]
+ 169 00a2 42F00102 		orr	r2, r2, #1
+ 170 00a6 1A60     		str	r2, [r3, #0]
+ 171              		.loc 1 117 0
+ 172 00a8 4FF48053 		mov	r3, #4096
+ 173 00ac C4F20203 		movt	r3, 16386
+ 174 00b0 4FF48052 		mov	r2, #4096
+ 175 00b4 C4F20202 		movt	r2, 16386
+ 176 00b8 D269     		ldr	r2, [r2, #28]
+ 177 00ba 42F08052 		orr	r2, r2, #268435456
+ 178 00be DA61     		str	r2, [r3, #28]
+ 179              		.loc 1 118 0
+ 180 00c0 4FF48053 		mov	r3, #4096
+ 181 00c4 C4F20203 		movt	r3, 16386
+ 182 00c8 4FF48052 		mov	r2, #4096
+ 183 00cc C4F20202 		movt	r2, 16386
+ 184 00d0 D269     		ldr	r2, [r2, #28]
+ 185 00d2 42F00062 		orr	r2, r2, #134217728
+ 186 00d6 DA61     		str	r2, [r3, #28]
+ 187              		.loc 1 121 0
+ 188 00d8 FFF7FEFF 		bl	hal_lld_backup_domain_init
+ 189              		.loc 1 124 0
+ 190 00dc FFF7FEFF 		bl	dmaInit
+ 191              		.loc 1 131 0
+ 192 00e0 08BD     		pop	{r3, pc}
+ 193              		.cfi_endproc
+ 194              	.LFE64:
+ 195              		.size	hal_lld_init, .-hal_lld_init
+ 196 00e2 00BFAFF3 		.section	.text.stm32_clock_init,"ax",%progbits
+ 196      0080AFF3 
+ 196      0080AFF3 
+ 196      0080
+ 197              		.align	2
+ 198              		.p2align 4,,15
+ 199              		.global	stm32_clock_init
+ 200              		.thumb
+ 201              		.thumb_func
+ 202              		.type	stm32_clock_init, %function
+ 203              	stm32_clock_init:
+ 204              	.LFB65:
+ 205              		.loc 1 147 0
+ 206              		.cfi_startproc
+ 207              		@ args = 0, pretend = 0, frame = 0
+ 208              		@ frame_needed = 0, uses_anonymous_args = 0
+ 209              		@ link register save eliminated.
+ 210              		.loc 1 152 0
+ 211 0000 4FF48053 		mov	r3, #4096
+ 212 0004 C4F20203 		movt	r3, 16386
+ 213 0008 4FF48052 		mov	r2, #4096
+ 214 000c C4F20202 		movt	r2, 16386
+ 215 0010 1268     		ldr	r2, [r2, #0]
+ 216 0012 42F00102 		orr	r2, r2, #1
+ 217 0016 1A60     		str	r2, [r3, #0]
+ 218              		.loc 1 153 0
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 5
+
+
+ 219 0018 00BF     		nop
+ 220              	.L6:
+ 221              		.loc 1 153 0 is_stmt 0 discriminator 1
+ 222 001a 4FF48053 		mov	r3, #4096
+ 223 001e C4F20203 		movt	r3, 16386
+ 224 0022 1B68     		ldr	r3, [r3, #0]
+ 225 0024 03F00203 		and	r3, r3, #2
+ 226 0028 002B     		cmp	r3, #0
+ 227 002a F6D0     		beq	.L6
+ 228              		.loc 1 155 0 is_stmt 1
+ 229 002c 4FF48053 		mov	r3, #4096
+ 230 0030 C4F20203 		movt	r3, 16386
+ 231 0034 4FF48052 		mov	r2, #4096
+ 232 0038 C4F20202 		movt	r2, 16386
+ 233 003c 1268     		ldr	r2, [r2, #0]
+ 234 003e 02F0F902 		and	r2, r2, #249
+ 235 0042 1A60     		str	r2, [r3, #0]
+ 236              		.loc 1 156 0
+ 237 0044 4FF48053 		mov	r3, #4096
+ 238 0048 C4F20203 		movt	r3, 16386
+ 239 004c 4FF00002 		mov	r2, #0
+ 240 0050 5A60     		str	r2, [r3, #4]
+ 241              		.loc 1 157 0
+ 242 0052 00BF     		nop
+ 243              	.L7:
+ 244              		.loc 1 157 0 is_stmt 0 discriminator 1
+ 245 0054 4FF48053 		mov	r3, #4096
+ 246 0058 C4F20203 		movt	r3, 16386
+ 247 005c 5B68     		ldr	r3, [r3, #4]
+ 248 005e 03F00C03 		and	r3, r3, #12
+ 249 0062 002B     		cmp	r3, #0
+ 250 0064 F6D1     		bne	.L7
+ 251              		.loc 1 166 0 is_stmt 1
+ 252 0066 4FF48053 		mov	r3, #4096
+ 253 006a C4F20203 		movt	r3, 16386
+ 254 006e 4FF48052 		mov	r2, #4096
+ 255 0072 C4F20202 		movt	r2, 16386
+ 256 0076 1268     		ldr	r2, [r2, #0]
+ 257 0078 42F48032 		orr	r2, r2, #65536
+ 258 007c 1A60     		str	r2, [r3, #0]
+ 259              		.loc 1 167 0
+ 260 007e 00BF     		nop
+ 261              	.L8:
+ 262              		.loc 1 167 0 is_stmt 0 discriminator 1
+ 263 0080 4FF48053 		mov	r3, #4096
+ 264 0084 C4F20203 		movt	r3, 16386
+ 265 0088 1B68     		ldr	r3, [r3, #0]
+ 266 008a 03F40033 		and	r3, r3, #131072
+ 267 008e 002B     		cmp	r3, #0
+ 268 0090 F6D0     		beq	.L8
+ 269              		.loc 1 180 0 is_stmt 1
+ 270 0092 4FF48053 		mov	r3, #4096
+ 271 0096 C4F20203 		movt	r3, 16386
+ 272 009a 4FF48052 		mov	r2, #4096
+ 273 009e C4F20202 		movt	r2, 16386
+ 274 00a2 5268     		ldr	r2, [r2, #4]
+ 275 00a4 42F4A022 		orr	r2, r2, #327680
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 6
+
+
+ 276 00a8 5A60     		str	r2, [r3, #4]
+ 277              		.loc 1 181 0
+ 278 00aa 4FF48053 		mov	r3, #4096
+ 279 00ae C4F20203 		movt	r3, 16386
+ 280 00b2 4FF48052 		mov	r2, #4096
+ 281 00b6 C4F20202 		movt	r2, 16386
+ 282 00ba 1268     		ldr	r2, [r2, #0]
+ 283 00bc 42F08072 		orr	r2, r2, #16777216
+ 284 00c0 1A60     		str	r2, [r3, #0]
+ 285              		.loc 1 182 0
+ 286 00c2 00BF     		nop
+ 287              	.L9:
+ 288              		.loc 1 182 0 is_stmt 0 discriminator 1
+ 289 00c4 4FF48053 		mov	r3, #4096
+ 290 00c8 C4F20203 		movt	r3, 16386
+ 291 00cc 1B68     		ldr	r3, [r3, #0]
+ 292 00ce 03F00073 		and	r3, r3, #33554432
+ 293 00d2 002B     		cmp	r3, #0
+ 294 00d4 F6D0     		beq	.L9
+ 295              		.loc 1 188 0 is_stmt 1
+ 296 00d6 4FF48053 		mov	r3, #4096
+ 297 00da C4F20203 		movt	r3, 16386
+ 298 00de 4FF4C842 		mov	r2, #25600
+ 299 00e2 C0F24502 		movt	r2, 69
+ 300 00e6 5A60     		str	r2, [r3, #4]
+ 301              		.loc 1 198 0
+ 302 00e8 4FF40053 		mov	r3, #8192
+ 303 00ec C4F20203 		movt	r3, 16386
+ 304 00f0 4FF01002 		mov	r2, #16
+ 305 00f4 1A60     		str	r2, [r3, #0]
+ 306              		.loc 1 203 0
+ 307 00f6 4FF48053 		mov	r3, #4096
+ 308 00fa C4F20203 		movt	r3, 16386
+ 309 00fe 4FF48052 		mov	r2, #4096
+ 310 0102 C4F20202 		movt	r2, 16386
+ 311 0106 5268     		ldr	r2, [r2, #4]
+ 312 0108 42F00202 		orr	r2, r2, #2
+ 313 010c 5A60     		str	r2, [r3, #4]
+ 314              		.loc 1 204 0
+ 315 010e 00BF     		nop
+ 316              	.L10:
+ 317              		.loc 1 204 0 is_stmt 0 discriminator 1
+ 318 0110 4FF48053 		mov	r3, #4096
+ 319 0114 C4F20203 		movt	r3, 16386
+ 320 0118 5B68     		ldr	r3, [r3, #4]
+ 321 011a 03F00C03 		and	r3, r3, #12
+ 322 011e 082B     		cmp	r3, #8
+ 323 0120 F6D1     		bne	.L10
+ 324              		.loc 1 212 0 is_stmt 1
+ 325 0122 7047     		bx	lr
+ 326              		.cfi_endproc
+ 327              	.LFE65:
+ 328              		.size	stm32_clock_init, .-stm32_clock_init
+ 329 0124 AFF30080 		.text
+ 329      AFF30080 
+ 329      AFF30080 
+ 330              	.Letext0:
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 7
+
+
+ 331              		.section	.debug_loc,"",%progbits
+ 332              	.Ldebug_loc0:
+ 333              	.LLST0:
+ 334 0000 00000000 		.4byte	.LFB63
+ 335 0004 02000000 		.4byte	.LCFI0
+ 336 0008 0200     		.2byte	0x2
+ 337 000a 7D       		.byte	0x7d
+ 338 000b 00       		.sleb128 0
+ 339 000c 02000000 		.4byte	.LCFI0
+ 340 0010 92000000 		.4byte	.LFE63
+ 341 0014 0200     		.2byte	0x2
+ 342 0016 7D       		.byte	0x7d
+ 343 0017 08       		.sleb128 8
+ 344 0018 00000000 		.4byte	0x0
+ 345 001c 00000000 		.4byte	0x0
+ 346              	.LLST1:
+ 347 0020 00000000 		.4byte	.LFB64
+ 348 0024 02000000 		.4byte	.LCFI1
+ 349 0028 0200     		.2byte	0x2
+ 350 002a 7D       		.byte	0x7d
+ 351 002b 00       		.sleb128 0
+ 352 002c 02000000 		.4byte	.LCFI1
+ 353 0030 E2000000 		.4byte	.LFE64
+ 354 0034 0200     		.2byte	0x2
+ 355 0036 7D       		.byte	0x7d
+ 356 0037 08       		.sleb128 8
+ 357 0038 00000000 		.4byte	0x0
+ 358 003c 00000000 		.4byte	0x0
+ 359              		.file 2 "c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdint.h"
+ 360              		.file 3 "../chibios_2.6.3/os/ports/common/ARMCMx/nvic.h"
+ 361              		.file 4 "../chibios_2.6.3/os/ports/common/ARMCMx/CMSIS/include/core_cm3.h"
+ 362              		.file 5 "../chibios_2.6.3/os/hal/platforms/STM32F1xx/stm32f10x.h"
+ 363              		.section	.debug_info
+ 364 0000 AF030000 		.4byte	0x3af
+ 365 0004 0200     		.2byte	0x2
+ 366 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 367 000a 04       		.byte	0x4
+ 368 000b 01       		.uleb128 0x1
+ 369 000c 02010000 		.4byte	.LASF48
+ 370 0010 01       		.byte	0x1
+ 371 0011 B1010000 		.4byte	.LASF49
+ 372 0015 16020000 		.4byte	.LASF50
+ 373 0019 00000000 		.4byte	0x0
+ 374 001d 00000000 		.4byte	0x0
+ 375 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 376 0025 00000000 		.4byte	.Ldebug_line0
+ 377 0029 02       		.uleb128 0x2
+ 378 002a 04       		.byte	0x4
+ 379 002b 05       		.byte	0x5
+ 380 002c 696E7400 		.ascii	"int\000"
+ 381 0030 03       		.uleb128 0x3
+ 382 0031 04       		.byte	0x4
+ 383 0032 07       		.byte	0x7
+ 384 0033 36010000 		.4byte	.LASF0
+ 385 0037 03       		.uleb128 0x3
+ 386 0038 01       		.byte	0x1
+ 387 0039 06       		.byte	0x6
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 8
+
+
+ 388 003a 0A020000 		.4byte	.LASF1
+ 389 003e 03       		.uleb128 0x3
+ 390 003f 01       		.byte	0x1
+ 391 0040 08       		.byte	0x8
+ 392 0041 76000000 		.4byte	.LASF2
+ 393 0045 03       		.uleb128 0x3
+ 394 0046 02       		.byte	0x2
+ 395 0047 05       		.byte	0x5
+ 396 0048 0E010000 		.4byte	.LASF3
+ 397 004c 04       		.uleb128 0x4
+ 398 004d 85010000 		.4byte	.LASF5
+ 399 0051 02       		.byte	0x2
+ 400 0052 36       		.byte	0x36
+ 401 0053 57000000 		.4byte	0x57
+ 402 0057 03       		.uleb128 0x3
+ 403 0058 02       		.byte	0x2
+ 404 0059 07       		.byte	0x7
+ 405 005a 9D000000 		.4byte	.LASF4
+ 406 005e 04       		.uleb128 0x4
+ 407 005f 67010000 		.4byte	.LASF6
+ 408 0063 02       		.byte	0x2
+ 409 0064 4F       		.byte	0x4f
+ 410 0065 69000000 		.4byte	0x69
+ 411 0069 03       		.uleb128 0x3
+ 412 006a 04       		.byte	0x4
+ 413 006b 05       		.byte	0x5
+ 414 006c FC010000 		.4byte	.LASF7
+ 415 0070 04       		.uleb128 0x4
+ 416 0071 F3010000 		.4byte	.LASF8
+ 417 0075 02       		.byte	0x2
+ 418 0076 50       		.byte	0x50
+ 419 0077 7B000000 		.4byte	0x7b
+ 420 007b 03       		.uleb128 0x3
+ 421 007c 04       		.byte	0x4
+ 422 007d 07       		.byte	0x7
+ 423 007e 8B000000 		.4byte	.LASF9
+ 424 0082 03       		.uleb128 0x3
+ 425 0083 08       		.byte	0x8
+ 426 0084 05       		.byte	0x5
+ 427 0085 00000000 		.4byte	.LASF10
+ 428 0089 03       		.uleb128 0x3
+ 429 008a 08       		.byte	0x8
+ 430 008b 07       		.byte	0x7
+ 431 008c 50000000 		.4byte	.LASF11
+ 432 0090 03       		.uleb128 0x3
+ 433 0091 01       		.byte	0x1
+ 434 0092 02       		.byte	0x2
+ 435 0093 3E020000 		.4byte	.LASF12
+ 436 0097 05       		.uleb128 0x5
+ 437 0098 70000000 		.4byte	0x70
+ 438 009c 05       		.uleb128 0x5
+ 439 009d 7B000000 		.4byte	0x7b
+ 440 00a1 06       		.uleb128 0x6
+ 441 00a2 04       		.byte	0x4
+ 442 00a3 07       		.byte	0x7
+ 443 00a4 07       		.uleb128 0x7
+ 444 00a5 10       		.byte	0x10
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 9
+
+
+ 445 00a6 03       		.byte	0x3
+ 446 00a7 F1       		.byte	0xf1
+ 447 00a8 E5000000 		.4byte	0xe5
+ 448 00ac 08       		.uleb128 0x8
+ 449 00ad DF000000 		.4byte	.LASF13
+ 450 00b1 03       		.byte	0x3
+ 451 00b2 F2       		.byte	0xf2
+ 452 00b3 9C000000 		.4byte	0x9c
+ 453 00b7 02       		.byte	0x2
+ 454 00b8 23       		.byte	0x23
+ 455 00b9 00       		.uleb128 0x0
+ 456 00ba 08       		.uleb128 0x8
+ 457 00bb 30010000 		.4byte	.LASF14
+ 458 00bf 03       		.byte	0x3
+ 459 00c0 F3       		.byte	0xf3
+ 460 00c1 9C000000 		.4byte	0x9c
+ 461 00c5 02       		.byte	0x2
+ 462 00c6 23       		.byte	0x23
+ 463 00c7 04       		.uleb128 0x4
+ 464 00c8 08       		.uleb128 0x8
+ 465 00c9 55010000 		.4byte	.LASF15
+ 466 00cd 03       		.byte	0x3
+ 467 00ce F4       		.byte	0xf4
+ 468 00cf 9C000000 		.4byte	0x9c
+ 469 00d3 02       		.byte	0x2
+ 470 00d4 23       		.byte	0x23
+ 471 00d5 08       		.uleb128 0x8
+ 472 00d6 08       		.uleb128 0x8
+ 473 00d7 70000000 		.4byte	.LASF16
+ 474 00db 03       		.byte	0x3
+ 475 00dc F5       		.byte	0xf5
+ 476 00dd 9C000000 		.4byte	0x9c
+ 477 00e1 02       		.byte	0x2
+ 478 00e2 23       		.byte	0x23
+ 479 00e3 0C       		.uleb128 0xc
+ 480 00e4 00       		.byte	0x0
+ 481 00e5 04       		.uleb128 0x4
+ 482 00e6 7D010000 		.4byte	.LASF17
+ 483 00ea 03       		.byte	0x3
+ 484 00eb F6       		.byte	0xf6
+ 485 00ec A4000000 		.4byte	0xa4
+ 486 00f0 09       		.uleb128 0x9
+ 487 00f1 20       		.byte	0x20
+ 488 00f2 03       		.byte	0x3
+ 489 00f3 0601     		.2byte	0x106
+ 490 00f5 72010000 		.4byte	0x172
+ 491 00f9 0A       		.uleb128 0xa
+ 492 00fa 5B010000 		.4byte	.LASF18
+ 493 00fe 03       		.byte	0x3
+ 494 00ff 0701     		.2byte	0x107
+ 495 0101 9C000000 		.4byte	0x9c
+ 496 0105 02       		.byte	0x2
+ 497 0106 23       		.byte	0x23
+ 498 0107 00       		.uleb128 0x0
+ 499 0108 0A       		.uleb128 0xa
+ 500 0109 84000000 		.4byte	.LASF19
+ 501 010d 03       		.byte	0x3
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 10
+
+
+ 502 010e 0801     		.2byte	0x108
+ 503 0110 9C000000 		.4byte	0x9c
+ 504 0114 02       		.byte	0x2
+ 505 0115 23       		.byte	0x23
+ 506 0116 04       		.uleb128 0x4
+ 507 0117 0A       		.uleb128 0xa
+ 508 0118 CB000000 		.4byte	.LASF20
+ 509 011c 03       		.byte	0x3
+ 510 011d 0901     		.2byte	0x109
+ 511 011f 9C000000 		.4byte	0x9c
+ 512 0123 02       		.byte	0x2
+ 513 0124 23       		.byte	0x23
+ 514 0125 08       		.uleb128 0x8
+ 515 0126 0A       		.uleb128 0xa
+ 516 0127 60010000 		.4byte	.LASF21
+ 517 012b 03       		.byte	0x3
+ 518 012c 0A01     		.2byte	0x10a
+ 519 012e 9C000000 		.4byte	0x9c
+ 520 0132 02       		.byte	0x2
+ 521 0133 23       		.byte	0x23
+ 522 0134 0C       		.uleb128 0xc
+ 523 0135 0A       		.uleb128 0xa
+ 524 0136 47000000 		.4byte	.LASF22
+ 525 013a 03       		.byte	0x3
+ 526 013b 0B01     		.2byte	0x10b
+ 527 013d 9C000000 		.4byte	0x9c
+ 528 0141 02       		.byte	0x2
+ 529 0142 23       		.byte	0x23
+ 530 0143 10       		.uleb128 0x10
+ 531 0144 0A       		.uleb128 0xa
+ 532 0145 18010000 		.4byte	.LASF23
+ 533 0149 03       		.byte	0x3
+ 534 014a 0C01     		.2byte	0x10c
+ 535 014c 9C000000 		.4byte	0x9c
+ 536 0150 02       		.byte	0x2
+ 537 0151 23       		.byte	0x23
+ 538 0152 14       		.uleb128 0x14
+ 539 0153 0A       		.uleb128 0xa
+ 540 0154 3A000000 		.4byte	.LASF24
+ 541 0158 03       		.byte	0x3
+ 542 0159 0D01     		.2byte	0x10d
+ 543 015b 9C000000 		.4byte	0x9c
+ 544 015f 02       		.byte	0x2
+ 545 0160 23       		.byte	0x23
+ 546 0161 18       		.uleb128 0x18
+ 547 0162 0A       		.uleb128 0xa
+ 548 0163 18000000 		.4byte	.LASF25
+ 549 0167 03       		.byte	0x3
+ 550 0168 0E01     		.2byte	0x10e
+ 551 016a 9C000000 		.4byte	0x9c
+ 552 016e 02       		.byte	0x2
+ 553 016f 23       		.byte	0x23
+ 554 0170 1C       		.uleb128 0x1c
+ 555 0171 00       		.byte	0x0
+ 556 0172 0B       		.uleb128 0xb
+ 557 0173 2B000000 		.4byte	.LASF26
+ 558 0177 03       		.byte	0x3
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 11
+
+
+ 559 0178 0F01     		.2byte	0x10f
+ 560 017a F0000000 		.4byte	0xf0
+ 561 017e 03       		.uleb128 0x3
+ 562 017f 01       		.byte	0x1
+ 563 0180 08       		.byte	0x8
+ 564 0181 43010000 		.4byte	.LASF27
+ 565 0185 0C       		.uleb128 0xc
+ 566 0186 97000000 		.4byte	0x97
+ 567 018a 09       		.uleb128 0x9
+ 568 018b 10       		.byte	0x10
+ 569 018c 04       		.byte	0x4
+ 570 018d 3F02     		.2byte	0x23f
+ 571 018f D0010000 		.4byte	0x1d0
+ 572 0193 0A       		.uleb128 0xa
+ 573 0194 5B010000 		.4byte	.LASF18
+ 574 0198 04       		.byte	0x4
+ 575 0199 4102     		.2byte	0x241
+ 576 019b 97000000 		.4byte	0x97
+ 577 019f 02       		.byte	0x2
+ 578 01a0 23       		.byte	0x23
+ 579 01a1 00       		.uleb128 0x0
+ 580 01a2 0A       		.uleb128 0xa
+ 581 01a3 9B010000 		.4byte	.LASF28
+ 582 01a7 04       		.byte	0x4
+ 583 01a8 4202     		.2byte	0x242
+ 584 01aa 97000000 		.4byte	0x97
+ 585 01ae 02       		.byte	0x2
+ 586 01af 23       		.byte	0x23
+ 587 01b0 04       		.uleb128 0x4
+ 588 01b1 0D       		.uleb128 0xd
+ 589 01b2 56414C00 		.ascii	"VAL\000"
+ 590 01b6 04       		.byte	0x4
+ 591 01b7 4302     		.2byte	0x243
+ 592 01b9 97000000 		.4byte	0x97
+ 593 01bd 02       		.byte	0x2
+ 594 01be 23       		.byte	0x23
+ 595 01bf 08       		.uleb128 0x8
+ 596 01c0 0A       		.uleb128 0xa
+ 597 01c1 6F010000 		.4byte	.LASF29
+ 598 01c5 04       		.byte	0x4
+ 599 01c6 4402     		.2byte	0x244
+ 600 01c8 85010000 		.4byte	0x185
+ 601 01cc 02       		.byte	0x2
+ 602 01cd 23       		.byte	0x23
+ 603 01ce 0C       		.uleb128 0xc
+ 604 01cf 00       		.byte	0x0
+ 605 01d0 0B       		.uleb128 0xb
+ 606 01d1 48010000 		.4byte	.LASF30
+ 607 01d5 04       		.byte	0x4
+ 608 01d6 4502     		.2byte	0x245
+ 609 01d8 8A010000 		.4byte	0x18a
+ 610 01dc 05       		.uleb128 0x5
+ 611 01dd 5E000000 		.4byte	0x5e
+ 612 01e1 09       		.uleb128 0x9
+ 613 01e2 24       		.byte	0x24
+ 614 01e3 05       		.byte	0x5
+ 615 01e4 9403     		.2byte	0x394
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 12
+
+
+ 616 01e6 6F020000 		.4byte	0x26f
+ 617 01ea 0D       		.uleb128 0xd
+ 618 01eb 41435200 		.ascii	"ACR\000"
+ 619 01ef 05       		.byte	0x5
+ 620 01f0 9603     		.2byte	0x396
+ 621 01f2 97000000 		.4byte	0x97
+ 622 01f6 02       		.byte	0x2
+ 623 01f7 23       		.byte	0x23
+ 624 01f8 00       		.uleb128 0x0
+ 625 01f9 0A       		.uleb128 0xa
+ 626 01fa 05020000 		.4byte	.LASF31
+ 627 01fe 05       		.byte	0x5
+ 628 01ff 9703     		.2byte	0x397
+ 629 0201 97000000 		.4byte	0x97
+ 630 0205 02       		.byte	0x2
+ 631 0206 23       		.byte	0x23
+ 632 0207 04       		.uleb128 0x4
+ 633 0208 0A       		.uleb128 0xa
+ 634 0209 E5000000 		.4byte	.LASF32
+ 635 020d 05       		.byte	0x5
+ 636 020e 9803     		.2byte	0x398
+ 637 0210 97000000 		.4byte	0x97
+ 638 0214 02       		.byte	0x2
+ 639 0215 23       		.byte	0x23
+ 640 0216 08       		.uleb128 0x8
+ 641 0217 0D       		.uleb128 0xd
+ 642 0218 535200   		.ascii	"SR\000"
+ 643 021b 05       		.byte	0x5
+ 644 021c 9903     		.2byte	0x399
+ 645 021e 97000000 		.4byte	0x97
+ 646 0222 02       		.byte	0x2
+ 647 0223 23       		.byte	0x23
+ 648 0224 0C       		.uleb128 0xc
+ 649 0225 0D       		.uleb128 0xd
+ 650 0226 435200   		.ascii	"CR\000"
+ 651 0229 05       		.byte	0x5
+ 652 022a 9A03     		.2byte	0x39a
+ 653 022c 97000000 		.4byte	0x97
+ 654 0230 02       		.byte	0x2
+ 655 0231 23       		.byte	0x23
+ 656 0232 10       		.uleb128 0x10
+ 657 0233 0D       		.uleb128 0xd
+ 658 0234 415200   		.ascii	"AR\000"
+ 659 0237 05       		.byte	0x5
+ 660 0238 9B03     		.2byte	0x39b
+ 661 023a 97000000 		.4byte	0x97
+ 662 023e 02       		.byte	0x2
+ 663 023f 23       		.byte	0x23
+ 664 0240 14       		.uleb128 0x14
+ 665 0241 0A       		.uleb128 0xa
+ 666 0242 F9000000 		.4byte	.LASF33
+ 667 0246 05       		.byte	0x5
+ 668 0247 9C03     		.2byte	0x39c
+ 669 0249 97000000 		.4byte	0x97
+ 670 024d 02       		.byte	0x2
+ 671 024e 23       		.byte	0x23
+ 672 024f 18       		.uleb128 0x18
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 13
+
+
+ 673 0250 0D       		.uleb128 0xd
+ 674 0251 4F425200 		.ascii	"OBR\000"
+ 675 0255 05       		.byte	0x5
+ 676 0256 9D03     		.2byte	0x39d
+ 677 0258 97000000 		.4byte	0x97
+ 678 025c 02       		.byte	0x2
+ 679 025d 23       		.byte	0x23
+ 680 025e 1C       		.uleb128 0x1c
+ 681 025f 0A       		.uleb128 0xa
+ 682 0260 42000000 		.4byte	.LASF34
+ 683 0264 05       		.byte	0x5
+ 684 0265 9E03     		.2byte	0x39e
+ 685 0267 97000000 		.4byte	0x97
+ 686 026b 02       		.byte	0x2
+ 687 026c 23       		.byte	0x23
+ 688 026d 20       		.uleb128 0x20
+ 689 026e 00       		.byte	0x0
+ 690 026f 0B       		.uleb128 0xb
+ 691 0270 1D000000 		.4byte	.LASF35
+ 692 0274 05       		.byte	0x5
+ 693 0275 A703     		.2byte	0x3a7
+ 694 0277 E1010000 		.4byte	0x1e1
+ 695 027b 09       		.uleb128 0x9
+ 696 027c 08       		.byte	0x8
+ 697 027d 05       		.byte	0x5
+ 698 027e 3904     		.2byte	0x439
+ 699 0280 A2020000 		.4byte	0x2a2
+ 700 0284 0D       		.uleb128 0xd
+ 701 0285 435200   		.ascii	"CR\000"
+ 702 0288 05       		.byte	0x5
+ 703 0289 3B04     		.2byte	0x43b
+ 704 028b 97000000 		.4byte	0x97
+ 705 028f 02       		.byte	0x2
+ 706 0290 23       		.byte	0x23
+ 707 0291 00       		.uleb128 0x0
+ 708 0292 0D       		.uleb128 0xd
+ 709 0293 43535200 		.ascii	"CSR\000"
+ 710 0297 05       		.byte	0x5
+ 711 0298 3C04     		.2byte	0x43c
+ 712 029a 97000000 		.4byte	0x97
+ 713 029e 02       		.byte	0x2
+ 714 029f 23       		.byte	0x23
+ 715 02a0 04       		.uleb128 0x4
+ 716 02a1 00       		.byte	0x0
+ 717 02a2 0B       		.uleb128 0xb
+ 718 02a3 ED000000 		.4byte	.LASF36
+ 719 02a7 05       		.byte	0x5
+ 720 02a8 3D04     		.2byte	0x43d
+ 721 02aa 7B020000 		.4byte	0x27b
+ 722 02ae 09       		.uleb128 0x9
+ 723 02af 28       		.byte	0x28
+ 724 02b0 05       		.byte	0x5
+ 725 02b1 4304     		.2byte	0x443
+ 726 02b3 4D030000 		.4byte	0x34d
+ 727 02b7 0D       		.uleb128 0xd
+ 728 02b8 435200   		.ascii	"CR\000"
+ 729 02bb 05       		.byte	0x5
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 14
+
+
+ 730 02bc 4504     		.2byte	0x445
+ 731 02be 97000000 		.4byte	0x97
+ 732 02c2 02       		.byte	0x2
+ 733 02c3 23       		.byte	0x23
+ 734 02c4 00       		.uleb128 0x0
+ 735 02c5 0A       		.uleb128 0xa
+ 736 02c6 13000000 		.4byte	.LASF37
+ 737 02ca 05       		.byte	0x5
+ 738 02cb 4604     		.2byte	0x446
+ 739 02cd 97000000 		.4byte	0x97
+ 740 02d1 02       		.byte	0x2
+ 741 02d2 23       		.byte	0x23
+ 742 02d3 04       		.uleb128 0x4
+ 743 02d4 0D       		.uleb128 0xd
+ 744 02d5 43495200 		.ascii	"CIR\000"
+ 745 02d9 05       		.byte	0x5
+ 746 02da 4704     		.2byte	0x447
+ 747 02dc 97000000 		.4byte	0x97
+ 748 02e0 02       		.byte	0x2
+ 749 02e1 23       		.byte	0x23
+ 750 02e2 08       		.uleb128 0x8
+ 751 02e3 0A       		.uleb128 0xa
+ 752 02e4 27010000 		.4byte	.LASF38
+ 753 02e8 05       		.byte	0x5
+ 754 02e9 4804     		.2byte	0x448
+ 755 02eb 97000000 		.4byte	0x97
+ 756 02ef 02       		.byte	0x2
+ 757 02f0 23       		.byte	0x23
+ 758 02f1 0C       		.uleb128 0xc
+ 759 02f2 0A       		.uleb128 0xa
+ 760 02f3 67000000 		.4byte	.LASF39
+ 761 02f7 05       		.byte	0x5
+ 762 02f8 4904     		.2byte	0x449
+ 763 02fa 97000000 		.4byte	0x97
+ 764 02fe 02       		.byte	0x2
+ 765 02ff 23       		.byte	0x23
+ 766 0300 10       		.uleb128 0x10
+ 767 0301 0A       		.uleb128 0xa
+ 768 0302 33000000 		.4byte	.LASF40
+ 769 0306 05       		.byte	0x5
+ 770 0307 4A04     		.2byte	0x44a
+ 771 0309 97000000 		.4byte	0x97
+ 772 030d 02       		.byte	0x2
+ 773 030e 23       		.byte	0x23
+ 774 030f 14       		.uleb128 0x14
+ 775 0310 0A       		.uleb128 0xa
+ 776 0311 75010000 		.4byte	.LASF41
+ 777 0315 05       		.byte	0x5
+ 778 0316 4B04     		.2byte	0x44b
+ 779 0318 97000000 		.4byte	0x97
+ 780 031c 02       		.byte	0x2
+ 781 031d 23       		.byte	0x23
+ 782 031e 18       		.uleb128 0x18
+ 783 031f 0A       		.uleb128 0xa
+ 784 0320 1F010000 		.4byte	.LASF42
+ 785 0324 05       		.byte	0x5
+ 786 0325 4C04     		.2byte	0x44c
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 15
+
+
+ 787 0327 97000000 		.4byte	0x97
+ 788 032b 02       		.byte	0x2
+ 789 032c 23       		.byte	0x23
+ 790 032d 1C       		.uleb128 0x1c
+ 791 032e 0A       		.uleb128 0xa
+ 792 032f 0E000000 		.4byte	.LASF43
+ 793 0333 05       		.byte	0x5
+ 794 0334 4D04     		.2byte	0x44d
+ 795 0336 97000000 		.4byte	0x97
+ 796 033a 02       		.byte	0x2
+ 797 033b 23       		.byte	0x23
+ 798 033c 20       		.uleb128 0x20
+ 799 033d 0D       		.uleb128 0xd
+ 800 033e 43535200 		.ascii	"CSR\000"
+ 801 0342 05       		.byte	0x5
+ 802 0343 4E04     		.2byte	0x44e
+ 803 0345 97000000 		.4byte	0x97
+ 804 0349 02       		.byte	0x2
+ 805 034a 23       		.byte	0x23
+ 806 034b 24       		.uleb128 0x24
+ 807 034c 00       		.byte	0x0
+ 808 034d 0B       		.uleb128 0xb
+ 809 034e E7010000 		.4byte	.LASF44
+ 810 0352 05       		.byte	0x5
+ 811 0353 5904     		.2byte	0x459
+ 812 0355 AE020000 		.4byte	0x2ae
+ 813 0359 0E       		.uleb128 0xe
+ 814 035a B0000000 		.4byte	.LASF51
+ 815 035e 01       		.byte	0x1
+ 816 035f 31       		.byte	0x31
+ 817 0360 01       		.byte	0x1
+ 818 0361 00000000 		.4byte	.LFB63
+ 819 0365 92000000 		.4byte	.LFE63
+ 820 0369 00000000 		.4byte	.LLST0
+ 821 036d 0F       		.uleb128 0xf
+ 822 036e 01       		.byte	0x1
+ 823 036f 8E010000 		.4byte	.LASF45
+ 824 0373 01       		.byte	0x1
+ 825 0374 63       		.byte	0x63
+ 826 0375 01       		.byte	0x1
+ 827 0376 00000000 		.4byte	.LFB64
+ 828 037a E2000000 		.4byte	.LFE64
+ 829 037e 20000000 		.4byte	.LLST1
+ 830 0382 10       		.uleb128 0x10
+ 831 0383 01       		.byte	0x1
+ 832 0384 A0010000 		.4byte	.LASF46
+ 833 0388 01       		.byte	0x1
+ 834 0389 93       		.byte	0x93
+ 835 038a 01       		.byte	0x1
+ 836 038b 00000000 		.4byte	.LFB65
+ 837 038f 24010000 		.4byte	.LFE65
+ 838 0393 02       		.byte	0x2
+ 839 0394 7D       		.byte	0x7d
+ 840 0395 00       		.sleb128 0
+ 841 0396 11       		.uleb128 0x11
+ 842 0397 D2000000 		.4byte	.LASF47
+ 843 039b 04       		.byte	0x4
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 16
+
+
+ 844 039c 0706     		.2byte	0x607
+ 845 039e DC010000 		.4byte	0x1dc
+ 846 03a2 01       		.byte	0x1
+ 847 03a3 01       		.byte	0x1
+ 848 03a4 11       		.uleb128 0x11
+ 849 03a5 D2000000 		.4byte	.LASF47
+ 850 03a9 04       		.byte	0x4
+ 851 03aa 0706     		.2byte	0x607
+ 852 03ac DC010000 		.4byte	0x1dc
+ 853 03b0 01       		.byte	0x1
+ 854 03b1 01       		.byte	0x1
+ 855 03b2 00       		.byte	0x0
+ 856              		.section	.debug_abbrev
+ 857 0000 01       		.uleb128 0x1
+ 858 0001 11       		.uleb128 0x11
+ 859 0002 01       		.byte	0x1
+ 860 0003 25       		.uleb128 0x25
+ 861 0004 0E       		.uleb128 0xe
+ 862 0005 13       		.uleb128 0x13
+ 863 0006 0B       		.uleb128 0xb
+ 864 0007 03       		.uleb128 0x3
+ 865 0008 0E       		.uleb128 0xe
+ 866 0009 1B       		.uleb128 0x1b
+ 867 000a 0E       		.uleb128 0xe
+ 868 000b 11       		.uleb128 0x11
+ 869 000c 01       		.uleb128 0x1
+ 870 000d 52       		.uleb128 0x52
+ 871 000e 01       		.uleb128 0x1
+ 872 000f 55       		.uleb128 0x55
+ 873 0010 06       		.uleb128 0x6
+ 874 0011 10       		.uleb128 0x10
+ 875 0012 06       		.uleb128 0x6
+ 876 0013 00       		.byte	0x0
+ 877 0014 00       		.byte	0x0
+ 878 0015 02       		.uleb128 0x2
+ 879 0016 24       		.uleb128 0x24
+ 880 0017 00       		.byte	0x0
+ 881 0018 0B       		.uleb128 0xb
+ 882 0019 0B       		.uleb128 0xb
+ 883 001a 3E       		.uleb128 0x3e
+ 884 001b 0B       		.uleb128 0xb
+ 885 001c 03       		.uleb128 0x3
+ 886 001d 08       		.uleb128 0x8
+ 887 001e 00       		.byte	0x0
+ 888 001f 00       		.byte	0x0
+ 889 0020 03       		.uleb128 0x3
+ 890 0021 24       		.uleb128 0x24
+ 891 0022 00       		.byte	0x0
+ 892 0023 0B       		.uleb128 0xb
+ 893 0024 0B       		.uleb128 0xb
+ 894 0025 3E       		.uleb128 0x3e
+ 895 0026 0B       		.uleb128 0xb
+ 896 0027 03       		.uleb128 0x3
+ 897 0028 0E       		.uleb128 0xe
+ 898 0029 00       		.byte	0x0
+ 899 002a 00       		.byte	0x0
+ 900 002b 04       		.uleb128 0x4
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 17
+
+
+ 901 002c 16       		.uleb128 0x16
+ 902 002d 00       		.byte	0x0
+ 903 002e 03       		.uleb128 0x3
+ 904 002f 0E       		.uleb128 0xe
+ 905 0030 3A       		.uleb128 0x3a
+ 906 0031 0B       		.uleb128 0xb
+ 907 0032 3B       		.uleb128 0x3b
+ 908 0033 0B       		.uleb128 0xb
+ 909 0034 49       		.uleb128 0x49
+ 910 0035 13       		.uleb128 0x13
+ 911 0036 00       		.byte	0x0
+ 912 0037 00       		.byte	0x0
+ 913 0038 05       		.uleb128 0x5
+ 914 0039 35       		.uleb128 0x35
+ 915 003a 00       		.byte	0x0
+ 916 003b 49       		.uleb128 0x49
+ 917 003c 13       		.uleb128 0x13
+ 918 003d 00       		.byte	0x0
+ 919 003e 00       		.byte	0x0
+ 920 003f 06       		.uleb128 0x6
+ 921 0040 24       		.uleb128 0x24
+ 922 0041 00       		.byte	0x0
+ 923 0042 0B       		.uleb128 0xb
+ 924 0043 0B       		.uleb128 0xb
+ 925 0044 3E       		.uleb128 0x3e
+ 926 0045 0B       		.uleb128 0xb
+ 927 0046 00       		.byte	0x0
+ 928 0047 00       		.byte	0x0
+ 929 0048 07       		.uleb128 0x7
+ 930 0049 13       		.uleb128 0x13
+ 931 004a 01       		.byte	0x1
+ 932 004b 0B       		.uleb128 0xb
+ 933 004c 0B       		.uleb128 0xb
+ 934 004d 3A       		.uleb128 0x3a
+ 935 004e 0B       		.uleb128 0xb
+ 936 004f 3B       		.uleb128 0x3b
+ 937 0050 0B       		.uleb128 0xb
+ 938 0051 01       		.uleb128 0x1
+ 939 0052 13       		.uleb128 0x13
+ 940 0053 00       		.byte	0x0
+ 941 0054 00       		.byte	0x0
+ 942 0055 08       		.uleb128 0x8
+ 943 0056 0D       		.uleb128 0xd
+ 944 0057 00       		.byte	0x0
+ 945 0058 03       		.uleb128 0x3
+ 946 0059 0E       		.uleb128 0xe
+ 947 005a 3A       		.uleb128 0x3a
+ 948 005b 0B       		.uleb128 0xb
+ 949 005c 3B       		.uleb128 0x3b
+ 950 005d 0B       		.uleb128 0xb
+ 951 005e 49       		.uleb128 0x49
+ 952 005f 13       		.uleb128 0x13
+ 953 0060 38       		.uleb128 0x38
+ 954 0061 0A       		.uleb128 0xa
+ 955 0062 00       		.byte	0x0
+ 956 0063 00       		.byte	0x0
+ 957 0064 09       		.uleb128 0x9
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 18
+
+
+ 958 0065 13       		.uleb128 0x13
+ 959 0066 01       		.byte	0x1
+ 960 0067 0B       		.uleb128 0xb
+ 961 0068 0B       		.uleb128 0xb
+ 962 0069 3A       		.uleb128 0x3a
+ 963 006a 0B       		.uleb128 0xb
+ 964 006b 3B       		.uleb128 0x3b
+ 965 006c 05       		.uleb128 0x5
+ 966 006d 01       		.uleb128 0x1
+ 967 006e 13       		.uleb128 0x13
+ 968 006f 00       		.byte	0x0
+ 969 0070 00       		.byte	0x0
+ 970 0071 0A       		.uleb128 0xa
+ 971 0072 0D       		.uleb128 0xd
+ 972 0073 00       		.byte	0x0
+ 973 0074 03       		.uleb128 0x3
+ 974 0075 0E       		.uleb128 0xe
+ 975 0076 3A       		.uleb128 0x3a
+ 976 0077 0B       		.uleb128 0xb
+ 977 0078 3B       		.uleb128 0x3b
+ 978 0079 05       		.uleb128 0x5
+ 979 007a 49       		.uleb128 0x49
+ 980 007b 13       		.uleb128 0x13
+ 981 007c 38       		.uleb128 0x38
+ 982 007d 0A       		.uleb128 0xa
+ 983 007e 00       		.byte	0x0
+ 984 007f 00       		.byte	0x0
+ 985 0080 0B       		.uleb128 0xb
+ 986 0081 16       		.uleb128 0x16
+ 987 0082 00       		.byte	0x0
+ 988 0083 03       		.uleb128 0x3
+ 989 0084 0E       		.uleb128 0xe
+ 990 0085 3A       		.uleb128 0x3a
+ 991 0086 0B       		.uleb128 0xb
+ 992 0087 3B       		.uleb128 0x3b
+ 993 0088 05       		.uleb128 0x5
+ 994 0089 49       		.uleb128 0x49
+ 995 008a 13       		.uleb128 0x13
+ 996 008b 00       		.byte	0x0
+ 997 008c 00       		.byte	0x0
+ 998 008d 0C       		.uleb128 0xc
+ 999 008e 26       		.uleb128 0x26
+ 1000 008f 00       		.byte	0x0
+ 1001 0090 49       		.uleb128 0x49
+ 1002 0091 13       		.uleb128 0x13
+ 1003 0092 00       		.byte	0x0
+ 1004 0093 00       		.byte	0x0
+ 1005 0094 0D       		.uleb128 0xd
+ 1006 0095 0D       		.uleb128 0xd
+ 1007 0096 00       		.byte	0x0
+ 1008 0097 03       		.uleb128 0x3
+ 1009 0098 08       		.uleb128 0x8
+ 1010 0099 3A       		.uleb128 0x3a
+ 1011 009a 0B       		.uleb128 0xb
+ 1012 009b 3B       		.uleb128 0x3b
+ 1013 009c 05       		.uleb128 0x5
+ 1014 009d 49       		.uleb128 0x49
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 19
+
+
+ 1015 009e 13       		.uleb128 0x13
+ 1016 009f 38       		.uleb128 0x38
+ 1017 00a0 0A       		.uleb128 0xa
+ 1018 00a1 00       		.byte	0x0
+ 1019 00a2 00       		.byte	0x0
+ 1020 00a3 0E       		.uleb128 0xe
+ 1021 00a4 2E       		.uleb128 0x2e
+ 1022 00a5 00       		.byte	0x0
+ 1023 00a6 03       		.uleb128 0x3
+ 1024 00a7 0E       		.uleb128 0xe
+ 1025 00a8 3A       		.uleb128 0x3a
+ 1026 00a9 0B       		.uleb128 0xb
+ 1027 00aa 3B       		.uleb128 0x3b
+ 1028 00ab 0B       		.uleb128 0xb
+ 1029 00ac 27       		.uleb128 0x27
+ 1030 00ad 0C       		.uleb128 0xc
+ 1031 00ae 11       		.uleb128 0x11
+ 1032 00af 01       		.uleb128 0x1
+ 1033 00b0 12       		.uleb128 0x12
+ 1034 00b1 01       		.uleb128 0x1
+ 1035 00b2 40       		.uleb128 0x40
+ 1036 00b3 06       		.uleb128 0x6
+ 1037 00b4 00       		.byte	0x0
+ 1038 00b5 00       		.byte	0x0
+ 1039 00b6 0F       		.uleb128 0xf
+ 1040 00b7 2E       		.uleb128 0x2e
+ 1041 00b8 00       		.byte	0x0
+ 1042 00b9 3F       		.uleb128 0x3f
+ 1043 00ba 0C       		.uleb128 0xc
+ 1044 00bb 03       		.uleb128 0x3
+ 1045 00bc 0E       		.uleb128 0xe
+ 1046 00bd 3A       		.uleb128 0x3a
+ 1047 00be 0B       		.uleb128 0xb
+ 1048 00bf 3B       		.uleb128 0x3b
+ 1049 00c0 0B       		.uleb128 0xb
+ 1050 00c1 27       		.uleb128 0x27
+ 1051 00c2 0C       		.uleb128 0xc
+ 1052 00c3 11       		.uleb128 0x11
+ 1053 00c4 01       		.uleb128 0x1
+ 1054 00c5 12       		.uleb128 0x12
+ 1055 00c6 01       		.uleb128 0x1
+ 1056 00c7 40       		.uleb128 0x40
+ 1057 00c8 06       		.uleb128 0x6
+ 1058 00c9 00       		.byte	0x0
+ 1059 00ca 00       		.byte	0x0
+ 1060 00cb 10       		.uleb128 0x10
+ 1061 00cc 2E       		.uleb128 0x2e
+ 1062 00cd 00       		.byte	0x0
+ 1063 00ce 3F       		.uleb128 0x3f
+ 1064 00cf 0C       		.uleb128 0xc
+ 1065 00d0 03       		.uleb128 0x3
+ 1066 00d1 0E       		.uleb128 0xe
+ 1067 00d2 3A       		.uleb128 0x3a
+ 1068 00d3 0B       		.uleb128 0xb
+ 1069 00d4 3B       		.uleb128 0x3b
+ 1070 00d5 0B       		.uleb128 0xb
+ 1071 00d6 27       		.uleb128 0x27
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 20
+
+
+ 1072 00d7 0C       		.uleb128 0xc
+ 1073 00d8 11       		.uleb128 0x11
+ 1074 00d9 01       		.uleb128 0x1
+ 1075 00da 12       		.uleb128 0x12
+ 1076 00db 01       		.uleb128 0x1
+ 1077 00dc 40       		.uleb128 0x40
+ 1078 00dd 0A       		.uleb128 0xa
+ 1079 00de 00       		.byte	0x0
+ 1080 00df 00       		.byte	0x0
+ 1081 00e0 11       		.uleb128 0x11
+ 1082 00e1 34       		.uleb128 0x34
+ 1083 00e2 00       		.byte	0x0
+ 1084 00e3 03       		.uleb128 0x3
+ 1085 00e4 0E       		.uleb128 0xe
+ 1086 00e5 3A       		.uleb128 0x3a
+ 1087 00e6 0B       		.uleb128 0xb
+ 1088 00e7 3B       		.uleb128 0x3b
+ 1089 00e8 05       		.uleb128 0x5
+ 1090 00e9 49       		.uleb128 0x49
+ 1091 00ea 13       		.uleb128 0x13
+ 1092 00eb 3F       		.uleb128 0x3f
+ 1093 00ec 0C       		.uleb128 0xc
+ 1094 00ed 3C       		.uleb128 0x3c
+ 1095 00ee 0C       		.uleb128 0xc
+ 1096 00ef 00       		.byte	0x0
+ 1097 00f0 00       		.byte	0x0
+ 1098 00f1 00       		.byte	0x0
+ 1099              		.section	.debug_pubnames,"",%progbits
+ 1100 0000 34000000 		.4byte	0x34
+ 1101 0004 0200     		.2byte	0x2
+ 1102 0006 00000000 		.4byte	.Ldebug_info0
+ 1103 000a B3030000 		.4byte	0x3b3
+ 1104 000e 6D030000 		.4byte	0x36d
+ 1105 0012 68616C5F 		.ascii	"hal_lld_init\000"
+ 1105      6C6C645F 
+ 1105      696E6974 
+ 1105      00
+ 1106 001f 82030000 		.4byte	0x382
+ 1107 0023 73746D33 		.ascii	"stm32_clock_init\000"
+ 1107      325F636C 
+ 1107      6F636B5F 
+ 1107      696E6974 
+ 1107      00
+ 1108 0034 00000000 		.4byte	0x0
+ 1109              		.section	.debug_pubtypes,"",%progbits
+ 1110 0000 8F000000 		.4byte	0x8f
+ 1111 0004 0200     		.2byte	0x2
+ 1112 0006 00000000 		.4byte	.Ldebug_info0
+ 1113 000a B3030000 		.4byte	0x3b3
+ 1114 000e 4C000000 		.4byte	0x4c
+ 1115 0012 75696E74 		.ascii	"uint16_t\000"
+ 1115      31365F74 
+ 1115      00
+ 1116 001b 5E000000 		.4byte	0x5e
+ 1117 001f 696E7433 		.ascii	"int32_t\000"
+ 1117      325F7400 
+ 1118 0027 70000000 		.4byte	0x70
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 21
+
+
+ 1119 002b 75696E74 		.ascii	"uint32_t\000"
+ 1119      33325F74 
+ 1119      00
+ 1120 0034 E5000000 		.4byte	0xe5
+ 1121 0038 434D785F 		.ascii	"CMx_SCS\000"
+ 1121      53435300 
+ 1122 0040 72010000 		.4byte	0x172
+ 1123 0044 434D785F 		.ascii	"CMx_DWT\000"
+ 1123      44575400 
+ 1124 004c D0010000 		.4byte	0x1d0
+ 1125 0050 53797354 		.ascii	"SysTick_Type\000"
+ 1125      69636B5F 
+ 1125      54797065 
+ 1125      00
+ 1126 005d 6F020000 		.4byte	0x26f
+ 1127 0061 464C4153 		.ascii	"FLASH_TypeDef\000"
+ 1127      485F5479 
+ 1127      70654465 
+ 1127      6600
+ 1128 006f A2020000 		.4byte	0x2a2
+ 1129 0073 5057525F 		.ascii	"PWR_TypeDef\000"
+ 1129      54797065 
+ 1129      44656600 
+ 1130 007f 4D030000 		.4byte	0x34d
+ 1131 0083 5243435F 		.ascii	"RCC_TypeDef\000"
+ 1131      54797065 
+ 1131      44656600 
+ 1132 008f 00000000 		.4byte	0x0
+ 1133              		.section	.debug_aranges,"",%progbits
+ 1134 0000 2C000000 		.4byte	0x2c
+ 1135 0004 0200     		.2byte	0x2
+ 1136 0006 00000000 		.4byte	.Ldebug_info0
+ 1137 000a 04       		.byte	0x4
+ 1138 000b 00       		.byte	0x0
+ 1139 000c 0000     		.2byte	0x0
+ 1140 000e 0000     		.2byte	0x0
+ 1141 0010 00000000 		.4byte	.LFB63
+ 1142 0014 92000000 		.4byte	.LFE63-.LFB63
+ 1143 0018 00000000 		.4byte	.LFB64
+ 1144 001c E2000000 		.4byte	.LFE64-.LFB64
+ 1145 0020 00000000 		.4byte	.LFB65
+ 1146 0024 24010000 		.4byte	.LFE65-.LFB65
+ 1147 0028 00000000 		.4byte	0x0
+ 1148 002c 00000000 		.4byte	0x0
+ 1149              		.section	.debug_ranges,"",%progbits
+ 1150              	.Ldebug_ranges0:
+ 1151 0000 00000000 		.4byte	.LFB63
+ 1152 0004 92000000 		.4byte	.LFE63
+ 1153 0008 00000000 		.4byte	.LFB64
+ 1154 000c E2000000 		.4byte	.LFE64
+ 1155 0010 00000000 		.4byte	.LFB65
+ 1156 0014 24010000 		.4byte	.LFE65
+ 1157 0018 00000000 		.4byte	0x0
+ 1158 001c 00000000 		.4byte	0x0
+ 1159              		.section	.debug_str,"MS",%progbits,1
+ 1160              	.LASF10:
+ 1161 0000 6C6F6E67 		.ascii	"long long int\000"
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 22
+
+
+ 1161      206C6F6E 
+ 1161      6720696E 
+ 1161      7400
+ 1162              	.LASF43:
+ 1163 000e 42444352 		.ascii	"BDCR\000"
+ 1163      00
+ 1164              	.LASF37:
+ 1165 0013 43464752 		.ascii	"CFGR\000"
+ 1165      00
+ 1166              	.LASF25:
+ 1167 0018 50435352 		.ascii	"PCSR\000"
+ 1167      00
+ 1168              	.LASF35:
+ 1169 001d 464C4153 		.ascii	"FLASH_TypeDef\000"
+ 1169      485F5479 
+ 1169      70654465 
+ 1169      6600
+ 1170              	.LASF26:
+ 1171 002b 434D785F 		.ascii	"CMx_DWT\000"
+ 1171      44575400 
+ 1172              	.LASF40:
+ 1173 0033 41484245 		.ascii	"AHBENR\000"
+ 1173      4E5200
+ 1174              	.LASF24:
+ 1175 003a 464F4C44 		.ascii	"FOLDCNT\000"
+ 1175      434E5400 
+ 1176              	.LASF34:
+ 1177 0042 57525052 		.ascii	"WRPR\000"
+ 1177      00
+ 1178              	.LASF22:
+ 1179 0047 534C4545 		.ascii	"SLEEPCNT\000"
+ 1179      50434E54 
+ 1179      00
+ 1180              	.LASF11:
+ 1181 0050 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1181      206C6F6E 
+ 1181      6720756E 
+ 1181      7369676E 
+ 1181      65642069 
+ 1182              	.LASF39:
+ 1183 0067 41504231 		.ascii	"APB1RSTR\000"
+ 1183      52535452 
+ 1183      00
+ 1184              	.LASF16:
+ 1185 0070 44454D43 		.ascii	"DEMCR\000"
+ 1185      5200
+ 1186              	.LASF2:
+ 1187 0076 756E7369 		.ascii	"unsigned char\000"
+ 1187      676E6564 
+ 1187      20636861 
+ 1187      7200
+ 1188              	.LASF19:
+ 1189 0084 43594343 		.ascii	"CYCCNT\000"
+ 1189      4E5400
+ 1190              	.LASF9:
+ 1191 008b 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1191      20756E73 
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 23
+
+
+ 1191      69676E65 
+ 1191      6420696E 
+ 1191      7400
+ 1192              	.LASF4:
+ 1193 009d 73686F72 		.ascii	"short unsigned int\000"
+ 1193      7420756E 
+ 1193      7369676E 
+ 1193      65642069 
+ 1193      6E7400
+ 1194              	.LASF51:
+ 1195 00b0 68616C5F 		.ascii	"hal_lld_backup_domain_init\000"
+ 1195      6C6C645F 
+ 1195      6261636B 
+ 1195      75705F64 
+ 1195      6F6D6169 
+ 1196              	.LASF20:
+ 1197 00cb 43504943 		.ascii	"CPICNT\000"
+ 1197      4E5400
+ 1198              	.LASF47:
+ 1199 00d2 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1199      52784275 
+ 1199      66666572 
+ 1199      00
+ 1200              	.LASF13:
+ 1201 00df 44484353 		.ascii	"DHCSR\000"
+ 1201      5200
+ 1202              	.LASF32:
+ 1203 00e5 4F50544B 		.ascii	"OPTKEYR\000"
+ 1203      45595200 
+ 1204              	.LASF36:
+ 1205 00ed 5057525F 		.ascii	"PWR_TypeDef\000"
+ 1205      54797065 
+ 1205      44656600 
+ 1206              	.LASF33:
+ 1207 00f9 52455345 		.ascii	"RESERVED\000"
+ 1207      52564544 
+ 1207      00
+ 1208              	.LASF48:
+ 1209 0102 474E5520 		.ascii	"GNU C 4.5.0\000"
+ 1209      4320342E 
+ 1209      352E3000 
+ 1210              	.LASF3:
+ 1211 010e 73686F72 		.ascii	"short int\000"
+ 1211      7420696E 
+ 1211      7400
+ 1212              	.LASF23:
+ 1213 0118 4C535543 		.ascii	"LSUCNT\000"
+ 1213      4E5400
+ 1214              	.LASF42:
+ 1215 011f 41504231 		.ascii	"APB1ENR\000"
+ 1215      454E5200 
+ 1216              	.LASF38:
+ 1217 0127 41504232 		.ascii	"APB2RSTR\000"
+ 1217      52535452 
+ 1217      00
+ 1218              	.LASF14:
+ 1219 0130 44435253 		.ascii	"DCRSR\000"
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 24
+
+
+ 1219      5200
+ 1220              	.LASF0:
+ 1221 0136 756E7369 		.ascii	"unsigned int\000"
+ 1221      676E6564 
+ 1221      20696E74 
+ 1221      00
+ 1222              	.LASF27:
+ 1223 0143 63686172 		.ascii	"char\000"
+ 1223      00
+ 1224              	.LASF30:
+ 1225 0148 53797354 		.ascii	"SysTick_Type\000"
+ 1225      69636B5F 
+ 1225      54797065 
+ 1225      00
+ 1226              	.LASF15:
+ 1227 0155 44435244 		.ascii	"DCRDR\000"
+ 1227      5200
+ 1228              	.LASF18:
+ 1229 015b 4354524C 		.ascii	"CTRL\000"
+ 1229      00
+ 1230              	.LASF21:
+ 1231 0160 45584343 		.ascii	"EXCCNT\000"
+ 1231      4E5400
+ 1232              	.LASF6:
+ 1233 0167 696E7433 		.ascii	"int32_t\000"
+ 1233      325F7400 
+ 1234              	.LASF29:
+ 1235 016f 43414C49 		.ascii	"CALIB\000"
+ 1235      4200
+ 1236              	.LASF41:
+ 1237 0175 41504232 		.ascii	"APB2ENR\000"
+ 1237      454E5200 
+ 1238              	.LASF17:
+ 1239 017d 434D785F 		.ascii	"CMx_SCS\000"
+ 1239      53435300 
+ 1240              	.LASF5:
+ 1241 0185 75696E74 		.ascii	"uint16_t\000"
+ 1241      31365F74 
+ 1241      00
+ 1242              	.LASF45:
+ 1243 018e 68616C5F 		.ascii	"hal_lld_init\000"
+ 1243      6C6C645F 
+ 1243      696E6974 
+ 1243      00
+ 1244              	.LASF28:
+ 1245 019b 4C4F4144 		.ascii	"LOAD\000"
+ 1245      00
+ 1246              	.LASF46:
+ 1247 01a0 73746D33 		.ascii	"stm32_clock_init\000"
+ 1247      325F636C 
+ 1247      6F636B5F 
+ 1247      696E6974 
+ 1247      00
+ 1248              	.LASF49:
+ 1249 01b1 2E2E2F63 		.ascii	"../chibios_2.6.3/os/hal/platforms/STM32F1xx/hal_lld"
+ 1249      68696269 
+ 1249      6F735F32 
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 25
+
+
+ 1249      2E362E33 
+ 1249      2F6F732F 
+ 1250 01e4 2E6300   		.ascii	".c\000"
+ 1251              	.LASF44:
+ 1252 01e7 5243435F 		.ascii	"RCC_TypeDef\000"
+ 1252      54797065 
+ 1252      44656600 
+ 1253              	.LASF8:
+ 1254 01f3 75696E74 		.ascii	"uint32_t\000"
+ 1254      33325F74 
+ 1254      00
+ 1255              	.LASF7:
+ 1256 01fc 6C6F6E67 		.ascii	"long int\000"
+ 1256      20696E74 
+ 1256      00
+ 1257              	.LASF31:
+ 1258 0205 4B455952 		.ascii	"KEYR\000"
+ 1258      00
+ 1259              	.LASF1:
+ 1260 020a 7369676E 		.ascii	"signed char\000"
+ 1260      65642063 
+ 1260      68617200 
+ 1261              	.LASF50:
+ 1262 0216 433A5C70 		.ascii	"C:\\projects\\clock.git\\firmware\\firmware\000"
+ 1262      726F6A65 
+ 1262      6374735C 
+ 1262      636C6F63 
+ 1262      6B2E6769 
+ 1263              	.LASF12:
+ 1264 023e 5F426F6F 		.ascii	"_Bool\000"
+ 1264      6C00
+ 1265              		.ident	"GCC: (GNU) 4.5.0"
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccxHmona.s 			page 26
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 hal_lld.c
+C:\Users\z80\AppData\Local\Temp\ccxHmona.s:24     .text.hal_lld_backup_domain_init:00000000 $t
+C:\Users\z80\AppData\Local\Temp\ccxHmona.s:29     .text.hal_lld_backup_domain_init:00000000 hal_lld_backup_domain_init
+C:\Users\z80\AppData\Local\Temp\ccxHmona.s:99     .text.hal_lld_init:00000000 $t
+C:\Users\z80\AppData\Local\Temp\ccxHmona.s:105    .text.hal_lld_init:00000000 hal_lld_init
+C:\Users\z80\AppData\Local\Temp\ccxHmona.s:197    .text.stm32_clock_init:00000000 $t
+C:\Users\z80\AppData\Local\Temp\ccxHmona.s:203    .text.stm32_clock_init:00000000 stm32_clock_init
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+rtc_lld_set_prescaler
+dmaInit

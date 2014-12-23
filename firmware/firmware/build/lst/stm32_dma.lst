@@ -1,0 +1,3012 @@
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"stm32_dma.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 2C020000 		.text
+  20      02002A01 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.global	_stm32_dma_streams
+  24              		.section	.rodata._stm32_dma_streams,"a",%progbits
+  25              		.align	2
+  26              		.type	_stm32_dma_streams, %object
+  27              		.size	_stm32_dma_streams, 84
+  28              	_stm32_dma_streams:
+  29 0000 08000240 		.word	1073872904
+  30 0004 04000240 		.word	1073872900
+  31 0008 00       		.byte	0
+  32 0009 00       		.byte	0
+  33 000a 0B       		.byte	11
+  34 000b 00       		.space	1
+  35 000c 1C000240 		.word	1073872924
+  36 0010 04000240 		.word	1073872900
+  37 0014 04       		.byte	4
+  38 0015 01       		.byte	1
+  39 0016 0C       		.byte	12
+  40 0017 00       		.space	1
+  41 0018 30000240 		.word	1073872944
+  42 001c 04000240 		.word	1073872900
+  43 0020 08       		.byte	8
+  44 0021 02       		.byte	2
+  45 0022 0D       		.byte	13
+  46 0023 00       		.space	1
+  47 0024 44000240 		.word	1073872964
+  48 0028 04000240 		.word	1073872900
+  49 002c 0C       		.byte	12
+  50 002d 03       		.byte	3
+  51 002e 0E       		.byte	14
+  52 002f 00       		.space	1
+  53 0030 58000240 		.word	1073872984
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 2
+
+
+  54 0034 04000240 		.word	1073872900
+  55 0038 10       		.byte	16
+  56 0039 04       		.byte	4
+  57 003a 0F       		.byte	15
+  58 003b 00       		.space	1
+  59 003c 6C000240 		.word	1073873004
+  60 0040 04000240 		.word	1073872900
+  61 0044 14       		.byte	20
+  62 0045 05       		.byte	5
+  63 0046 10       		.byte	16
+  64 0047 00       		.space	1
+  65 0048 80000240 		.word	1073873024
+  66 004c 04000240 		.word	1073872900
+  67 0050 18       		.byte	24
+  68 0051 06       		.byte	6
+  69 0052 11       		.byte	17
+  70 0053 00       		.space	1
+  71              		.section	.bss.dma_streams_mask,"aw",%nobits
+  72              		.align	2
+  73              		.type	dma_streams_mask, %object
+  74              		.size	dma_streams_mask, 4
+  75              	dma_streams_mask:
+  76 0000 00000000 		.space	4
+  77              		.section	.bss.dma_isr_redir,"aw",%nobits
+  78              		.align	2
+  79              		.type	dma_isr_redir, %object
+  80              		.size	dma_isr_redir, 56
+  81              	dma_isr_redir:
+  82 0000 00000000 		.space	56
+  82      00000000 
+  82      00000000 
+  82      00000000 
+  82      00000000 
+  83              		.section	.text.Vector6C,"ax",%progbits
+  84              		.align	2
+  85              		.p2align 4,,15
+  86              		.global	Vector6C
+  87              		.thumb
+  88              		.thumb_func
+  89              		.type	Vector6C, %function
+  90              	Vector6C:
+  91              	.LFB63:
+  92              		.file 1 "../chibios_2.6.3/os/hal/platforms/STM32F1xx/stm32_dma.c"
+  93              		.loc 1 126 0
+  94              		.cfi_startproc
+  95              		@ args = 0, pretend = 0, frame = 8
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+  97 0000 00B5     		push	{lr}
+  98              	.LCFI0:
+  99              		.cfi_def_cfa_offset 4
+ 100 0002 83B0     		sub	sp, sp, #12
+ 101              	.LCFI1:
+ 102              		.cfi_def_cfa_offset 16
+ 103              		.loc 1 131 0
+ 104 0004 4FF00003 		mov	r3, #0
+ 105 0008 C4F20203 		movt	r3, 16386
+ 106 000c 1B68     		ldr	r3, [r3, #0]
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 3
+
+
+ 107 000e 03F00F03 		and	r3, r3, #15
+ 108 0012 0193     		str	r3, [sp, #4]
+ 109              		.loc 1 132 0
+ 110 0014 4FF00003 		mov	r3, #0
+ 111 0018 C4F20203 		movt	r3, 16386
+ 112 001c 019A     		ldr	r2, [sp, #4]
+ 113 001e 5A60     		str	r2, [r3, #4]
+ 114              		.loc 1 133 0
+ 115 0020 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 116 0024 C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 117 0028 1B68     		ldr	r3, [r3, #0]
+ 118 002a 002B     		cmp	r3, #0
+ 119 002c 0CD0     		beq	.L2
+ 120              		.cfi_offset 14, -4
+ 121              		.loc 1 134 0
+ 122 002e 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 123 0032 C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 124 0036 1A68     		ldr	r2, [r3, #0]
+ 125 0038 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 126 003c C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 127 0040 5B68     		ldr	r3, [r3, #4]
+ 128 0042 1846     		mov	r0, r3
+ 129 0044 0199     		ldr	r1, [sp, #4]
+ 130 0046 9047     		blx	r2
+ 131              	.L2:
+ 132              		.loc 1 136 0
+ 133 0048 FFF7FEFF 		bl	_port_irq_epilogue
+ 134              		.loc 1 137 0
+ 135 004c 03B0     		add	sp, sp, #12
+ 136 004e 00BD     		pop	{pc}
+ 137              		.cfi_endproc
+ 138              	.LFE63:
+ 139              		.size	Vector6C, .-Vector6C
+ 140              		.section	.text.Vector70,"ax",%progbits
+ 141              		.align	2
+ 142              		.p2align 4,,15
+ 143              		.global	Vector70
+ 144              		.thumb
+ 145              		.thumb_func
+ 146              		.type	Vector70, %function
+ 147              	Vector70:
+ 148              	.LFB64:
+ 149              		.loc 1 144 0
+ 150              		.cfi_startproc
+ 151              		@ args = 0, pretend = 0, frame = 8
+ 152              		@ frame_needed = 0, uses_anonymous_args = 0
+ 153 0000 00B5     		push	{lr}
+ 154              	.LCFI2:
+ 155              		.cfi_def_cfa_offset 4
+ 156 0002 83B0     		sub	sp, sp, #12
+ 157              	.LCFI3:
+ 158              		.cfi_def_cfa_offset 16
+ 159              		.loc 1 149 0
+ 160 0004 4FF00003 		mov	r3, #0
+ 161 0008 C4F20203 		movt	r3, 16386
+ 162 000c 1B68     		ldr	r3, [r3, #0]
+ 163 000e 4FEA1313 		lsr	r3, r3, #4
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 4
+
+
+ 164 0012 03F00F03 		and	r3, r3, #15
+ 165 0016 0193     		str	r3, [sp, #4]
+ 166              		.loc 1 150 0
+ 167 0018 4FF00003 		mov	r3, #0
+ 168 001c C4F20203 		movt	r3, 16386
+ 169 0020 019A     		ldr	r2, [sp, #4]
+ 170 0022 4FEA0212 		lsl	r2, r2, #4
+ 171 0026 5A60     		str	r2, [r3, #4]
+ 172              		.loc 1 151 0
+ 173 0028 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 174 002c C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 175 0030 9B68     		ldr	r3, [r3, #8]
+ 176 0032 002B     		cmp	r3, #0
+ 177 0034 0CD0     		beq	.L4
+ 178              		.cfi_offset 14, -4
+ 179              		.loc 1 152 0
+ 180 0036 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 181 003a C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 182 003e 9A68     		ldr	r2, [r3, #8]
+ 183 0040 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 184 0044 C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 185 0048 DB68     		ldr	r3, [r3, #12]
+ 186 004a 1846     		mov	r0, r3
+ 187 004c 0199     		ldr	r1, [sp, #4]
+ 188 004e 9047     		blx	r2
+ 189              	.L4:
+ 190              		.loc 1 154 0
+ 191 0050 FFF7FEFF 		bl	_port_irq_epilogue
+ 192              		.loc 1 155 0
+ 193 0054 03B0     		add	sp, sp, #12
+ 194 0056 00BD     		pop	{pc}
+ 195              		.cfi_endproc
+ 196              	.LFE64:
+ 197              		.size	Vector70, .-Vector70
+ 198 0058 AFF30080 		.section	.text.Vector74,"ax",%progbits
+ 198      AFF30080 
+ 199              		.align	2
+ 200              		.p2align 4,,15
+ 201              		.global	Vector74
+ 202              		.thumb
+ 203              		.thumb_func
+ 204              		.type	Vector74, %function
+ 205              	Vector74:
+ 206              	.LFB65:
+ 207              		.loc 1 162 0
+ 208              		.cfi_startproc
+ 209              		@ args = 0, pretend = 0, frame = 8
+ 210              		@ frame_needed = 0, uses_anonymous_args = 0
+ 211 0000 00B5     		push	{lr}
+ 212              	.LCFI4:
+ 213              		.cfi_def_cfa_offset 4
+ 214 0002 83B0     		sub	sp, sp, #12
+ 215              	.LCFI5:
+ 216              		.cfi_def_cfa_offset 16
+ 217              		.loc 1 167 0
+ 218 0004 4FF00003 		mov	r3, #0
+ 219 0008 C4F20203 		movt	r3, 16386
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 5
+
+
+ 220 000c 1B68     		ldr	r3, [r3, #0]
+ 221 000e 4FEA1323 		lsr	r3, r3, #8
+ 222 0012 03F00F03 		and	r3, r3, #15
+ 223 0016 0193     		str	r3, [sp, #4]
+ 224              		.loc 1 168 0
+ 225 0018 4FF00003 		mov	r3, #0
+ 226 001c C4F20203 		movt	r3, 16386
+ 227 0020 019A     		ldr	r2, [sp, #4]
+ 228 0022 4FEA0222 		lsl	r2, r2, #8
+ 229 0026 5A60     		str	r2, [r3, #4]
+ 230              		.loc 1 169 0
+ 231 0028 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 232 002c C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 233 0030 1B69     		ldr	r3, [r3, #16]
+ 234 0032 002B     		cmp	r3, #0
+ 235 0034 0CD0     		beq	.L6
+ 236              		.cfi_offset 14, -4
+ 237              		.loc 1 170 0
+ 238 0036 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 239 003a C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 240 003e 1A69     		ldr	r2, [r3, #16]
+ 241 0040 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 242 0044 C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 243 0048 5B69     		ldr	r3, [r3, #20]
+ 244 004a 1846     		mov	r0, r3
+ 245 004c 0199     		ldr	r1, [sp, #4]
+ 246 004e 9047     		blx	r2
+ 247              	.L6:
+ 248              		.loc 1 172 0
+ 249 0050 FFF7FEFF 		bl	_port_irq_epilogue
+ 250              		.loc 1 173 0
+ 251 0054 03B0     		add	sp, sp, #12
+ 252 0056 00BD     		pop	{pc}
+ 253              		.cfi_endproc
+ 254              	.LFE65:
+ 255              		.size	Vector74, .-Vector74
+ 256 0058 AFF30080 		.section	.text.Vector78,"ax",%progbits
+ 256      AFF30080 
+ 257              		.align	2
+ 258              		.p2align 4,,15
+ 259              		.global	Vector78
+ 260              		.thumb
+ 261              		.thumb_func
+ 262              		.type	Vector78, %function
+ 263              	Vector78:
+ 264              	.LFB66:
+ 265              		.loc 1 180 0
+ 266              		.cfi_startproc
+ 267              		@ args = 0, pretend = 0, frame = 8
+ 268              		@ frame_needed = 0, uses_anonymous_args = 0
+ 269 0000 00B5     		push	{lr}
+ 270              	.LCFI6:
+ 271              		.cfi_def_cfa_offset 4
+ 272 0002 83B0     		sub	sp, sp, #12
+ 273              	.LCFI7:
+ 274              		.cfi_def_cfa_offset 16
+ 275              		.loc 1 185 0
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 6
+
+
+ 276 0004 4FF00003 		mov	r3, #0
+ 277 0008 C4F20203 		movt	r3, 16386
+ 278 000c 1B68     		ldr	r3, [r3, #0]
+ 279 000e 4FEA1333 		lsr	r3, r3, #12
+ 280 0012 03F00F03 		and	r3, r3, #15
+ 281 0016 0193     		str	r3, [sp, #4]
+ 282              		.loc 1 186 0
+ 283 0018 4FF00003 		mov	r3, #0
+ 284 001c C4F20203 		movt	r3, 16386
+ 285 0020 019A     		ldr	r2, [sp, #4]
+ 286 0022 4FEA0232 		lsl	r2, r2, #12
+ 287 0026 5A60     		str	r2, [r3, #4]
+ 288              		.loc 1 187 0
+ 289 0028 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 290 002c C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 291 0030 9B69     		ldr	r3, [r3, #24]
+ 292 0032 002B     		cmp	r3, #0
+ 293 0034 0CD0     		beq	.L8
+ 294              		.cfi_offset 14, -4
+ 295              		.loc 1 188 0
+ 296 0036 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 297 003a C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 298 003e 9A69     		ldr	r2, [r3, #24]
+ 299 0040 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 300 0044 C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 301 0048 DB69     		ldr	r3, [r3, #28]
+ 302 004a 1846     		mov	r0, r3
+ 303 004c 0199     		ldr	r1, [sp, #4]
+ 304 004e 9047     		blx	r2
+ 305              	.L8:
+ 306              		.loc 1 190 0
+ 307 0050 FFF7FEFF 		bl	_port_irq_epilogue
+ 308              		.loc 1 191 0
+ 309 0054 03B0     		add	sp, sp, #12
+ 310 0056 00BD     		pop	{pc}
+ 311              		.cfi_endproc
+ 312              	.LFE66:
+ 313              		.size	Vector78, .-Vector78
+ 314 0058 AFF30080 		.section	.text.Vector7C,"ax",%progbits
+ 314      AFF30080 
+ 315              		.align	2
+ 316              		.p2align 4,,15
+ 317              		.global	Vector7C
+ 318              		.thumb
+ 319              		.thumb_func
+ 320              		.type	Vector7C, %function
+ 321              	Vector7C:
+ 322              	.LFB67:
+ 323              		.loc 1 198 0
+ 324              		.cfi_startproc
+ 325              		@ args = 0, pretend = 0, frame = 8
+ 326              		@ frame_needed = 0, uses_anonymous_args = 0
+ 327 0000 00B5     		push	{lr}
+ 328              	.LCFI8:
+ 329              		.cfi_def_cfa_offset 4
+ 330 0002 83B0     		sub	sp, sp, #12
+ 331              	.LCFI9:
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 7
+
+
+ 332              		.cfi_def_cfa_offset 16
+ 333              		.loc 1 203 0
+ 334 0004 4FF00003 		mov	r3, #0
+ 335 0008 C4F20203 		movt	r3, 16386
+ 336 000c 1B68     		ldr	r3, [r3, #0]
+ 337 000e 4FEA1343 		lsr	r3, r3, #16
+ 338 0012 03F00F03 		and	r3, r3, #15
+ 339 0016 0193     		str	r3, [sp, #4]
+ 340              		.loc 1 204 0
+ 341 0018 4FF00003 		mov	r3, #0
+ 342 001c C4F20203 		movt	r3, 16386
+ 343 0020 019A     		ldr	r2, [sp, #4]
+ 344 0022 4FEA0242 		lsl	r2, r2, #16
+ 345 0026 5A60     		str	r2, [r3, #4]
+ 346              		.loc 1 205 0
+ 347 0028 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 348 002c C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 349 0030 1B6A     		ldr	r3, [r3, #32]
+ 350 0032 002B     		cmp	r3, #0
+ 351 0034 0CD0     		beq	.L10
+ 352              		.cfi_offset 14, -4
+ 353              		.loc 1 206 0
+ 354 0036 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 355 003a C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 356 003e 1A6A     		ldr	r2, [r3, #32]
+ 357 0040 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 358 0044 C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 359 0048 5B6A     		ldr	r3, [r3, #36]
+ 360 004a 1846     		mov	r0, r3
+ 361 004c 0199     		ldr	r1, [sp, #4]
+ 362 004e 9047     		blx	r2
+ 363              	.L10:
+ 364              		.loc 1 208 0
+ 365 0050 FFF7FEFF 		bl	_port_irq_epilogue
+ 366              		.loc 1 209 0
+ 367 0054 03B0     		add	sp, sp, #12
+ 368 0056 00BD     		pop	{pc}
+ 369              		.cfi_endproc
+ 370              	.LFE67:
+ 371              		.size	Vector7C, .-Vector7C
+ 372 0058 AFF30080 		.section	.text.Vector80,"ax",%progbits
+ 372      AFF30080 
+ 373              		.align	2
+ 374              		.p2align 4,,15
+ 375              		.global	Vector80
+ 376              		.thumb
+ 377              		.thumb_func
+ 378              		.type	Vector80, %function
+ 379              	Vector80:
+ 380              	.LFB68:
+ 381              		.loc 1 216 0
+ 382              		.cfi_startproc
+ 383              		@ args = 0, pretend = 0, frame = 8
+ 384              		@ frame_needed = 0, uses_anonymous_args = 0
+ 385 0000 00B5     		push	{lr}
+ 386              	.LCFI10:
+ 387              		.cfi_def_cfa_offset 4
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 8
+
+
+ 388 0002 83B0     		sub	sp, sp, #12
+ 389              	.LCFI11:
+ 390              		.cfi_def_cfa_offset 16
+ 391              		.loc 1 221 0
+ 392 0004 4FF00003 		mov	r3, #0
+ 393 0008 C4F20203 		movt	r3, 16386
+ 394 000c 1B68     		ldr	r3, [r3, #0]
+ 395 000e 4FEA1353 		lsr	r3, r3, #20
+ 396 0012 03F00F03 		and	r3, r3, #15
+ 397 0016 0193     		str	r3, [sp, #4]
+ 398              		.loc 1 222 0
+ 399 0018 4FF00003 		mov	r3, #0
+ 400 001c C4F20203 		movt	r3, 16386
+ 401 0020 019A     		ldr	r2, [sp, #4]
+ 402 0022 4FEA0252 		lsl	r2, r2, #20
+ 403 0026 5A60     		str	r2, [r3, #4]
+ 404              		.loc 1 223 0
+ 405 0028 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 406 002c C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 407 0030 9B6A     		ldr	r3, [r3, #40]
+ 408 0032 002B     		cmp	r3, #0
+ 409 0034 0CD0     		beq	.L12
+ 410              		.cfi_offset 14, -4
+ 411              		.loc 1 224 0
+ 412 0036 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 413 003a C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 414 003e 9A6A     		ldr	r2, [r3, #40]
+ 415 0040 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 416 0044 C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 417 0048 DB6A     		ldr	r3, [r3, #44]
+ 418 004a 1846     		mov	r0, r3
+ 419 004c 0199     		ldr	r1, [sp, #4]
+ 420 004e 9047     		blx	r2
+ 421              	.L12:
+ 422              		.loc 1 226 0
+ 423 0050 FFF7FEFF 		bl	_port_irq_epilogue
+ 424              		.loc 1 227 0
+ 425 0054 03B0     		add	sp, sp, #12
+ 426 0056 00BD     		pop	{pc}
+ 427              		.cfi_endproc
+ 428              	.LFE68:
+ 429              		.size	Vector80, .-Vector80
+ 430 0058 AFF30080 		.section	.text.Vector84,"ax",%progbits
+ 430      AFF30080 
+ 431              		.align	2
+ 432              		.p2align 4,,15
+ 433              		.global	Vector84
+ 434              		.thumb
+ 435              		.thumb_func
+ 436              		.type	Vector84, %function
+ 437              	Vector84:
+ 438              	.LFB69:
+ 439              		.loc 1 234 0
+ 440              		.cfi_startproc
+ 441              		@ args = 0, pretend = 0, frame = 8
+ 442              		@ frame_needed = 0, uses_anonymous_args = 0
+ 443 0000 00B5     		push	{lr}
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 9
+
+
+ 444              	.LCFI12:
+ 445              		.cfi_def_cfa_offset 4
+ 446 0002 83B0     		sub	sp, sp, #12
+ 447              	.LCFI13:
+ 448              		.cfi_def_cfa_offset 16
+ 449              		.loc 1 239 0
+ 450 0004 4FF00003 		mov	r3, #0
+ 451 0008 C4F20203 		movt	r3, 16386
+ 452 000c 1B68     		ldr	r3, [r3, #0]
+ 453 000e 4FEA1363 		lsr	r3, r3, #24
+ 454 0012 03F00F03 		and	r3, r3, #15
+ 455 0016 0193     		str	r3, [sp, #4]
+ 456              		.loc 1 240 0
+ 457 0018 4FF00003 		mov	r3, #0
+ 458 001c C4F20203 		movt	r3, 16386
+ 459 0020 019A     		ldr	r2, [sp, #4]
+ 460 0022 4FEA0262 		lsl	r2, r2, #24
+ 461 0026 5A60     		str	r2, [r3, #4]
+ 462              		.loc 1 241 0
+ 463 0028 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 464 002c C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 465 0030 1B6B     		ldr	r3, [r3, #48]
+ 466 0032 002B     		cmp	r3, #0
+ 467 0034 0CD0     		beq	.L14
+ 468              		.cfi_offset 14, -4
+ 469              		.loc 1 242 0
+ 470 0036 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 471 003a C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 472 003e 1A6B     		ldr	r2, [r3, #48]
+ 473 0040 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 474 0044 C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 475 0048 5B6B     		ldr	r3, [r3, #52]
+ 476 004a 1846     		mov	r0, r3
+ 477 004c 0199     		ldr	r1, [sp, #4]
+ 478 004e 9047     		blx	r2
+ 479              	.L14:
+ 480              		.loc 1 244 0
+ 481 0050 FFF7FEFF 		bl	_port_irq_epilogue
+ 482              		.loc 1 245 0
+ 483 0054 03B0     		add	sp, sp, #12
+ 484 0056 00BD     		pop	{pc}
+ 485              		.cfi_endproc
+ 486              	.LFE69:
+ 487              		.size	Vector84, .-Vector84
+ 488 0058 AFF30080 		.section	.text.dmaInit,"ax",%progbits
+ 488      AFF30080 
+ 489              		.align	2
+ 490              		.p2align 4,,15
+ 491              		.global	dmaInit
+ 492              		.thumb
+ 493              		.thumb_func
+ 494              		.type	dmaInit, %function
+ 495              	dmaInit:
+ 496              	.LFB70:
+ 497              		.loc 1 381 0
+ 498              		.cfi_startproc
+ 499              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 10
+
+
+ 500              		@ frame_needed = 0, uses_anonymous_args = 0
+ 501              		@ link register save eliminated.
+ 502 0000 82B0     		sub	sp, sp, #8
+ 503              	.LCFI14:
+ 504              		.cfi_def_cfa_offset 8
+ 505              		.loc 1 384 0
+ 506 0002 40F20003 		movw	r3, #:lower16:dma_streams_mask
+ 507 0006 C0F20003 		movt	r3, #:upper16:dma_streams_mask
+ 508 000a 4FF00002 		mov	r2, #0
+ 509 000e 1A60     		str	r2, [r3, #0]
+ 510              		.loc 1 385 0
+ 511 0010 4FF00003 		mov	r3, #0
+ 512 0014 0193     		str	r3, [sp, #4]
+ 513 0016 1CE0     		b	.L16
+ 514              	.L17:
+ 515              		.loc 1 386 0 discriminator 2
+ 516 0018 40F20002 		movw	r2, #:lower16:_stm32_dma_streams
+ 517 001c C0F20002 		movt	r2, #:upper16:_stm32_dma_streams
+ 518 0020 0199     		ldr	r1, [sp, #4]
+ 519 0022 0B46     		mov	r3, r1
+ 520 0024 4FEA4303 		lsl	r3, r3, #1
+ 521 0028 0B44     		add	r3, r3, r1
+ 522 002a 4FEA8303 		lsl	r3, r3, #2
+ 523 002e 1344     		add	r3, r2, r3
+ 524 0030 1B68     		ldr	r3, [r3, #0]
+ 525 0032 4FF00002 		mov	r2, #0
+ 526 0036 1A60     		str	r2, [r3, #0]
+ 527              		.loc 1 387 0 discriminator 2
+ 528 0038 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 529 003c C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 530 0040 019A     		ldr	r2, [sp, #4]
+ 531 0042 4FF00001 		mov	r1, #0
+ 532 0046 43F83210 		str	r1, [r3, r2, lsl #3]
+ 533              		.loc 1 385 0 discriminator 2
+ 534 004a 019B     		ldr	r3, [sp, #4]
+ 535 004c 03F10103 		add	r3, r3, #1
+ 536 0050 0193     		str	r3, [sp, #4]
+ 537              	.L16:
+ 538              		.loc 1 385 0 is_stmt 0 discriminator 1
+ 539 0052 019B     		ldr	r3, [sp, #4]
+ 540 0054 062B     		cmp	r3, #6
+ 541 0056 DFDD     		ble	.L17
+ 542              		.loc 1 389 0 is_stmt 1
+ 543 0058 4FF00003 		mov	r3, #0
+ 544 005c C4F20203 		movt	r3, 16386
+ 545 0060 4FF0FF32 		mov	r2, #-1
+ 546 0064 5A60     		str	r2, [r3, #4]
+ 547              		.loc 1 393 0
+ 548 0066 02B0     		add	sp, sp, #8
+ 549 0068 7047     		bx	lr
+ 550              		.cfi_endproc
+ 551              	.LFE70:
+ 552              		.size	dmaInit, .-dmaInit
+ 553 006a 00BFAFF3 		.section	.text.dmaStreamAllocate,"ax",%progbits
+ 553      0080
+ 554              		.align	2
+ 555              		.p2align 4,,15
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 11
+
+
+ 556              		.global	dmaStreamAllocate
+ 557              		.thumb
+ 558              		.thumb_func
+ 559              		.type	dmaStreamAllocate, %function
+ 560              	dmaStreamAllocate:
+ 561              	.LFB71:
+ 562              		.loc 1 422 0
+ 563              		.cfi_startproc
+ 564              		@ args = 0, pretend = 0, frame = 16
+ 565              		@ frame_needed = 0, uses_anonymous_args = 0
+ 566 0000 00B5     		push	{lr}
+ 567              	.LCFI15:
+ 568              		.cfi_def_cfa_offset 4
+ 569 0002 85B0     		sub	sp, sp, #20
+ 570              	.LCFI16:
+ 571              		.cfi_def_cfa_offset 24
+ 572 0004 0390     		str	r0, [sp, #12]
+ 573 0006 0291     		str	r1, [sp, #8]
+ 574 0008 0192     		str	r2, [sp, #4]
+ 575 000a 0093     		str	r3, [sp, #0]
+ 576              		.loc 1 424 0
+ 577 000c 039B     		ldr	r3, [sp, #12]
+ 578 000e 002B     		cmp	r3, #0
+ 579              		.loc 1 427 0
+ 580 0010 039B     		ldr	r3, [sp, #12]
+ 581 0012 5B7A     		ldrb	r3, [r3, #9]	@ zero_extendqisi2
+ 582 0014 4FF00102 		mov	r2, #1
+ 583 0018 02FA03F3 		lsl	r3, r2, r3
+ 584 001c 1A46     		mov	r2, r3
+ 585 001e 40F20003 		movw	r3, #:lower16:dma_streams_mask
+ 586 0022 C0F20003 		movt	r3, #:upper16:dma_streams_mask
+ 587 0026 1B68     		ldr	r3, [r3, #0]
+ 588 0028 02EA0303 		and	r3, r2, r3
+ 589 002c 002B     		cmp	r3, #0
+ 590 002e 02D0     		beq	.L20
+ 591              		.cfi_offset 14, -4
+ 592              		.loc 1 428 0
+ 593 0030 4FF00103 		mov	r3, #1
+ 594 0034 61E0     		b	.L21
+ 595              	.L20:
+ 596              		.loc 1 431 0
+ 597 0036 039B     		ldr	r3, [sp, #12]
+ 598 0038 5B7A     		ldrb	r3, [r3, #9]	@ zero_extendqisi2
+ 599 003a 1A46     		mov	r2, r3
+ 600 003c 40F20003 		movw	r3, #:lower16:dma_isr_redir
+ 601 0040 C0F20003 		movt	r3, #:upper16:dma_isr_redir
+ 602 0044 0199     		ldr	r1, [sp, #4]
+ 603 0046 43F83210 		str	r1, [r3, r2, lsl #3]
+ 604              		.loc 1 432 0
+ 605 004a 039B     		ldr	r3, [sp, #12]
+ 606 004c 5B7A     		ldrb	r3, [r3, #9]	@ zero_extendqisi2
+ 607 004e 40F20002 		movw	r2, #:lower16:dma_isr_redir
+ 608 0052 C0F20002 		movt	r2, #:upper16:dma_isr_redir
+ 609 0056 4FEAC303 		lsl	r3, r3, #3
+ 610 005a 1344     		add	r3, r2, r3
+ 611 005c 009A     		ldr	r2, [sp, #0]
+ 612 005e 5A60     		str	r2, [r3, #4]
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 12
+
+
+ 613              		.loc 1 433 0
+ 614 0060 039B     		ldr	r3, [sp, #12]
+ 615 0062 5B7A     		ldrb	r3, [r3, #9]	@ zero_extendqisi2
+ 616 0064 4FF00102 		mov	r2, #1
+ 617 0068 02FA03F3 		lsl	r3, r2, r3
+ 618 006c 1A46     		mov	r2, r3
+ 619 006e 40F20003 		movw	r3, #:lower16:dma_streams_mask
+ 620 0072 C0F20003 		movt	r3, #:upper16:dma_streams_mask
+ 621 0076 1B68     		ldr	r3, [r3, #0]
+ 622 0078 42EA0302 		orr	r2, r2, r3
+ 623 007c 40F20003 		movw	r3, #:lower16:dma_streams_mask
+ 624 0080 C0F20003 		movt	r3, #:upper16:dma_streams_mask
+ 625 0084 1A60     		str	r2, [r3, #0]
+ 626              		.loc 1 436 0
+ 627 0086 40F20003 		movw	r3, #:lower16:dma_streams_mask
+ 628 008a C0F20003 		movt	r3, #:upper16:dma_streams_mask
+ 629 008e 1B68     		ldr	r3, [r3, #0]
+ 630 0090 03F07F03 		and	r3, r3, #127
+ 631 0094 002B     		cmp	r3, #0
+ 632 0096 0BD0     		beq	.L22
+ 633              		.loc 1 437 0
+ 634 0098 4FF48053 		mov	r3, #4096
+ 635 009c C4F20203 		movt	r3, 16386
+ 636 00a0 4FF48052 		mov	r2, #4096
+ 637 00a4 C4F20202 		movt	r2, 16386
+ 638 00a8 5269     		ldr	r2, [r2, #20]
+ 639 00aa 42F00102 		orr	r2, r2, #1
+ 640 00ae 5A61     		str	r2, [r3, #20]
+ 641              	.L22:
+ 642              		.loc 1 444 0
+ 643 00b0 039B     		ldr	r3, [sp, #12]
+ 644 00b2 1B68     		ldr	r3, [r3, #0]
+ 645 00b4 039A     		ldr	r2, [sp, #12]
+ 646 00b6 1268     		ldr	r2, [r2, #0]
+ 647 00b8 1268     		ldr	r2, [r2, #0]
+ 648 00ba 22F00F02 		bic	r2, r2, #15
+ 649 00be 1A60     		str	r2, [r3, #0]
+ 650 00c0 039B     		ldr	r3, [sp, #12]
+ 651 00c2 5B68     		ldr	r3, [r3, #4]
+ 652 00c4 039A     		ldr	r2, [sp, #12]
+ 653 00c6 127A     		ldrb	r2, [r2, #8]	@ zero_extendqisi2
+ 654 00c8 4FF00F01 		mov	r1, #15
+ 655 00cc 01FA02F2 		lsl	r2, r1, r2
+ 656 00d0 1A60     		str	r2, [r3, #0]
+ 657              		.loc 1 445 0
+ 658 00d2 039B     		ldr	r3, [sp, #12]
+ 659 00d4 1B68     		ldr	r3, [r3, #0]
+ 660 00d6 4FF00002 		mov	r2, #0
+ 661 00da 1A60     		str	r2, [r3, #0]
+ 662              		.loc 1 448 0
+ 663 00dc 019B     		ldr	r3, [sp, #4]
+ 664 00de 002B     		cmp	r3, #0
+ 665 00e0 09D0     		beq	.L23
+ 666              		.loc 1 449 0
+ 667 00e2 039B     		ldr	r3, [sp, #12]
+ 668 00e4 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ 669 00e6 1A46     		mov	r2, r3
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 13
+
+
+ 670 00e8 029B     		ldr	r3, [sp, #8]
+ 671 00ea 4FEA0313 		lsl	r3, r3, #4
+ 672 00ee 1046     		mov	r0, r2
+ 673 00f0 1946     		mov	r1, r3
+ 674 00f2 FFF7FEFF 		bl	nvicEnableVector
+ 675              	.L23:
+ 676              		.loc 1 451 0
+ 677 00f6 4FF00003 		mov	r3, #0
+ 678              	.L21:
+ 679              		.loc 1 452 0
+ 680 00fa 1846     		mov	r0, r3
+ 681 00fc 05B0     		add	sp, sp, #20
+ 682 00fe 00BD     		pop	{pc}
+ 683              		.cfi_endproc
+ 684              	.LFE71:
+ 685              		.size	dmaStreamAllocate, .-dmaStreamAllocate
+ 686              		.section	.text.dmaStreamRelease,"ax",%progbits
+ 687              		.align	2
+ 688              		.p2align 4,,15
+ 689              		.global	dmaStreamRelease
+ 690              		.thumb
+ 691              		.thumb_func
+ 692              		.type	dmaStreamRelease, %function
+ 693              	dmaStreamRelease:
+ 694              	.LFB72:
+ 695              		.loc 1 467 0
+ 696              		.cfi_startproc
+ 697              		@ args = 0, pretend = 0, frame = 8
+ 698              		@ frame_needed = 0, uses_anonymous_args = 0
+ 699 0000 00B5     		push	{lr}
+ 700              	.LCFI17:
+ 701              		.cfi_def_cfa_offset 4
+ 702 0002 83B0     		sub	sp, sp, #12
+ 703              	.LCFI18:
+ 704              		.cfi_def_cfa_offset 16
+ 705 0004 0190     		str	r0, [sp, #4]
+ 706              		.loc 1 469 0
+ 707 0006 019B     		ldr	r3, [sp, #4]
+ 708 0008 002B     		cmp	r3, #0
+ 709              		.loc 1 472 0
+ 710 000a 019B     		ldr	r3, [sp, #4]
+ 711 000c 5B7A     		ldrb	r3, [r3, #9]	@ zero_extendqisi2
+ 712 000e 4FF00102 		mov	r2, #1
+ 713 0012 02FA03F3 		lsl	r3, r2, r3
+ 714 0016 1A46     		mov	r2, r3
+ 715 0018 40F20003 		movw	r3, #:lower16:dma_streams_mask
+ 716 001c C0F20003 		movt	r3, #:upper16:dma_streams_mask
+ 717 0020 1B68     		ldr	r3, [r3, #0]
+ 718 0022 02EA0303 		and	r3, r2, r3
+ 719 0026 002B     		cmp	r3, #0
+ 720              		.loc 1 476 0
+ 721 0028 019B     		ldr	r3, [sp, #4]
+ 722 002a 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ 723 002c 1846     		mov	r0, r3
+ 724              		.cfi_offset 14, -4
+ 725 002e FFF7FEFF 		bl	nvicDisableVector
+ 726              		.loc 1 479 0
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 14
+
+
+ 727 0032 019B     		ldr	r3, [sp, #4]
+ 728 0034 5B7A     		ldrb	r3, [r3, #9]	@ zero_extendqisi2
+ 729 0036 4FF00102 		mov	r2, #1
+ 730 003a 02FA03F3 		lsl	r3, r2, r3
+ 731 003e 6FEA0303 		mvn	r3, r3
+ 732 0042 1A46     		mov	r2, r3
+ 733 0044 40F20003 		movw	r3, #:lower16:dma_streams_mask
+ 734 0048 C0F20003 		movt	r3, #:upper16:dma_streams_mask
+ 735 004c 1B68     		ldr	r3, [r3, #0]
+ 736 004e 02EA0302 		and	r2, r2, r3
+ 737 0052 40F20003 		movw	r3, #:lower16:dma_streams_mask
+ 738 0056 C0F20003 		movt	r3, #:upper16:dma_streams_mask
+ 739 005a 1A60     		str	r2, [r3, #0]
+ 740              		.loc 1 482 0
+ 741 005c 40F20003 		movw	r3, #:lower16:dma_streams_mask
+ 742 0060 C0F20003 		movt	r3, #:upper16:dma_streams_mask
+ 743 0064 1B68     		ldr	r3, [r3, #0]
+ 744 0066 03F07F03 		and	r3, r3, #127
+ 745 006a 002B     		cmp	r3, #0
+ 746 006c 0BD1     		bne	.L24
+ 747              		.loc 1 483 0
+ 748 006e 4FF48053 		mov	r3, #4096
+ 749 0072 C4F20203 		movt	r3, 16386
+ 750 0076 4FF48052 		mov	r2, #4096
+ 751 007a C4F20202 		movt	r2, 16386
+ 752 007e 5269     		ldr	r2, [r2, #20]
+ 753 0080 22F00102 		bic	r2, r2, #1
+ 754 0084 5A61     		str	r2, [r3, #20]
+ 755              	.L24:
+ 756              		.loc 1 488 0
+ 757 0086 03B0     		add	sp, sp, #12
+ 758 0088 00BD     		pop	{pc}
+ 759              		.cfi_endproc
+ 760              	.LFE72:
+ 761              		.size	dmaStreamRelease, .-dmaStreamRelease
+ 762 008a 00BFAFF3 		.text
+ 762      0080
+ 763              	.Letext0:
+ 764              		.section	.debug_loc,"",%progbits
+ 765              	.Ldebug_loc0:
+ 766              	.LLST0:
+ 767 0000 00000000 		.4byte	.LFB63
+ 768 0004 02000000 		.4byte	.LCFI0
+ 769 0008 0200     		.2byte	0x2
+ 770 000a 7D       		.byte	0x7d
+ 771 000b 00       		.sleb128 0
+ 772 000c 02000000 		.4byte	.LCFI0
+ 773 0010 04000000 		.4byte	.LCFI1
+ 774 0014 0200     		.2byte	0x2
+ 775 0016 7D       		.byte	0x7d
+ 776 0017 04       		.sleb128 4
+ 777 0018 04000000 		.4byte	.LCFI1
+ 778 001c 50000000 		.4byte	.LFE63
+ 779 0020 0200     		.2byte	0x2
+ 780 0022 7D       		.byte	0x7d
+ 781 0023 10       		.sleb128 16
+ 782 0024 00000000 		.4byte	0x0
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 15
+
+
+ 783 0028 00000000 		.4byte	0x0
+ 784              	.LLST1:
+ 785 002c 00000000 		.4byte	.LFB64
+ 786 0030 02000000 		.4byte	.LCFI2
+ 787 0034 0200     		.2byte	0x2
+ 788 0036 7D       		.byte	0x7d
+ 789 0037 00       		.sleb128 0
+ 790 0038 02000000 		.4byte	.LCFI2
+ 791 003c 04000000 		.4byte	.LCFI3
+ 792 0040 0200     		.2byte	0x2
+ 793 0042 7D       		.byte	0x7d
+ 794 0043 04       		.sleb128 4
+ 795 0044 04000000 		.4byte	.LCFI3
+ 796 0048 58000000 		.4byte	.LFE64
+ 797 004c 0200     		.2byte	0x2
+ 798 004e 7D       		.byte	0x7d
+ 799 004f 10       		.sleb128 16
+ 800 0050 00000000 		.4byte	0x0
+ 801 0054 00000000 		.4byte	0x0
+ 802              	.LLST2:
+ 803 0058 00000000 		.4byte	.LFB65
+ 804 005c 02000000 		.4byte	.LCFI4
+ 805 0060 0200     		.2byte	0x2
+ 806 0062 7D       		.byte	0x7d
+ 807 0063 00       		.sleb128 0
+ 808 0064 02000000 		.4byte	.LCFI4
+ 809 0068 04000000 		.4byte	.LCFI5
+ 810 006c 0200     		.2byte	0x2
+ 811 006e 7D       		.byte	0x7d
+ 812 006f 04       		.sleb128 4
+ 813 0070 04000000 		.4byte	.LCFI5
+ 814 0074 58000000 		.4byte	.LFE65
+ 815 0078 0200     		.2byte	0x2
+ 816 007a 7D       		.byte	0x7d
+ 817 007b 10       		.sleb128 16
+ 818 007c 00000000 		.4byte	0x0
+ 819 0080 00000000 		.4byte	0x0
+ 820              	.LLST3:
+ 821 0084 00000000 		.4byte	.LFB66
+ 822 0088 02000000 		.4byte	.LCFI6
+ 823 008c 0200     		.2byte	0x2
+ 824 008e 7D       		.byte	0x7d
+ 825 008f 00       		.sleb128 0
+ 826 0090 02000000 		.4byte	.LCFI6
+ 827 0094 04000000 		.4byte	.LCFI7
+ 828 0098 0200     		.2byte	0x2
+ 829 009a 7D       		.byte	0x7d
+ 830 009b 04       		.sleb128 4
+ 831 009c 04000000 		.4byte	.LCFI7
+ 832 00a0 58000000 		.4byte	.LFE66
+ 833 00a4 0200     		.2byte	0x2
+ 834 00a6 7D       		.byte	0x7d
+ 835 00a7 10       		.sleb128 16
+ 836 00a8 00000000 		.4byte	0x0
+ 837 00ac 00000000 		.4byte	0x0
+ 838              	.LLST4:
+ 839 00b0 00000000 		.4byte	.LFB67
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 16
+
+
+ 840 00b4 02000000 		.4byte	.LCFI8
+ 841 00b8 0200     		.2byte	0x2
+ 842 00ba 7D       		.byte	0x7d
+ 843 00bb 00       		.sleb128 0
+ 844 00bc 02000000 		.4byte	.LCFI8
+ 845 00c0 04000000 		.4byte	.LCFI9
+ 846 00c4 0200     		.2byte	0x2
+ 847 00c6 7D       		.byte	0x7d
+ 848 00c7 04       		.sleb128 4
+ 849 00c8 04000000 		.4byte	.LCFI9
+ 850 00cc 58000000 		.4byte	.LFE67
+ 851 00d0 0200     		.2byte	0x2
+ 852 00d2 7D       		.byte	0x7d
+ 853 00d3 10       		.sleb128 16
+ 854 00d4 00000000 		.4byte	0x0
+ 855 00d8 00000000 		.4byte	0x0
+ 856              	.LLST5:
+ 857 00dc 00000000 		.4byte	.LFB68
+ 858 00e0 02000000 		.4byte	.LCFI10
+ 859 00e4 0200     		.2byte	0x2
+ 860 00e6 7D       		.byte	0x7d
+ 861 00e7 00       		.sleb128 0
+ 862 00e8 02000000 		.4byte	.LCFI10
+ 863 00ec 04000000 		.4byte	.LCFI11
+ 864 00f0 0200     		.2byte	0x2
+ 865 00f2 7D       		.byte	0x7d
+ 866 00f3 04       		.sleb128 4
+ 867 00f4 04000000 		.4byte	.LCFI11
+ 868 00f8 58000000 		.4byte	.LFE68
+ 869 00fc 0200     		.2byte	0x2
+ 870 00fe 7D       		.byte	0x7d
+ 871 00ff 10       		.sleb128 16
+ 872 0100 00000000 		.4byte	0x0
+ 873 0104 00000000 		.4byte	0x0
+ 874              	.LLST6:
+ 875 0108 00000000 		.4byte	.LFB69
+ 876 010c 02000000 		.4byte	.LCFI12
+ 877 0110 0200     		.2byte	0x2
+ 878 0112 7D       		.byte	0x7d
+ 879 0113 00       		.sleb128 0
+ 880 0114 02000000 		.4byte	.LCFI12
+ 881 0118 04000000 		.4byte	.LCFI13
+ 882 011c 0200     		.2byte	0x2
+ 883 011e 7D       		.byte	0x7d
+ 884 011f 04       		.sleb128 4
+ 885 0120 04000000 		.4byte	.LCFI13
+ 886 0124 58000000 		.4byte	.LFE69
+ 887 0128 0200     		.2byte	0x2
+ 888 012a 7D       		.byte	0x7d
+ 889 012b 10       		.sleb128 16
+ 890 012c 00000000 		.4byte	0x0
+ 891 0130 00000000 		.4byte	0x0
+ 892              	.LLST7:
+ 893 0134 00000000 		.4byte	.LFB70
+ 894 0138 02000000 		.4byte	.LCFI14
+ 895 013c 0200     		.2byte	0x2
+ 896 013e 7D       		.byte	0x7d
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 17
+
+
+ 897 013f 00       		.sleb128 0
+ 898 0140 02000000 		.4byte	.LCFI14
+ 899 0144 6A000000 		.4byte	.LFE70
+ 900 0148 0200     		.2byte	0x2
+ 901 014a 7D       		.byte	0x7d
+ 902 014b 08       		.sleb128 8
+ 903 014c 00000000 		.4byte	0x0
+ 904 0150 00000000 		.4byte	0x0
+ 905              	.LLST8:
+ 906 0154 00000000 		.4byte	.LFB71
+ 907 0158 02000000 		.4byte	.LCFI15
+ 908 015c 0200     		.2byte	0x2
+ 909 015e 7D       		.byte	0x7d
+ 910 015f 00       		.sleb128 0
+ 911 0160 02000000 		.4byte	.LCFI15
+ 912 0164 04000000 		.4byte	.LCFI16
+ 913 0168 0200     		.2byte	0x2
+ 914 016a 7D       		.byte	0x7d
+ 915 016b 04       		.sleb128 4
+ 916 016c 04000000 		.4byte	.LCFI16
+ 917 0170 00010000 		.4byte	.LFE71
+ 918 0174 0200     		.2byte	0x2
+ 919 0176 7D       		.byte	0x7d
+ 920 0177 18       		.sleb128 24
+ 921 0178 00000000 		.4byte	0x0
+ 922 017c 00000000 		.4byte	0x0
+ 923              	.LLST9:
+ 924 0180 00000000 		.4byte	.LFB72
+ 925 0184 02000000 		.4byte	.LCFI17
+ 926 0188 0200     		.2byte	0x2
+ 927 018a 7D       		.byte	0x7d
+ 928 018b 00       		.sleb128 0
+ 929 018c 02000000 		.4byte	.LCFI17
+ 930 0190 04000000 		.4byte	.LCFI18
+ 931 0194 0200     		.2byte	0x2
+ 932 0196 7D       		.byte	0x7d
+ 933 0197 04       		.sleb128 4
+ 934 0198 04000000 		.4byte	.LCFI18
+ 935 019c 8A000000 		.4byte	.LFE72
+ 936 01a0 0200     		.2byte	0x2
+ 937 01a2 7D       		.byte	0x7d
+ 938 01a3 10       		.sleb128 16
+ 939 01a4 00000000 		.4byte	0x0
+ 940 01a8 00000000 		.4byte	0x0
+ 941              		.file 2 "c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdint.h"
+ 942              		.file 3 "../chibios_2.6.3/os/ports/GCC/ARMCMx/chtypes.h"
+ 943              		.file 4 "../chibios_2.6.3/os/hal/platforms/STM32F1xx/stm32f10x.h"
+ 944              		.file 5 "../chibios_2.6.3/os/hal/platforms/STM32F1xx/stm32_dma.h"
+ 945              		.file 6 "../chibios_2.6.3/os/ports/common/ARMCMx/CMSIS/include/core_cm3.h"
+ 946              		.section	.debug_info
+ 947 0000 40060000 		.4byte	0x640
+ 948 0004 0200     		.2byte	0x2
+ 949 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 950 000a 04       		.byte	0x4
+ 951 000b 01       		.uleb128 0x1
+ 952 000c 95040000 		.4byte	.LASF109
+ 953 0010 01       		.byte	0x1
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 18
+
+
+ 954 0011 F3000000 		.4byte	.LASF110
+ 955 0015 BB030000 		.4byte	.LASF111
+ 956 0019 00000000 		.4byte	0x0
+ 957 001d 00000000 		.4byte	0x0
+ 958 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 959 0025 00000000 		.4byte	.Ldebug_line0
+ 960 0029 02       		.uleb128 0x2
+ 961 002a 04       		.byte	0x4
+ 962 002b 05       		.byte	0x5
+ 963 002c 696E7400 		.ascii	"int\000"
+ 964 0030 03       		.uleb128 0x3
+ 965 0031 04       		.byte	0x4
+ 966 0032 07       		.byte	0x7
+ 967 0033 53050000 		.4byte	.LASF0
+ 968 0037 03       		.uleb128 0x3
+ 969 0038 01       		.byte	0x1
+ 970 0039 06       		.byte	0x6
+ 971 003a A4020000 		.4byte	.LASF1
+ 972 003e 04       		.uleb128 0x4
+ 973 003f 4C010000 		.4byte	.LASF4
+ 974 0043 02       		.byte	0x2
+ 975 0044 2A       		.byte	0x2a
+ 976 0045 49000000 		.4byte	0x49
+ 977 0049 03       		.uleb128 0x3
+ 978 004a 01       		.byte	0x1
+ 979 004b 08       		.byte	0x8
+ 980 004c 78020000 		.4byte	.LASF2
+ 981 0050 03       		.uleb128 0x3
+ 982 0051 02       		.byte	0x2
+ 983 0052 05       		.byte	0x5
+ 984 0053 6E000000 		.4byte	.LASF3
+ 985 0057 04       		.uleb128 0x4
+ 986 0058 EA020000 		.4byte	.LASF5
+ 987 005c 02       		.byte	0x2
+ 988 005d 36       		.byte	0x36
+ 989 005e 62000000 		.4byte	0x62
+ 990 0062 03       		.uleb128 0x3
+ 991 0063 02       		.byte	0x2
+ 992 0064 07       		.byte	0x7
+ 993 0065 3F030000 		.4byte	.LASF6
+ 994 0069 04       		.uleb128 0x4
+ 995 006a 8D030000 		.4byte	.LASF7
+ 996 006e 02       		.byte	0x2
+ 997 006f 4F       		.byte	0x4f
+ 998 0070 74000000 		.4byte	0x74
+ 999 0074 03       		.uleb128 0x3
+ 1000 0075 04       		.byte	0x4
+ 1001 0076 05       		.byte	0x5
+ 1002 0077 0B020000 		.4byte	.LASF8
+ 1003 007b 04       		.uleb128 0x4
+ 1004 007c CD020000 		.4byte	.LASF9
+ 1005 0080 02       		.byte	0x2
+ 1006 0081 50       		.byte	0x50
+ 1007 0082 86000000 		.4byte	0x86
+ 1008 0086 03       		.uleb128 0x3
+ 1009 0087 04       		.byte	0x4
+ 1010 0088 07       		.byte	0x7
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 19
+
+
+ 1011 0089 49040000 		.4byte	.LASF10
+ 1012 008d 03       		.uleb128 0x3
+ 1013 008e 08       		.byte	0x8
+ 1014 008f 05       		.byte	0x5
+ 1015 0090 DB010000 		.4byte	.LASF11
+ 1016 0094 03       		.uleb128 0x3
+ 1017 0095 08       		.byte	0x8
+ 1018 0096 07       		.byte	0x7
+ 1019 0097 B6020000 		.4byte	.LASF12
+ 1020 009b 04       		.uleb128 0x4
+ 1021 009c 9F030000 		.4byte	.LASF13
+ 1022 00a0 03       		.byte	0x3
+ 1023 00a1 2B       		.byte	0x2b
+ 1024 00a2 A6000000 		.4byte	0xa6
+ 1025 00a6 03       		.uleb128 0x3
+ 1026 00a7 01       		.byte	0x1
+ 1027 00a8 02       		.byte	0x2
+ 1028 00a9 B5030000 		.4byte	.LASF14
+ 1029 00ad 05       		.uleb128 0x5
+ 1030 00ae 04       		.byte	0x4
+ 1031 00af 06       		.uleb128 0x6
+ 1032 00b0 7B000000 		.4byte	0x7b
+ 1033 00b4 07       		.uleb128 0x7
+ 1034 00b5 04       		.byte	0x4
+ 1035 00b6 07       		.byte	0x7
+ 1036 00b7 03       		.uleb128 0x3
+ 1037 00b8 01       		.byte	0x1
+ 1038 00b9 08       		.byte	0x8
+ 1039 00ba 88030000 		.4byte	.LASF15
+ 1040 00be 08       		.uleb128 0x8
+ 1041 00bf BC000000 		.4byte	.LASF112
+ 1042 00c3 01       		.byte	0x1
+ 1043 00c4 04       		.byte	0x4
+ 1044 00c5 A9       		.byte	0xa9
+ 1045 00c6 FD010000 		.4byte	0x1fd
+ 1046 00ca 09       		.uleb128 0x9
+ 1047 00cb A1040000 		.4byte	.LASF16
+ 1048 00cf 72       		.sleb128 -14
+ 1049 00d0 09       		.uleb128 0x9
+ 1050 00d1 64040000 		.4byte	.LASF17
+ 1051 00d5 74       		.sleb128 -12
+ 1052 00d6 09       		.uleb128 0x9
+ 1053 00d7 FE020000 		.4byte	.LASF18
+ 1054 00db 75       		.sleb128 -11
+ 1055 00dc 09       		.uleb128 0x9
+ 1056 00dd 94010000 		.4byte	.LASF19
+ 1057 00e1 76       		.sleb128 -10
+ 1058 00e2 09       		.uleb128 0x9
+ 1059 00e3 0C030000 		.4byte	.LASF20
+ 1060 00e7 7B       		.sleb128 -5
+ 1061 00e8 09       		.uleb128 0x9
+ 1062 00e9 AA000000 		.4byte	.LASF21
+ 1063 00ed 7C       		.sleb128 -4
+ 1064 00ee 09       		.uleb128 0x9
+ 1065 00ef 7C050000 		.4byte	.LASF22
+ 1066 00f3 7E       		.sleb128 -2
+ 1067 00f4 09       		.uleb128 0x9
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 20
+
+
+ 1068 00f5 00000000 		.4byte	.LASF23
+ 1069 00f9 7F       		.sleb128 -1
+ 1070 00fa 09       		.uleb128 0x9
+ 1071 00fb 01020000 		.4byte	.LASF24
+ 1072 00ff 00       		.sleb128 0
+ 1073 0100 09       		.uleb128 0x9
+ 1074 0101 40020000 		.4byte	.LASF25
+ 1075 0105 01       		.sleb128 1
+ 1076 0106 09       		.uleb128 0x9
+ 1077 0107 62000000 		.4byte	.LASF26
+ 1078 010b 02       		.sleb128 2
+ 1079 010c 09       		.uleb128 0x9
+ 1080 010d 7A040000 		.4byte	.LASF27
+ 1081 0111 03       		.sleb128 3
+ 1082 0112 09       		.uleb128 0x9
+ 1083 0113 76010000 		.4byte	.LASF28
+ 1084 0117 04       		.sleb128 4
+ 1085 0118 09       		.uleb128 0x9
+ 1086 0119 30000000 		.4byte	.LASF29
+ 1087 011d 05       		.sleb128 5
+ 1088 011e 09       		.uleb128 0x9
+ 1089 011f F3020000 		.4byte	.LASF30
+ 1090 0123 06       		.sleb128 6
+ 1091 0124 09       		.uleb128 0x9
+ 1092 0125 39000000 		.4byte	.LASF31
+ 1093 0129 07       		.sleb128 7
+ 1094 012a 09       		.uleb128 0x9
+ 1095 012b D6020000 		.4byte	.LASF32
+ 1096 012f 08       		.sleb128 8
+ 1097 0130 09       		.uleb128 0x9
+ 1098 0131 F3040000 		.4byte	.LASF33
+ 1099 0135 09       		.sleb128 9
+ 1100 0136 09       		.uleb128 0x9
+ 1101 0137 57000000 		.4byte	.LASF34
+ 1102 013b 0A       		.sleb128 10
+ 1103 013c 09       		.uleb128 0x9
+ 1104 013d 81010000 		.4byte	.LASF35
+ 1105 0141 0B       		.sleb128 11
+ 1106 0142 09       		.uleb128 0x9
+ 1107 0143 36040000 		.4byte	.LASF36
+ 1108 0147 0C       		.sleb128 12
+ 1109 0148 09       		.uleb128 0x9
+ 1110 0149 AD010000 		.4byte	.LASF37
+ 1111 014d 0D       		.sleb128 13
+ 1112 014e 09       		.uleb128 0x9
+ 1113 014f 63010000 		.4byte	.LASF38
+ 1114 0153 0E       		.sleb128 14
+ 1115 0154 09       		.uleb128 0x9
+ 1116 0155 23040000 		.4byte	.LASF39
+ 1117 0159 0F       		.sleb128 15
+ 1118 015a 09       		.uleb128 0x9
+ 1119 015b E0000000 		.4byte	.LASF40
+ 1120 015f 10       		.sleb128 16
+ 1121 0160 09       		.uleb128 0x9
+ 1122 0161 07040000 		.4byte	.LASF41
+ 1123 0165 11       		.sleb128 17
+ 1124 0166 09       		.uleb128 0x9
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 21
+
+
+ 1125 0167 E9010000 		.4byte	.LASF42
+ 1126 016b 12       		.sleb128 18
+ 1127 016c 09       		.uleb128 0x9
+ 1128 016d 2B030000 		.4byte	.LASF43
+ 1129 0171 13       		.sleb128 19
+ 1130 0172 09       		.uleb128 0x9
+ 1131 0173 95000000 		.4byte	.LASF44
+ 1132 0177 14       		.sleb128 20
+ 1133 0178 09       		.uleb128 0x9
+ 1134 0179 74030000 		.4byte	.LASF45
+ 1135 017d 15       		.sleb128 21
+ 1136 017e 09       		.uleb128 0x9
+ 1137 017f 19000000 		.4byte	.LASF46
+ 1138 0183 16       		.sleb128 22
+ 1139 0184 09       		.uleb128 0x9
+ 1140 0185 18030000 		.4byte	.LASF47
+ 1141 0189 17       		.sleb128 23
+ 1142 018a 09       		.uleb128 0x9
+ 1143 018b 66030000 		.4byte	.LASF48
+ 1144 018f 18       		.sleb128 24
+ 1145 0190 09       		.uleb128 0x9
+ 1146 0191 D3040000 		.4byte	.LASF49
+ 1147 0195 19       		.sleb128 25
+ 1148 0196 09       		.uleb128 0x9
+ 1149 0197 83040000 		.4byte	.LASF50
+ 1150 019b 1A       		.sleb128 26
+ 1151 019c 09       		.uleb128 0x9
+ 1152 019d BA040000 		.4byte	.LASF51
+ 1153 01a1 1B       		.sleb128 27
+ 1154 01a2 09       		.uleb128 0x9
+ 1155 01a3 58020000 		.4byte	.LASF52
+ 1156 01a7 1C       		.sleb128 28
+ 1157 01a8 09       		.uleb128 0x9
+ 1158 01a9 6D050000 		.4byte	.LASF53
+ 1159 01ad 1D       		.sleb128 29
+ 1160 01ae 09       		.uleb128 0x9
+ 1161 01af 49020000 		.4byte	.LASF54
+ 1162 01b3 1E       		.sleb128 30
+ 1163 01b4 09       		.uleb128 0x9
+ 1164 01b5 23020000 		.4byte	.LASF55
+ 1165 01b9 1F       		.sleb128 31
+ 1166 01ba 09       		.uleb128 0x9
+ 1167 01bb 60050000 		.4byte	.LASF56
+ 1168 01bf 20       		.sleb128 32
+ 1169 01c0 09       		.uleb128 0x9
+ 1170 01c1 6B020000 		.4byte	.LASF57
+ 1171 01c5 21       		.sleb128 33
+ 1172 01c6 09       		.uleb128 0x9
+ 1173 01c7 8F020000 		.4byte	.LASF58
+ 1174 01cb 22       		.sleb128 34
+ 1175 01cc 09       		.uleb128 0x9
+ 1176 01cd CA000000 		.4byte	.LASF59
+ 1177 01d1 23       		.sleb128 35
+ 1178 01d2 09       		.uleb128 0x9
+ 1179 01d3 95030000 		.4byte	.LASF60
+ 1180 01d7 24       		.sleb128 36
+ 1181 01d8 09       		.uleb128 0x9
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 22
+
+
+ 1182 01d9 F5010000 		.4byte	.LASF61
+ 1183 01dd 25       		.sleb128 37
+ 1184 01de 09       		.uleb128 0x9
+ 1185 01df C7040000 		.4byte	.LASF62
+ 1186 01e3 26       		.sleb128 38
+ 1187 01e4 09       		.uleb128 0x9
+ 1188 01e5 CA010000 		.4byte	.LASF63
+ 1189 01e9 27       		.sleb128 39
+ 1190 01ea 09       		.uleb128 0x9
+ 1191 01eb 14020000 		.4byte	.LASF64
+ 1192 01ef 28       		.sleb128 40
+ 1193 01f0 09       		.uleb128 0x9
+ 1194 01f1 F0030000 		.4byte	.LASF65
+ 1195 01f5 29       		.sleb128 41
+ 1196 01f6 09       		.uleb128 0x9
+ 1197 01f7 88050000 		.4byte	.LASF66
+ 1198 01fb 2A       		.sleb128 42
+ 1199 01fc 00       		.byte	0x0
+ 1200 01fd 06       		.uleb128 0x6
+ 1201 01fe 69000000 		.4byte	0x69
+ 1202 0202 0A       		.uleb128 0xa
+ 1203 0203 10       		.byte	0x10
+ 1204 0204 04       		.byte	0x4
+ 1205 0205 2D03     		.2byte	0x32d
+ 1206 0207 48020000 		.4byte	0x248
+ 1207 020b 0B       		.uleb128 0xb
+ 1208 020c 43435200 		.ascii	"CCR\000"
+ 1209 0210 04       		.byte	0x4
+ 1210 0211 2F03     		.2byte	0x32f
+ 1211 0213 AF000000 		.4byte	0xaf
+ 1212 0217 02       		.byte	0x2
+ 1213 0218 23       		.byte	0x23
+ 1214 0219 00       		.uleb128 0x0
+ 1215 021a 0C       		.uleb128 0xc
+ 1216 021b 82030000 		.4byte	.LASF67
+ 1217 021f 04       		.byte	0x4
+ 1218 0220 3003     		.2byte	0x330
+ 1219 0222 AF000000 		.4byte	0xaf
+ 1220 0226 02       		.byte	0x2
+ 1221 0227 23       		.byte	0x23
+ 1222 0228 04       		.uleb128 0x4
+ 1223 0229 0C       		.uleb128 0xc
+ 1224 022a 53020000 		.4byte	.LASF68
+ 1225 022e 04       		.byte	0x4
+ 1226 022f 3103     		.2byte	0x331
+ 1227 0231 AF000000 		.4byte	0xaf
+ 1228 0235 02       		.byte	0x2
+ 1229 0236 23       		.byte	0x23
+ 1230 0237 08       		.uleb128 0x8
+ 1231 0238 0C       		.uleb128 0xc
+ 1232 0239 B5040000 		.4byte	.LASF69
+ 1233 023d 04       		.byte	0x4
+ 1234 023e 3203     		.2byte	0x332
+ 1235 0240 AF000000 		.4byte	0xaf
+ 1236 0244 02       		.byte	0x2
+ 1237 0245 23       		.byte	0x23
+ 1238 0246 0C       		.uleb128 0xc
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 23
+
+
+ 1239 0247 00       		.byte	0x0
+ 1240 0248 0D       		.uleb128 0xd
+ 1241 0249 52030000 		.4byte	.LASF70
+ 1242 024d 04       		.byte	0x4
+ 1243 024e 3303     		.2byte	0x333
+ 1244 0250 02020000 		.4byte	0x202
+ 1245 0254 0A       		.uleb128 0xa
+ 1246 0255 08       		.byte	0x8
+ 1247 0256 04       		.byte	0x4
+ 1248 0257 3503     		.2byte	0x335
+ 1249 0259 7C020000 		.4byte	0x27c
+ 1250 025d 0B       		.uleb128 0xb
+ 1251 025e 49535200 		.ascii	"ISR\000"
+ 1252 0262 04       		.byte	0x4
+ 1253 0263 3703     		.2byte	0x337
+ 1254 0265 AF000000 		.4byte	0xaf
+ 1255 0269 02       		.byte	0x2
+ 1256 026a 23       		.byte	0x23
+ 1257 026b 00       		.uleb128 0x0
+ 1258 026c 0C       		.uleb128 0xc
+ 1259 026d E3030000 		.4byte	.LASF71
+ 1260 0271 04       		.byte	0x4
+ 1261 0272 3803     		.2byte	0x338
+ 1262 0274 AF000000 		.4byte	0xaf
+ 1263 0278 02       		.byte	0x2
+ 1264 0279 23       		.byte	0x23
+ 1265 027a 04       		.uleb128 0x4
+ 1266 027b 00       		.byte	0x0
+ 1267 027c 0D       		.uleb128 0xd
+ 1268 027d D4000000 		.4byte	.LASF72
+ 1269 0281 04       		.byte	0x4
+ 1270 0282 3903     		.2byte	0x339
+ 1271 0284 54020000 		.4byte	0x254
+ 1272 0288 0A       		.uleb128 0xa
+ 1273 0289 28       		.byte	0x28
+ 1274 028a 04       		.byte	0x4
+ 1275 028b 4304     		.2byte	0x443
+ 1276 028d 27030000 		.4byte	0x327
+ 1277 0291 0B       		.uleb128 0xb
+ 1278 0292 435200   		.ascii	"CR\000"
+ 1279 0295 04       		.byte	0x4
+ 1280 0296 4504     		.2byte	0x445
+ 1281 0298 AF000000 		.4byte	0xaf
+ 1282 029c 02       		.byte	0x2
+ 1283 029d 23       		.byte	0x23
+ 1284 029e 00       		.uleb128 0x0
+ 1285 029f 0C       		.uleb128 0xc
+ 1286 02a0 34010000 		.4byte	.LASF73
+ 1287 02a4 04       		.byte	0x4
+ 1288 02a5 4604     		.2byte	0x446
+ 1289 02a7 AF000000 		.4byte	0xaf
+ 1290 02ab 02       		.byte	0x2
+ 1291 02ac 23       		.byte	0x23
+ 1292 02ad 04       		.uleb128 0x4
+ 1293 02ae 0B       		.uleb128 0xb
+ 1294 02af 43495200 		.ascii	"CIR\000"
+ 1295 02b3 04       		.byte	0x4
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 24
+
+
+ 1296 02b4 4704     		.2byte	0x447
+ 1297 02b6 AF000000 		.4byte	0xaf
+ 1298 02ba 02       		.byte	0x2
+ 1299 02bb 23       		.byte	0x23
+ 1300 02bc 08       		.uleb128 0x8
+ 1301 02bd 0C       		.uleb128 0xc
+ 1302 02be 37020000 		.4byte	.LASF74
+ 1303 02c2 04       		.byte	0x4
+ 1304 02c3 4804     		.2byte	0x448
+ 1305 02c5 AF000000 		.4byte	0xaf
+ 1306 02c9 02       		.byte	0x2
+ 1307 02ca 23       		.byte	0x23
+ 1308 02cb 0C       		.uleb128 0xc
+ 1309 02cc 0C       		.uleb128 0xc
+ 1310 02cd 27000000 		.4byte	.LASF75
+ 1311 02d1 04       		.byte	0x4
+ 1312 02d2 4904     		.2byte	0x449
+ 1313 02d4 AF000000 		.4byte	0xaf
+ 1314 02d8 02       		.byte	0x2
+ 1315 02d9 23       		.byte	0x23
+ 1316 02da 10       		.uleb128 0x10
+ 1317 02db 0C       		.uleb128 0xc
+ 1318 02dc 30020000 		.4byte	.LASF76
+ 1319 02e0 04       		.byte	0x4
+ 1320 02e1 4A04     		.2byte	0x44a
+ 1321 02e3 AF000000 		.4byte	0xaf
+ 1322 02e7 02       		.byte	0x2
+ 1323 02e8 23       		.byte	0x23
+ 1324 02e9 14       		.uleb128 0x14
+ 1325 02ea 0C       		.uleb128 0xc
+ 1326 02eb 9C020000 		.4byte	.LASF77
+ 1327 02ef 04       		.byte	0x4
+ 1328 02f0 4B04     		.2byte	0x44b
+ 1329 02f2 AF000000 		.4byte	0xaf
+ 1330 02f6 02       		.byte	0x2
+ 1331 02f7 23       		.byte	0x23
+ 1332 02f8 18       		.uleb128 0x18
+ 1333 02f9 0C       		.uleb128 0xc
+ 1334 02fa 54010000 		.4byte	.LASF78
+ 1335 02fe 04       		.byte	0x4
+ 1336 02ff 4C04     		.2byte	0x44c
+ 1337 0301 AF000000 		.4byte	0xaf
+ 1338 0305 02       		.byte	0x2
+ 1339 0306 23       		.byte	0x23
+ 1340 0307 1C       		.uleb128 0x1c
+ 1341 0308 0C       		.uleb128 0xc
+ 1342 0309 90000000 		.4byte	.LASF79
+ 1343 030d 04       		.byte	0x4
+ 1344 030e 4D04     		.2byte	0x44d
+ 1345 0310 AF000000 		.4byte	0xaf
+ 1346 0314 02       		.byte	0x2
+ 1347 0315 23       		.byte	0x23
+ 1348 0316 20       		.uleb128 0x20
+ 1349 0317 0B       		.uleb128 0xb
+ 1350 0318 43535200 		.ascii	"CSR\000"
+ 1351 031c 04       		.byte	0x4
+ 1352 031d 4E04     		.2byte	0x44e
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 25
+
+
+ 1353 031f AF000000 		.4byte	0xaf
+ 1354 0323 02       		.byte	0x2
+ 1355 0324 23       		.byte	0x23
+ 1356 0325 24       		.uleb128 0x24
+ 1357 0326 00       		.byte	0x0
+ 1358 0327 0D       		.uleb128 0xd
+ 1359 0328 0D000000 		.4byte	.LASF80
+ 1360 032c 04       		.byte	0x4
+ 1361 032d 5904     		.2byte	0x459
+ 1362 032f 88020000 		.4byte	0x288
+ 1363 0333 0E       		.uleb128 0xe
+ 1364 0334 0C       		.byte	0xc
+ 1365 0335 05       		.byte	0x5
+ 1366 0336 C1       		.byte	0xc1
+ 1367 0337 82030000 		.4byte	0x382
+ 1368 033b 0F       		.uleb128 0xf
+ 1369 033c E8030000 		.4byte	.LASF81
+ 1370 0340 05       		.byte	0x5
+ 1371 0341 C2       		.byte	0xc2
+ 1372 0342 82030000 		.4byte	0x382
+ 1373 0346 02       		.byte	0x2
+ 1374 0347 23       		.byte	0x23
+ 1375 0348 00       		.uleb128 0x0
+ 1376 0349 0F       		.uleb128 0xf
+ 1377 034a 77050000 		.4byte	.LASF82
+ 1378 034e 05       		.byte	0x5
+ 1379 034f C3       		.byte	0xc3
+ 1380 0350 88030000 		.4byte	0x388
+ 1381 0354 02       		.byte	0x2
+ 1382 0355 23       		.byte	0x23
+ 1383 0356 04       		.uleb128 0x4
+ 1384 0357 0F       		.uleb128 0xf
+ 1385 0358 3F050000 		.4byte	.LASF83
+ 1386 035c 05       		.byte	0x5
+ 1387 035d C4       		.byte	0xc4
+ 1388 035e 3E000000 		.4byte	0x3e
+ 1389 0362 02       		.byte	0x2
+ 1390 0363 23       		.byte	0x23
+ 1391 0364 08       		.uleb128 0x8
+ 1392 0365 0F       		.uleb128 0xf
+ 1393 0366 C0010000 		.4byte	.LASF84
+ 1394 036a 05       		.byte	0x5
+ 1395 036b C6       		.byte	0xc6
+ 1396 036c 3E000000 		.4byte	0x3e
+ 1397 0370 02       		.byte	0x2
+ 1398 0371 23       		.byte	0x23
+ 1399 0372 09       		.uleb128 0x9
+ 1400 0373 0F       		.uleb128 0xf
+ 1401 0374 5C010000 		.4byte	.LASF85
+ 1402 0378 05       		.byte	0x5
+ 1403 0379 C7       		.byte	0xc7
+ 1404 037a 3E000000 		.4byte	0x3e
+ 1405 037e 02       		.byte	0x2
+ 1406 037f 23       		.byte	0x23
+ 1407 0380 0A       		.uleb128 0xa
+ 1408 0381 00       		.byte	0x0
+ 1409 0382 10       		.uleb128 0x10
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 26
+
+
+ 1410 0383 04       		.byte	0x4
+ 1411 0384 48020000 		.4byte	0x248
+ 1412 0388 10       		.uleb128 0x10
+ 1413 0389 04       		.byte	0x4
+ 1414 038a AF000000 		.4byte	0xaf
+ 1415 038e 04       		.uleb128 0x4
+ 1416 038f 39010000 		.4byte	.LASF86
+ 1417 0393 05       		.byte	0x5
+ 1418 0394 C8       		.byte	0xc8
+ 1419 0395 33030000 		.4byte	0x333
+ 1420 0399 04       		.uleb128 0x4
+ 1421 039a A6030000 		.4byte	.LASF87
+ 1422 039e 05       		.byte	0x5
+ 1423 039f D1       		.byte	0xd1
+ 1424 03a0 A4030000 		.4byte	0x3a4
+ 1425 03a4 10       		.uleb128 0x10
+ 1426 03a5 04       		.byte	0x4
+ 1427 03a6 AA030000 		.4byte	0x3aa
+ 1428 03aa 11       		.uleb128 0x11
+ 1429 03ab 01       		.byte	0x1
+ 1430 03ac BB030000 		.4byte	0x3bb
+ 1431 03b0 12       		.uleb128 0x12
+ 1432 03b1 AD000000 		.4byte	0xad
+ 1433 03b5 12       		.uleb128 0x12
+ 1434 03b6 7B000000 		.4byte	0x7b
+ 1435 03ba 00       		.byte	0x0
+ 1436 03bb 10       		.uleb128 0x10
+ 1437 03bc 04       		.byte	0x4
+ 1438 03bd C1030000 		.4byte	0x3c1
+ 1439 03c1 13       		.uleb128 0x13
+ 1440 03c2 8E030000 		.4byte	0x38e
+ 1441 03c6 0E       		.uleb128 0xe
+ 1442 03c7 08       		.byte	0x8
+ 1443 03c8 01       		.byte	0x1
+ 1444 03c9 62       		.byte	0x62
+ 1445 03ca EB030000 		.4byte	0x3eb
+ 1446 03ce 0F       		.uleb128 0xf
+ 1447 03cf 86020000 		.4byte	.LASF88
+ 1448 03d3 01       		.byte	0x1
+ 1449 03d4 63       		.byte	0x63
+ 1450 03d5 99030000 		.4byte	0x399
+ 1451 03d9 02       		.byte	0x2
+ 1452 03da 23       		.byte	0x23
+ 1453 03db 00       		.uleb128 0x0
+ 1454 03dc 0F       		.uleb128 0xf
+ 1455 03dd 4D000000 		.4byte	.LASF89
+ 1456 03e1 01       		.byte	0x1
+ 1457 03e2 64       		.byte	0x64
+ 1458 03e3 AD000000 		.4byte	0xad
+ 1459 03e7 02       		.byte	0x2
+ 1460 03e8 23       		.byte	0x23
+ 1461 03e9 04       		.uleb128 0x4
+ 1462 03ea 00       		.byte	0x0
+ 1463 03eb 04       		.uleb128 0x4
+ 1464 03ec 10050000 		.4byte	.LASF90
+ 1465 03f0 01       		.byte	0x1
+ 1466 03f1 65       		.byte	0x65
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 27
+
+
+ 1467 03f2 C6030000 		.4byte	0x3c6
+ 1468 03f6 14       		.uleb128 0x14
+ 1469 03f7 01       		.byte	0x1
+ 1470 03f8 A4010000 		.4byte	.LASF91
+ 1471 03fc 01       		.byte	0x1
+ 1472 03fd 7E       		.byte	0x7e
+ 1473 03fe 01       		.byte	0x1
+ 1474 03ff 00000000 		.4byte	.LFB63
+ 1475 0403 50000000 		.4byte	.LFE63
+ 1476 0407 00000000 		.4byte	.LLST0
+ 1477 040b 1E040000 		.4byte	0x41e
+ 1478 040f 15       		.uleb128 0x15
+ 1479 0410 B0020000 		.4byte	.LASF93
+ 1480 0414 01       		.byte	0x1
+ 1481 0415 7F       		.byte	0x7f
+ 1482 0416 7B000000 		.4byte	0x7b
+ 1483 041a 02       		.byte	0x2
+ 1484 041b 91       		.byte	0x91
+ 1485 041c 74       		.sleb128 -12
+ 1486 041d 00       		.byte	0x0
+ 1487 041e 14       		.uleb128 0x14
+ 1488 041f 01       		.byte	0x1
+ 1489 0420 62020000 		.4byte	.LASF92
+ 1490 0424 01       		.byte	0x1
+ 1491 0425 90       		.byte	0x90
+ 1492 0426 01       		.byte	0x1
+ 1493 0427 00000000 		.4byte	.LFB64
+ 1494 042b 58000000 		.4byte	.LFE64
+ 1495 042f 2C000000 		.4byte	.LLST1
+ 1496 0433 46040000 		.4byte	0x446
+ 1497 0437 15       		.uleb128 0x15
+ 1498 0438 B0020000 		.4byte	.LASF93
+ 1499 043c 01       		.byte	0x1
+ 1500 043d 91       		.byte	0x91
+ 1501 043e 7B000000 		.4byte	0x7b
+ 1502 0442 02       		.byte	0x2
+ 1503 0443 91       		.byte	0x91
+ 1504 0444 74       		.sleb128 -12
+ 1505 0445 00       		.byte	0x0
+ 1506 0446 14       		.uleb128 0x14
+ 1507 0447 01       		.byte	0x1
+ 1508 0448 C1000000 		.4byte	.LASF94
+ 1509 044c 01       		.byte	0x1
+ 1510 044d A2       		.byte	0xa2
+ 1511 044e 01       		.byte	0x1
+ 1512 044f 00000000 		.4byte	.LFB65
+ 1513 0453 58000000 		.4byte	.LFE65
+ 1514 0457 58000000 		.4byte	.LLST2
+ 1515 045b 6E040000 		.4byte	0x46e
+ 1516 045f 15       		.uleb128 0x15
+ 1517 0460 B0020000 		.4byte	.LASF93
+ 1518 0464 01       		.byte	0x1
+ 1519 0465 A3       		.byte	0xa3
+ 1520 0466 7B000000 		.4byte	0x7b
+ 1521 046a 02       		.byte	0x2
+ 1522 046b 91       		.byte	0x91
+ 1523 046c 74       		.sleb128 -12
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 28
+
+
+ 1524 046d 00       		.byte	0x0
+ 1525 046e 14       		.uleb128 0x14
+ 1526 046f 01       		.byte	0x1
+ 1527 0470 2B010000 		.4byte	.LASF95
+ 1528 0474 01       		.byte	0x1
+ 1529 0475 B4       		.byte	0xb4
+ 1530 0476 01       		.byte	0x1
+ 1531 0477 00000000 		.4byte	.LFB66
+ 1532 047b 58000000 		.4byte	.LFE66
+ 1533 047f 84000000 		.4byte	.LLST3
+ 1534 0483 96040000 		.4byte	0x496
+ 1535 0487 15       		.uleb128 0x15
+ 1536 0488 B0020000 		.4byte	.LASF93
+ 1537 048c 01       		.byte	0x1
+ 1538 048d B5       		.byte	0xb5
+ 1539 048e 7B000000 		.4byte	0x7b
+ 1540 0492 02       		.byte	0x2
+ 1541 0493 91       		.byte	0x91
+ 1542 0494 74       		.sleb128 -12
+ 1543 0495 00       		.byte	0x0
+ 1544 0496 14       		.uleb128 0x14
+ 1545 0497 01       		.byte	0x1
+ 1546 0498 E1020000 		.4byte	.LASF96
+ 1547 049c 01       		.byte	0x1
+ 1548 049d C6       		.byte	0xc6
+ 1549 049e 01       		.byte	0x1
+ 1550 049f 00000000 		.4byte	.LFB67
+ 1551 04a3 58000000 		.4byte	.LFE67
+ 1552 04a7 B0000000 		.4byte	.LLST4
+ 1553 04ab BE040000 		.4byte	0x4be
+ 1554 04af 15       		.uleb128 0x15
+ 1555 04b0 B0020000 		.4byte	.LASF93
+ 1556 04b4 01       		.byte	0x1
+ 1557 04b5 C7       		.byte	0xc7
+ 1558 04b6 7B000000 		.4byte	0x7b
+ 1559 04ba 02       		.byte	0x2
+ 1560 04bb 91       		.byte	0x91
+ 1561 04bc 74       		.sleb128 -12
+ 1562 04bd 00       		.byte	0x0
+ 1563 04be 14       		.uleb128 0x14
+ 1564 04bf 01       		.byte	0x1
+ 1565 04c0 1A040000 		.4byte	.LASF97
+ 1566 04c4 01       		.byte	0x1
+ 1567 04c5 D8       		.byte	0xd8
+ 1568 04c6 01       		.byte	0x1
+ 1569 04c7 00000000 		.4byte	.LFB68
+ 1570 04cb 58000000 		.4byte	.LFE68
+ 1571 04cf DC000000 		.4byte	.LLST5
+ 1572 04d3 E6040000 		.4byte	0x4e6
+ 1573 04d7 15       		.uleb128 0x15
+ 1574 04d8 B0020000 		.4byte	.LASF93
+ 1575 04dc 01       		.byte	0x1
+ 1576 04dd D9       		.byte	0xd9
+ 1577 04de 7B000000 		.4byte	0x7b
+ 1578 04e2 02       		.byte	0x2
+ 1579 04e3 91       		.byte	0x91
+ 1580 04e4 74       		.sleb128 -12
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 29
+
+
+ 1581 04e5 00       		.byte	0x0
+ 1582 04e6 14       		.uleb128 0x14
+ 1583 04e7 01       		.byte	0x1
+ 1584 04e8 5B040000 		.4byte	.LASF98
+ 1585 04ec 01       		.byte	0x1
+ 1586 04ed EA       		.byte	0xea
+ 1587 04ee 01       		.byte	0x1
+ 1588 04ef 00000000 		.4byte	.LFB69
+ 1589 04f3 58000000 		.4byte	.LFE69
+ 1590 04f7 08010000 		.4byte	.LLST6
+ 1591 04fb 0E050000 		.4byte	0x50e
+ 1592 04ff 15       		.uleb128 0x15
+ 1593 0500 B0020000 		.4byte	.LASF93
+ 1594 0504 01       		.byte	0x1
+ 1595 0505 EB       		.byte	0xeb
+ 1596 0506 7B000000 		.4byte	0x7b
+ 1597 050a 02       		.byte	0x2
+ 1598 050b 91       		.byte	0x91
+ 1599 050c 74       		.sleb128 -12
+ 1600 050d 00       		.byte	0x0
+ 1601 050e 16       		.uleb128 0x16
+ 1602 050f 01       		.byte	0x1
+ 1603 0510 FF030000 		.4byte	.LASF99
+ 1604 0514 01       		.byte	0x1
+ 1605 0515 7D01     		.2byte	0x17d
+ 1606 0517 01       		.byte	0x1
+ 1607 0518 00000000 		.4byte	.LFB70
+ 1608 051c 6A000000 		.4byte	.LFE70
+ 1609 0520 34010000 		.4byte	.LLST7
+ 1610 0524 36050000 		.4byte	0x536
+ 1611 0528 17       		.uleb128 0x17
+ 1612 0529 6900     		.ascii	"i\000"
+ 1613 052b 01       		.byte	0x1
+ 1614 052c 7E01     		.2byte	0x17e
+ 1615 052e 29000000 		.4byte	0x29
+ 1616 0532 02       		.byte	0x2
+ 1617 0533 91       		.byte	0x91
+ 1618 0534 7C       		.sleb128 -4
+ 1619 0535 00       		.byte	0x0
+ 1620 0536 18       		.uleb128 0x18
+ 1621 0537 01       		.byte	0x1
+ 1622 0538 FE040000 		.4byte	.LASF113
+ 1623 053c 01       		.byte	0x1
+ 1624 053d A301     		.2byte	0x1a3
+ 1625 053f 01       		.byte	0x1
+ 1626 0540 9B000000 		.4byte	0x9b
+ 1627 0544 00000000 		.4byte	.LFB71
+ 1628 0548 00010000 		.4byte	.LFE71
+ 1629 054c 54010000 		.4byte	.LLST8
+ 1630 0550 91050000 		.4byte	0x591
+ 1631 0554 19       		.uleb128 0x19
+ 1632 0555 78000000 		.4byte	.LASF100
+ 1633 0559 01       		.byte	0x1
+ 1634 055a A301     		.2byte	0x1a3
+ 1635 055c BB030000 		.4byte	0x3bb
+ 1636 0560 02       		.byte	0x2
+ 1637 0561 91       		.byte	0x91
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 30
+
+
+ 1638 0562 74       		.sleb128 -12
+ 1639 0563 19       		.uleb128 0x19
+ 1640 0564 44000000 		.4byte	.LASF101
+ 1641 0568 01       		.byte	0x1
+ 1642 0569 A401     		.2byte	0x1a4
+ 1643 056b 7B000000 		.4byte	0x7b
+ 1644 056f 02       		.byte	0x2
+ 1645 0570 91       		.byte	0x91
+ 1646 0571 70       		.sleb128 -16
+ 1647 0572 19       		.uleb128 0x19
+ 1648 0573 D6010000 		.4byte	.LASF102
+ 1649 0577 01       		.byte	0x1
+ 1650 0578 A501     		.2byte	0x1a5
+ 1651 057a 99030000 		.4byte	0x399
+ 1652 057e 02       		.byte	0x2
+ 1653 057f 91       		.byte	0x91
+ 1654 0580 6C       		.sleb128 -20
+ 1655 0581 19       		.uleb128 0x19
+ 1656 0582 25030000 		.4byte	.LASF103
+ 1657 0586 01       		.byte	0x1
+ 1658 0587 A601     		.2byte	0x1a6
+ 1659 0589 AD000000 		.4byte	0xad
+ 1660 058d 02       		.byte	0x2
+ 1661 058e 91       		.byte	0x91
+ 1662 058f 68       		.sleb128 -24
+ 1663 0590 00       		.byte	0x0
+ 1664 0591 16       		.uleb128 0x16
+ 1665 0592 01       		.byte	0x1
+ 1666 0593 7F000000 		.4byte	.LASF104
+ 1667 0597 01       		.byte	0x1
+ 1668 0598 D301     		.2byte	0x1d3
+ 1669 059a 01       		.byte	0x1
+ 1670 059b 00000000 		.4byte	.LFB72
+ 1671 059f 8A000000 		.4byte	.LFE72
+ 1672 05a3 80010000 		.4byte	.LLST9
+ 1673 05a7 BB050000 		.4byte	0x5bb
+ 1674 05ab 19       		.uleb128 0x19
+ 1675 05ac 78000000 		.4byte	.LASF100
+ 1676 05b0 01       		.byte	0x1
+ 1677 05b1 D301     		.2byte	0x1d3
+ 1678 05b3 BB030000 		.4byte	0x3bb
+ 1679 05b7 02       		.byte	0x2
+ 1680 05b8 91       		.byte	0x91
+ 1681 05b9 74       		.sleb128 -12
+ 1682 05ba 00       		.byte	0x0
+ 1683 05bb 1A       		.uleb128 0x1a
+ 1684 05bc 46050000 		.4byte	.LASF105
+ 1685 05c0 06       		.byte	0x6
+ 1686 05c1 0706     		.2byte	0x607
+ 1687 05c3 FD010000 		.4byte	0x1fd
+ 1688 05c7 01       		.byte	0x1
+ 1689 05c8 01       		.byte	0x1
+ 1690 05c9 1B       		.uleb128 0x1b
+ 1691 05ca 8E030000 		.4byte	0x38e
+ 1692 05ce D9050000 		.4byte	0x5d9
+ 1693 05d2 1C       		.uleb128 0x1c
+ 1694 05d3 B4000000 		.4byte	0xb4
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 31
+
+
+ 1695 05d7 06       		.byte	0x6
+ 1696 05d8 00       		.byte	0x0
+ 1697 05d9 1A       		.uleb128 0x1a
+ 1698 05da E0040000 		.4byte	.LASF106
+ 1699 05de 05       		.byte	0x5
+ 1700 05df 8401     		.2byte	0x184
+ 1701 05e1 E7050000 		.4byte	0x5e7
+ 1702 05e5 01       		.byte	0x1
+ 1703 05e6 01       		.byte	0x1
+ 1704 05e7 13       		.uleb128 0x13
+ 1705 05e8 C9050000 		.4byte	0x5c9
+ 1706 05ec 15       		.uleb128 0x15
+ 1707 05ed 2E050000 		.4byte	.LASF107
+ 1708 05f1 01       		.byte	0x1
+ 1709 05f2 6A       		.byte	0x6a
+ 1710 05f3 7B000000 		.4byte	0x7b
+ 1711 05f7 05       		.byte	0x5
+ 1712 05f8 03       		.byte	0x3
+ 1713 05f9 00000000 		.4byte	dma_streams_mask
+ 1714 05fd 1B       		.uleb128 0x1b
+ 1715 05fe EB030000 		.4byte	0x3eb
+ 1716 0602 0D060000 		.4byte	0x60d
+ 1717 0606 1C       		.uleb128 0x1c
+ 1718 0607 B4000000 		.4byte	0xb4
+ 1719 060b 06       		.byte	0x6
+ 1720 060c 00       		.byte	0x0
+ 1721 060d 15       		.uleb128 0x15
+ 1722 060e 20050000 		.4byte	.LASF108
+ 1723 0612 01       		.byte	0x1
+ 1724 0613 6F       		.byte	0x6f
+ 1725 0614 FD050000 		.4byte	0x5fd
+ 1726 0618 05       		.byte	0x5
+ 1727 0619 03       		.byte	0x3
+ 1728 061a 00000000 		.4byte	dma_isr_redir
+ 1729 061e 1A       		.uleb128 0x1a
+ 1730 061f 46050000 		.4byte	.LASF105
+ 1731 0623 06       		.byte	0x6
+ 1732 0624 0706     		.2byte	0x607
+ 1733 0626 FD010000 		.4byte	0x1fd
+ 1734 062a 01       		.byte	0x1
+ 1735 062b 01       		.byte	0x1
+ 1736 062c 1D       		.uleb128 0x1d
+ 1737 062d E0040000 		.4byte	.LASF106
+ 1738 0631 01       		.byte	0x1
+ 1739 0632 45       		.byte	0x45
+ 1740 0633 3E060000 		.4byte	0x63e
+ 1741 0637 01       		.byte	0x1
+ 1742 0638 05       		.byte	0x5
+ 1743 0639 03       		.byte	0x3
+ 1744 063a 00000000 		.4byte	_stm32_dma_streams
+ 1745 063e 13       		.uleb128 0x13
+ 1746 063f C9050000 		.4byte	0x5c9
+ 1747 0643 00       		.byte	0x0
+ 1748              		.section	.debug_abbrev
+ 1749 0000 01       		.uleb128 0x1
+ 1750 0001 11       		.uleb128 0x11
+ 1751 0002 01       		.byte	0x1
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 32
+
+
+ 1752 0003 25       		.uleb128 0x25
+ 1753 0004 0E       		.uleb128 0xe
+ 1754 0005 13       		.uleb128 0x13
+ 1755 0006 0B       		.uleb128 0xb
+ 1756 0007 03       		.uleb128 0x3
+ 1757 0008 0E       		.uleb128 0xe
+ 1758 0009 1B       		.uleb128 0x1b
+ 1759 000a 0E       		.uleb128 0xe
+ 1760 000b 11       		.uleb128 0x11
+ 1761 000c 01       		.uleb128 0x1
+ 1762 000d 52       		.uleb128 0x52
+ 1763 000e 01       		.uleb128 0x1
+ 1764 000f 55       		.uleb128 0x55
+ 1765 0010 06       		.uleb128 0x6
+ 1766 0011 10       		.uleb128 0x10
+ 1767 0012 06       		.uleb128 0x6
+ 1768 0013 00       		.byte	0x0
+ 1769 0014 00       		.byte	0x0
+ 1770 0015 02       		.uleb128 0x2
+ 1771 0016 24       		.uleb128 0x24
+ 1772 0017 00       		.byte	0x0
+ 1773 0018 0B       		.uleb128 0xb
+ 1774 0019 0B       		.uleb128 0xb
+ 1775 001a 3E       		.uleb128 0x3e
+ 1776 001b 0B       		.uleb128 0xb
+ 1777 001c 03       		.uleb128 0x3
+ 1778 001d 08       		.uleb128 0x8
+ 1779 001e 00       		.byte	0x0
+ 1780 001f 00       		.byte	0x0
+ 1781 0020 03       		.uleb128 0x3
+ 1782 0021 24       		.uleb128 0x24
+ 1783 0022 00       		.byte	0x0
+ 1784 0023 0B       		.uleb128 0xb
+ 1785 0024 0B       		.uleb128 0xb
+ 1786 0025 3E       		.uleb128 0x3e
+ 1787 0026 0B       		.uleb128 0xb
+ 1788 0027 03       		.uleb128 0x3
+ 1789 0028 0E       		.uleb128 0xe
+ 1790 0029 00       		.byte	0x0
+ 1791 002a 00       		.byte	0x0
+ 1792 002b 04       		.uleb128 0x4
+ 1793 002c 16       		.uleb128 0x16
+ 1794 002d 00       		.byte	0x0
+ 1795 002e 03       		.uleb128 0x3
+ 1796 002f 0E       		.uleb128 0xe
+ 1797 0030 3A       		.uleb128 0x3a
+ 1798 0031 0B       		.uleb128 0xb
+ 1799 0032 3B       		.uleb128 0x3b
+ 1800 0033 0B       		.uleb128 0xb
+ 1801 0034 49       		.uleb128 0x49
+ 1802 0035 13       		.uleb128 0x13
+ 1803 0036 00       		.byte	0x0
+ 1804 0037 00       		.byte	0x0
+ 1805 0038 05       		.uleb128 0x5
+ 1806 0039 0F       		.uleb128 0xf
+ 1807 003a 00       		.byte	0x0
+ 1808 003b 0B       		.uleb128 0xb
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 33
+
+
+ 1809 003c 0B       		.uleb128 0xb
+ 1810 003d 00       		.byte	0x0
+ 1811 003e 00       		.byte	0x0
+ 1812 003f 06       		.uleb128 0x6
+ 1813 0040 35       		.uleb128 0x35
+ 1814 0041 00       		.byte	0x0
+ 1815 0042 49       		.uleb128 0x49
+ 1816 0043 13       		.uleb128 0x13
+ 1817 0044 00       		.byte	0x0
+ 1818 0045 00       		.byte	0x0
+ 1819 0046 07       		.uleb128 0x7
+ 1820 0047 24       		.uleb128 0x24
+ 1821 0048 00       		.byte	0x0
+ 1822 0049 0B       		.uleb128 0xb
+ 1823 004a 0B       		.uleb128 0xb
+ 1824 004b 3E       		.uleb128 0x3e
+ 1825 004c 0B       		.uleb128 0xb
+ 1826 004d 00       		.byte	0x0
+ 1827 004e 00       		.byte	0x0
+ 1828 004f 08       		.uleb128 0x8
+ 1829 0050 04       		.uleb128 0x4
+ 1830 0051 01       		.byte	0x1
+ 1831 0052 03       		.uleb128 0x3
+ 1832 0053 0E       		.uleb128 0xe
+ 1833 0054 0B       		.uleb128 0xb
+ 1834 0055 0B       		.uleb128 0xb
+ 1835 0056 3A       		.uleb128 0x3a
+ 1836 0057 0B       		.uleb128 0xb
+ 1837 0058 3B       		.uleb128 0x3b
+ 1838 0059 0B       		.uleb128 0xb
+ 1839 005a 01       		.uleb128 0x1
+ 1840 005b 13       		.uleb128 0x13
+ 1841 005c 00       		.byte	0x0
+ 1842 005d 00       		.byte	0x0
+ 1843 005e 09       		.uleb128 0x9
+ 1844 005f 28       		.uleb128 0x28
+ 1845 0060 00       		.byte	0x0
+ 1846 0061 03       		.uleb128 0x3
+ 1847 0062 0E       		.uleb128 0xe
+ 1848 0063 1C       		.uleb128 0x1c
+ 1849 0064 0D       		.uleb128 0xd
+ 1850 0065 00       		.byte	0x0
+ 1851 0066 00       		.byte	0x0
+ 1852 0067 0A       		.uleb128 0xa
+ 1853 0068 13       		.uleb128 0x13
+ 1854 0069 01       		.byte	0x1
+ 1855 006a 0B       		.uleb128 0xb
+ 1856 006b 0B       		.uleb128 0xb
+ 1857 006c 3A       		.uleb128 0x3a
+ 1858 006d 0B       		.uleb128 0xb
+ 1859 006e 3B       		.uleb128 0x3b
+ 1860 006f 05       		.uleb128 0x5
+ 1861 0070 01       		.uleb128 0x1
+ 1862 0071 13       		.uleb128 0x13
+ 1863 0072 00       		.byte	0x0
+ 1864 0073 00       		.byte	0x0
+ 1865 0074 0B       		.uleb128 0xb
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 34
+
+
+ 1866 0075 0D       		.uleb128 0xd
+ 1867 0076 00       		.byte	0x0
+ 1868 0077 03       		.uleb128 0x3
+ 1869 0078 08       		.uleb128 0x8
+ 1870 0079 3A       		.uleb128 0x3a
+ 1871 007a 0B       		.uleb128 0xb
+ 1872 007b 3B       		.uleb128 0x3b
+ 1873 007c 05       		.uleb128 0x5
+ 1874 007d 49       		.uleb128 0x49
+ 1875 007e 13       		.uleb128 0x13
+ 1876 007f 38       		.uleb128 0x38
+ 1877 0080 0A       		.uleb128 0xa
+ 1878 0081 00       		.byte	0x0
+ 1879 0082 00       		.byte	0x0
+ 1880 0083 0C       		.uleb128 0xc
+ 1881 0084 0D       		.uleb128 0xd
+ 1882 0085 00       		.byte	0x0
+ 1883 0086 03       		.uleb128 0x3
+ 1884 0087 0E       		.uleb128 0xe
+ 1885 0088 3A       		.uleb128 0x3a
+ 1886 0089 0B       		.uleb128 0xb
+ 1887 008a 3B       		.uleb128 0x3b
+ 1888 008b 05       		.uleb128 0x5
+ 1889 008c 49       		.uleb128 0x49
+ 1890 008d 13       		.uleb128 0x13
+ 1891 008e 38       		.uleb128 0x38
+ 1892 008f 0A       		.uleb128 0xa
+ 1893 0090 00       		.byte	0x0
+ 1894 0091 00       		.byte	0x0
+ 1895 0092 0D       		.uleb128 0xd
+ 1896 0093 16       		.uleb128 0x16
+ 1897 0094 00       		.byte	0x0
+ 1898 0095 03       		.uleb128 0x3
+ 1899 0096 0E       		.uleb128 0xe
+ 1900 0097 3A       		.uleb128 0x3a
+ 1901 0098 0B       		.uleb128 0xb
+ 1902 0099 3B       		.uleb128 0x3b
+ 1903 009a 05       		.uleb128 0x5
+ 1904 009b 49       		.uleb128 0x49
+ 1905 009c 13       		.uleb128 0x13
+ 1906 009d 00       		.byte	0x0
+ 1907 009e 00       		.byte	0x0
+ 1908 009f 0E       		.uleb128 0xe
+ 1909 00a0 13       		.uleb128 0x13
+ 1910 00a1 01       		.byte	0x1
+ 1911 00a2 0B       		.uleb128 0xb
+ 1912 00a3 0B       		.uleb128 0xb
+ 1913 00a4 3A       		.uleb128 0x3a
+ 1914 00a5 0B       		.uleb128 0xb
+ 1915 00a6 3B       		.uleb128 0x3b
+ 1916 00a7 0B       		.uleb128 0xb
+ 1917 00a8 01       		.uleb128 0x1
+ 1918 00a9 13       		.uleb128 0x13
+ 1919 00aa 00       		.byte	0x0
+ 1920 00ab 00       		.byte	0x0
+ 1921 00ac 0F       		.uleb128 0xf
+ 1922 00ad 0D       		.uleb128 0xd
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 35
+
+
+ 1923 00ae 00       		.byte	0x0
+ 1924 00af 03       		.uleb128 0x3
+ 1925 00b0 0E       		.uleb128 0xe
+ 1926 00b1 3A       		.uleb128 0x3a
+ 1927 00b2 0B       		.uleb128 0xb
+ 1928 00b3 3B       		.uleb128 0x3b
+ 1929 00b4 0B       		.uleb128 0xb
+ 1930 00b5 49       		.uleb128 0x49
+ 1931 00b6 13       		.uleb128 0x13
+ 1932 00b7 38       		.uleb128 0x38
+ 1933 00b8 0A       		.uleb128 0xa
+ 1934 00b9 00       		.byte	0x0
+ 1935 00ba 00       		.byte	0x0
+ 1936 00bb 10       		.uleb128 0x10
+ 1937 00bc 0F       		.uleb128 0xf
+ 1938 00bd 00       		.byte	0x0
+ 1939 00be 0B       		.uleb128 0xb
+ 1940 00bf 0B       		.uleb128 0xb
+ 1941 00c0 49       		.uleb128 0x49
+ 1942 00c1 13       		.uleb128 0x13
+ 1943 00c2 00       		.byte	0x0
+ 1944 00c3 00       		.byte	0x0
+ 1945 00c4 11       		.uleb128 0x11
+ 1946 00c5 15       		.uleb128 0x15
+ 1947 00c6 01       		.byte	0x1
+ 1948 00c7 27       		.uleb128 0x27
+ 1949 00c8 0C       		.uleb128 0xc
+ 1950 00c9 01       		.uleb128 0x1
+ 1951 00ca 13       		.uleb128 0x13
+ 1952 00cb 00       		.byte	0x0
+ 1953 00cc 00       		.byte	0x0
+ 1954 00cd 12       		.uleb128 0x12
+ 1955 00ce 05       		.uleb128 0x5
+ 1956 00cf 00       		.byte	0x0
+ 1957 00d0 49       		.uleb128 0x49
+ 1958 00d1 13       		.uleb128 0x13
+ 1959 00d2 00       		.byte	0x0
+ 1960 00d3 00       		.byte	0x0
+ 1961 00d4 13       		.uleb128 0x13
+ 1962 00d5 26       		.uleb128 0x26
+ 1963 00d6 00       		.byte	0x0
+ 1964 00d7 49       		.uleb128 0x49
+ 1965 00d8 13       		.uleb128 0x13
+ 1966 00d9 00       		.byte	0x0
+ 1967 00da 00       		.byte	0x0
+ 1968 00db 14       		.uleb128 0x14
+ 1969 00dc 2E       		.uleb128 0x2e
+ 1970 00dd 01       		.byte	0x1
+ 1971 00de 3F       		.uleb128 0x3f
+ 1972 00df 0C       		.uleb128 0xc
+ 1973 00e0 03       		.uleb128 0x3
+ 1974 00e1 0E       		.uleb128 0xe
+ 1975 00e2 3A       		.uleb128 0x3a
+ 1976 00e3 0B       		.uleb128 0xb
+ 1977 00e4 3B       		.uleb128 0x3b
+ 1978 00e5 0B       		.uleb128 0xb
+ 1979 00e6 27       		.uleb128 0x27
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 36
+
+
+ 1980 00e7 0C       		.uleb128 0xc
+ 1981 00e8 11       		.uleb128 0x11
+ 1982 00e9 01       		.uleb128 0x1
+ 1983 00ea 12       		.uleb128 0x12
+ 1984 00eb 01       		.uleb128 0x1
+ 1985 00ec 40       		.uleb128 0x40
+ 1986 00ed 06       		.uleb128 0x6
+ 1987 00ee 01       		.uleb128 0x1
+ 1988 00ef 13       		.uleb128 0x13
+ 1989 00f0 00       		.byte	0x0
+ 1990 00f1 00       		.byte	0x0
+ 1991 00f2 15       		.uleb128 0x15
+ 1992 00f3 34       		.uleb128 0x34
+ 1993 00f4 00       		.byte	0x0
+ 1994 00f5 03       		.uleb128 0x3
+ 1995 00f6 0E       		.uleb128 0xe
+ 1996 00f7 3A       		.uleb128 0x3a
+ 1997 00f8 0B       		.uleb128 0xb
+ 1998 00f9 3B       		.uleb128 0x3b
+ 1999 00fa 0B       		.uleb128 0xb
+ 2000 00fb 49       		.uleb128 0x49
+ 2001 00fc 13       		.uleb128 0x13
+ 2002 00fd 02       		.uleb128 0x2
+ 2003 00fe 0A       		.uleb128 0xa
+ 2004 00ff 00       		.byte	0x0
+ 2005 0100 00       		.byte	0x0
+ 2006 0101 16       		.uleb128 0x16
+ 2007 0102 2E       		.uleb128 0x2e
+ 2008 0103 01       		.byte	0x1
+ 2009 0104 3F       		.uleb128 0x3f
+ 2010 0105 0C       		.uleb128 0xc
+ 2011 0106 03       		.uleb128 0x3
+ 2012 0107 0E       		.uleb128 0xe
+ 2013 0108 3A       		.uleb128 0x3a
+ 2014 0109 0B       		.uleb128 0xb
+ 2015 010a 3B       		.uleb128 0x3b
+ 2016 010b 05       		.uleb128 0x5
+ 2017 010c 27       		.uleb128 0x27
+ 2018 010d 0C       		.uleb128 0xc
+ 2019 010e 11       		.uleb128 0x11
+ 2020 010f 01       		.uleb128 0x1
+ 2021 0110 12       		.uleb128 0x12
+ 2022 0111 01       		.uleb128 0x1
+ 2023 0112 40       		.uleb128 0x40
+ 2024 0113 06       		.uleb128 0x6
+ 2025 0114 01       		.uleb128 0x1
+ 2026 0115 13       		.uleb128 0x13
+ 2027 0116 00       		.byte	0x0
+ 2028 0117 00       		.byte	0x0
+ 2029 0118 17       		.uleb128 0x17
+ 2030 0119 34       		.uleb128 0x34
+ 2031 011a 00       		.byte	0x0
+ 2032 011b 03       		.uleb128 0x3
+ 2033 011c 08       		.uleb128 0x8
+ 2034 011d 3A       		.uleb128 0x3a
+ 2035 011e 0B       		.uleb128 0xb
+ 2036 011f 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 37
+
+
+ 2037 0120 05       		.uleb128 0x5
+ 2038 0121 49       		.uleb128 0x49
+ 2039 0122 13       		.uleb128 0x13
+ 2040 0123 02       		.uleb128 0x2
+ 2041 0124 0A       		.uleb128 0xa
+ 2042 0125 00       		.byte	0x0
+ 2043 0126 00       		.byte	0x0
+ 2044 0127 18       		.uleb128 0x18
+ 2045 0128 2E       		.uleb128 0x2e
+ 2046 0129 01       		.byte	0x1
+ 2047 012a 3F       		.uleb128 0x3f
+ 2048 012b 0C       		.uleb128 0xc
+ 2049 012c 03       		.uleb128 0x3
+ 2050 012d 0E       		.uleb128 0xe
+ 2051 012e 3A       		.uleb128 0x3a
+ 2052 012f 0B       		.uleb128 0xb
+ 2053 0130 3B       		.uleb128 0x3b
+ 2054 0131 05       		.uleb128 0x5
+ 2055 0132 27       		.uleb128 0x27
+ 2056 0133 0C       		.uleb128 0xc
+ 2057 0134 49       		.uleb128 0x49
+ 2058 0135 13       		.uleb128 0x13
+ 2059 0136 11       		.uleb128 0x11
+ 2060 0137 01       		.uleb128 0x1
+ 2061 0138 12       		.uleb128 0x12
+ 2062 0139 01       		.uleb128 0x1
+ 2063 013a 40       		.uleb128 0x40
+ 2064 013b 06       		.uleb128 0x6
+ 2065 013c 01       		.uleb128 0x1
+ 2066 013d 13       		.uleb128 0x13
+ 2067 013e 00       		.byte	0x0
+ 2068 013f 00       		.byte	0x0
+ 2069 0140 19       		.uleb128 0x19
+ 2070 0141 05       		.uleb128 0x5
+ 2071 0142 00       		.byte	0x0
+ 2072 0143 03       		.uleb128 0x3
+ 2073 0144 0E       		.uleb128 0xe
+ 2074 0145 3A       		.uleb128 0x3a
+ 2075 0146 0B       		.uleb128 0xb
+ 2076 0147 3B       		.uleb128 0x3b
+ 2077 0148 05       		.uleb128 0x5
+ 2078 0149 49       		.uleb128 0x49
+ 2079 014a 13       		.uleb128 0x13
+ 2080 014b 02       		.uleb128 0x2
+ 2081 014c 0A       		.uleb128 0xa
+ 2082 014d 00       		.byte	0x0
+ 2083 014e 00       		.byte	0x0
+ 2084 014f 1A       		.uleb128 0x1a
+ 2085 0150 34       		.uleb128 0x34
+ 2086 0151 00       		.byte	0x0
+ 2087 0152 03       		.uleb128 0x3
+ 2088 0153 0E       		.uleb128 0xe
+ 2089 0154 3A       		.uleb128 0x3a
+ 2090 0155 0B       		.uleb128 0xb
+ 2091 0156 3B       		.uleb128 0x3b
+ 2092 0157 05       		.uleb128 0x5
+ 2093 0158 49       		.uleb128 0x49
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 38
+
+
+ 2094 0159 13       		.uleb128 0x13
+ 2095 015a 3F       		.uleb128 0x3f
+ 2096 015b 0C       		.uleb128 0xc
+ 2097 015c 3C       		.uleb128 0x3c
+ 2098 015d 0C       		.uleb128 0xc
+ 2099 015e 00       		.byte	0x0
+ 2100 015f 00       		.byte	0x0
+ 2101 0160 1B       		.uleb128 0x1b
+ 2102 0161 01       		.uleb128 0x1
+ 2103 0162 01       		.byte	0x1
+ 2104 0163 49       		.uleb128 0x49
+ 2105 0164 13       		.uleb128 0x13
+ 2106 0165 01       		.uleb128 0x1
+ 2107 0166 13       		.uleb128 0x13
+ 2108 0167 00       		.byte	0x0
+ 2109 0168 00       		.byte	0x0
+ 2110 0169 1C       		.uleb128 0x1c
+ 2111 016a 21       		.uleb128 0x21
+ 2112 016b 00       		.byte	0x0
+ 2113 016c 49       		.uleb128 0x49
+ 2114 016d 13       		.uleb128 0x13
+ 2115 016e 2F       		.uleb128 0x2f
+ 2116 016f 0B       		.uleb128 0xb
+ 2117 0170 00       		.byte	0x0
+ 2118 0171 00       		.byte	0x0
+ 2119 0172 1D       		.uleb128 0x1d
+ 2120 0173 34       		.uleb128 0x34
+ 2121 0174 00       		.byte	0x0
+ 2122 0175 03       		.uleb128 0x3
+ 2123 0176 0E       		.uleb128 0xe
+ 2124 0177 3A       		.uleb128 0x3a
+ 2125 0178 0B       		.uleb128 0xb
+ 2126 0179 3B       		.uleb128 0x3b
+ 2127 017a 0B       		.uleb128 0xb
+ 2128 017b 49       		.uleb128 0x49
+ 2129 017c 13       		.uleb128 0x13
+ 2130 017d 3F       		.uleb128 0x3f
+ 2131 017e 0C       		.uleb128 0xc
+ 2132 017f 02       		.uleb128 0x2
+ 2133 0180 0A       		.uleb128 0xa
+ 2134 0181 00       		.byte	0x0
+ 2135 0182 00       		.byte	0x0
+ 2136 0183 00       		.byte	0x0
+ 2137              		.section	.debug_pubnames,"",%progbits
+ 2138 0000 B7000000 		.4byte	0xb7
+ 2139 0004 0200     		.2byte	0x2
+ 2140 0006 00000000 		.4byte	.Ldebug_info0
+ 2141 000a 44060000 		.4byte	0x644
+ 2142 000e F6030000 		.4byte	0x3f6
+ 2143 0012 56656374 		.ascii	"Vector6C\000"
+ 2143      6F723643 
+ 2143      00
+ 2144 001b 1E040000 		.4byte	0x41e
+ 2145 001f 56656374 		.ascii	"Vector70\000"
+ 2145      6F723730 
+ 2145      00
+ 2146 0028 46040000 		.4byte	0x446
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 39
+
+
+ 2147 002c 56656374 		.ascii	"Vector74\000"
+ 2147      6F723734 
+ 2147      00
+ 2148 0035 6E040000 		.4byte	0x46e
+ 2149 0039 56656374 		.ascii	"Vector78\000"
+ 2149      6F723738 
+ 2149      00
+ 2150 0042 96040000 		.4byte	0x496
+ 2151 0046 56656374 		.ascii	"Vector7C\000"
+ 2151      6F723743 
+ 2151      00
+ 2152 004f BE040000 		.4byte	0x4be
+ 2153 0053 56656374 		.ascii	"Vector80\000"
+ 2153      6F723830 
+ 2153      00
+ 2154 005c E6040000 		.4byte	0x4e6
+ 2155 0060 56656374 		.ascii	"Vector84\000"
+ 2155      6F723834 
+ 2155      00
+ 2156 0069 0E050000 		.4byte	0x50e
+ 2157 006d 646D6149 		.ascii	"dmaInit\000"
+ 2157      6E697400 
+ 2158 0075 36050000 		.4byte	0x536
+ 2159 0079 646D6153 		.ascii	"dmaStreamAllocate\000"
+ 2159      74726561 
+ 2159      6D416C6C 
+ 2159      6F636174 
+ 2159      6500
+ 2160 008b 91050000 		.4byte	0x591
+ 2161 008f 646D6153 		.ascii	"dmaStreamRelease\000"
+ 2161      74726561 
+ 2161      6D52656C 
+ 2161      65617365 
+ 2161      00
+ 2162 00a0 2C060000 		.4byte	0x62c
+ 2163 00a4 5F73746D 		.ascii	"_stm32_dma_streams\000"
+ 2163      33325F64 
+ 2163      6D615F73 
+ 2163      74726561 
+ 2163      6D7300
+ 2164 00b7 00000000 		.4byte	0x0
+ 2165              		.section	.debug_pubtypes,"",%progbits
+ 2166 0000 CA000000 		.4byte	0xca
+ 2167 0004 0200     		.2byte	0x2
+ 2168 0006 00000000 		.4byte	.Ldebug_info0
+ 2169 000a 44060000 		.4byte	0x644
+ 2170 000e 3E000000 		.4byte	0x3e
+ 2171 0012 75696E74 		.ascii	"uint8_t\000"
+ 2171      385F7400 
+ 2172 001a 57000000 		.4byte	0x57
+ 2173 001e 75696E74 		.ascii	"uint16_t\000"
+ 2173      31365F74 
+ 2173      00
+ 2174 0027 69000000 		.4byte	0x69
+ 2175 002b 696E7433 		.ascii	"int32_t\000"
+ 2175      325F7400 
+ 2176 0033 7B000000 		.4byte	0x7b
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 40
+
+
+ 2177 0037 75696E74 		.ascii	"uint32_t\000"
+ 2177      33325F74 
+ 2177      00
+ 2178 0040 9B000000 		.4byte	0x9b
+ 2179 0044 626F6F6C 		.ascii	"bool_t\000"
+ 2179      5F7400
+ 2180 004b BE000000 		.4byte	0xbe
+ 2181 004f 4952516E 		.ascii	"IRQn\000"
+ 2181      00
+ 2182 0054 48020000 		.4byte	0x248
+ 2183 0058 444D415F 		.ascii	"DMA_Channel_TypeDef\000"
+ 2183      4368616E 
+ 2183      6E656C5F 
+ 2183      54797065 
+ 2183      44656600 
+ 2184 006c 7C020000 		.4byte	0x27c
+ 2185 0070 444D415F 		.ascii	"DMA_TypeDef\000"
+ 2185      54797065 
+ 2185      44656600 
+ 2186 007c 27030000 		.4byte	0x327
+ 2187 0080 5243435F 		.ascii	"RCC_TypeDef\000"
+ 2187      54797065 
+ 2187      44656600 
+ 2188 008c 8E030000 		.4byte	0x38e
+ 2189 0090 73746D33 		.ascii	"stm32_dma_stream_t\000"
+ 2189      325F646D 
+ 2189      615F7374 
+ 2189      7265616D 
+ 2189      5F7400
+ 2190 00a3 99030000 		.4byte	0x399
+ 2191 00a7 73746D33 		.ascii	"stm32_dmaisr_t\000"
+ 2191      325F646D 
+ 2191      61697372 
+ 2191      5F7400
+ 2192 00b6 EB030000 		.4byte	0x3eb
+ 2193 00ba 646D615F 		.ascii	"dma_isr_redir_t\000"
+ 2193      6973725F 
+ 2193      72656469 
+ 2193      725F7400 
+ 2194 00ca 00000000 		.4byte	0x0
+ 2195              		.section	.debug_aranges,"",%progbits
+ 2196 0000 64000000 		.4byte	0x64
+ 2197 0004 0200     		.2byte	0x2
+ 2198 0006 00000000 		.4byte	.Ldebug_info0
+ 2199 000a 04       		.byte	0x4
+ 2200 000b 00       		.byte	0x0
+ 2201 000c 0000     		.2byte	0x0
+ 2202 000e 0000     		.2byte	0x0
+ 2203 0010 00000000 		.4byte	.LFB63
+ 2204 0014 50000000 		.4byte	.LFE63-.LFB63
+ 2205 0018 00000000 		.4byte	.LFB64
+ 2206 001c 58000000 		.4byte	.LFE64-.LFB64
+ 2207 0020 00000000 		.4byte	.LFB65
+ 2208 0024 58000000 		.4byte	.LFE65-.LFB65
+ 2209 0028 00000000 		.4byte	.LFB66
+ 2210 002c 58000000 		.4byte	.LFE66-.LFB66
+ 2211 0030 00000000 		.4byte	.LFB67
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 41
+
+
+ 2212 0034 58000000 		.4byte	.LFE67-.LFB67
+ 2213 0038 00000000 		.4byte	.LFB68
+ 2214 003c 58000000 		.4byte	.LFE68-.LFB68
+ 2215 0040 00000000 		.4byte	.LFB69
+ 2216 0044 58000000 		.4byte	.LFE69-.LFB69
+ 2217 0048 00000000 		.4byte	.LFB70
+ 2218 004c 6A000000 		.4byte	.LFE70-.LFB70
+ 2219 0050 00000000 		.4byte	.LFB71
+ 2220 0054 00010000 		.4byte	.LFE71-.LFB71
+ 2221 0058 00000000 		.4byte	.LFB72
+ 2222 005c 8A000000 		.4byte	.LFE72-.LFB72
+ 2223 0060 00000000 		.4byte	0x0
+ 2224 0064 00000000 		.4byte	0x0
+ 2225              		.section	.debug_ranges,"",%progbits
+ 2226              	.Ldebug_ranges0:
+ 2227 0000 00000000 		.4byte	.LFB63
+ 2228 0004 50000000 		.4byte	.LFE63
+ 2229 0008 00000000 		.4byte	.LFB64
+ 2230 000c 58000000 		.4byte	.LFE64
+ 2231 0010 00000000 		.4byte	.LFB65
+ 2232 0014 58000000 		.4byte	.LFE65
+ 2233 0018 00000000 		.4byte	.LFB66
+ 2234 001c 58000000 		.4byte	.LFE66
+ 2235 0020 00000000 		.4byte	.LFB67
+ 2236 0024 58000000 		.4byte	.LFE67
+ 2237 0028 00000000 		.4byte	.LFB68
+ 2238 002c 58000000 		.4byte	.LFE68
+ 2239 0030 00000000 		.4byte	.LFB69
+ 2240 0034 58000000 		.4byte	.LFE69
+ 2241 0038 00000000 		.4byte	.LFB70
+ 2242 003c 6A000000 		.4byte	.LFE70
+ 2243 0040 00000000 		.4byte	.LFB71
+ 2244 0044 00010000 		.4byte	.LFE71
+ 2245 0048 00000000 		.4byte	.LFB72
+ 2246 004c 8A000000 		.4byte	.LFE72
+ 2247 0050 00000000 		.4byte	0x0
+ 2248 0054 00000000 		.4byte	0x0
+ 2249              		.section	.debug_str,"MS",%progbits,1
+ 2250              	.LASF23:
+ 2251 0000 53797354 		.ascii	"SysTick_IRQn\000"
+ 2251      69636B5F 
+ 2251      4952516E 
+ 2251      00
+ 2252              	.LASF80:
+ 2253 000d 5243435F 		.ascii	"RCC_TypeDef\000"
+ 2253      54797065 
+ 2253      44656600 
+ 2254              	.LASF46:
+ 2255 0019 43414E31 		.ascii	"CAN1_SCE_IRQn\000"
+ 2255      5F534345 
+ 2255      5F495251 
+ 2255      6E00
+ 2256              	.LASF75:
+ 2257 0027 41504231 		.ascii	"APB1RSTR\000"
+ 2257      52535452 
+ 2257      00
+ 2258              	.LASF29:
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 42
+
+
+ 2259 0030 5243435F 		.ascii	"RCC_IRQn\000"
+ 2259      4952516E 
+ 2259      00
+ 2260              	.LASF31:
+ 2261 0039 45585449 		.ascii	"EXTI1_IRQn\000"
+ 2261      315F4952 
+ 2261      516E00
+ 2262              	.LASF101:
+ 2263 0044 7072696F 		.ascii	"priority\000"
+ 2263      72697479 
+ 2263      00
+ 2264              	.LASF89:
+ 2265 004d 646D615F 		.ascii	"dma_param\000"
+ 2265      70617261 
+ 2265      6D00
+ 2266              	.LASF34:
+ 2267 0057 45585449 		.ascii	"EXTI4_IRQn\000"
+ 2267      345F4952 
+ 2267      516E00
+ 2268              	.LASF26:
+ 2269 0062 54414D50 		.ascii	"TAMPER_IRQn\000"
+ 2269      45525F49 
+ 2269      52516E00 
+ 2270              	.LASF3:
+ 2271 006e 73686F72 		.ascii	"short int\000"
+ 2271      7420696E 
+ 2271      7400
+ 2272              	.LASF100:
+ 2273 0078 646D6173 		.ascii	"dmastp\000"
+ 2273      747000
+ 2274              	.LASF104:
+ 2275 007f 646D6153 		.ascii	"dmaStreamRelease\000"
+ 2275      74726561 
+ 2275      6D52656C 
+ 2275      65617365 
+ 2275      00
+ 2276              	.LASF79:
+ 2277 0090 42444352 		.ascii	"BDCR\000"
+ 2277      00
+ 2278              	.LASF44:
+ 2279 0095 5553425F 		.ascii	"USB_LP_CAN1_RX0_IRQn\000"
+ 2279      4C505F43 
+ 2279      414E315F 
+ 2279      5258305F 
+ 2279      4952516E 
+ 2280              	.LASF21:
+ 2281 00aa 44656275 		.ascii	"DebugMonitor_IRQn\000"
+ 2281      674D6F6E 
+ 2281      69746F72 
+ 2281      5F495251 
+ 2281      6E00
+ 2282              	.LASF112:
+ 2283 00bc 4952516E 		.ascii	"IRQn\000"
+ 2283      00
+ 2284              	.LASF94:
+ 2285 00c1 56656374 		.ascii	"Vector74\000"
+ 2285      6F723734 
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 43
+
+
+ 2285      00
+ 2286              	.LASF59:
+ 2287 00ca 53504931 		.ascii	"SPI1_IRQn\000"
+ 2287      5F495251 
+ 2287      6E00
+ 2288              	.LASF72:
+ 2289 00d4 444D415F 		.ascii	"DMA_TypeDef\000"
+ 2289      54797065 
+ 2289      44656600 
+ 2290              	.LASF40:
+ 2291 00e0 444D4131 		.ascii	"DMA1_Channel6_IRQn\000"
+ 2291      5F436861 
+ 2291      6E6E656C 
+ 2291      365F4952 
+ 2291      516E00
+ 2292              	.LASF110:
+ 2293 00f3 2E2E2F63 		.ascii	"../chibios_2.6.3/os/hal/platforms/STM32F1xx/stm32_d"
+ 2293      68696269 
+ 2293      6F735F32 
+ 2293      2E362E33 
+ 2293      2F6F732F 
+ 2294 0126 6D612E63 		.ascii	"ma.c\000"
+ 2294      00
+ 2295              	.LASF95:
+ 2296 012b 56656374 		.ascii	"Vector78\000"
+ 2296      6F723738 
+ 2296      00
+ 2297              	.LASF73:
+ 2298 0134 43464752 		.ascii	"CFGR\000"
+ 2298      00
+ 2299              	.LASF86:
+ 2300 0139 73746D33 		.ascii	"stm32_dma_stream_t\000"
+ 2300      325F646D 
+ 2300      615F7374 
+ 2300      7265616D 
+ 2300      5F7400
+ 2301              	.LASF4:
+ 2302 014c 75696E74 		.ascii	"uint8_t\000"
+ 2302      385F7400 
+ 2303              	.LASF78:
+ 2304 0154 41504231 		.ascii	"APB1ENR\000"
+ 2304      454E5200 
+ 2305              	.LASF85:
+ 2306 015c 76656374 		.ascii	"vector\000"
+ 2306      6F7200
+ 2307              	.LASF38:
+ 2308 0163 444D4131 		.ascii	"DMA1_Channel4_IRQn\000"
+ 2308      5F436861 
+ 2308      6E6E656C 
+ 2308      345F4952 
+ 2308      516E00
+ 2309              	.LASF28:
+ 2310 0176 464C4153 		.ascii	"FLASH_IRQn\000"
+ 2310      485F4952 
+ 2310      516E00
+ 2311              	.LASF35:
+ 2312 0181 444D4131 		.ascii	"DMA1_Channel1_IRQn\000"
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 44
+
+
+ 2312      5F436861 
+ 2312      6E6E656C 
+ 2312      315F4952 
+ 2312      516E00
+ 2313              	.LASF19:
+ 2314 0194 55736167 		.ascii	"UsageFault_IRQn\000"
+ 2314      65466175 
+ 2314      6C745F49 
+ 2314      52516E00 
+ 2315              	.LASF91:
+ 2316 01a4 56656374 		.ascii	"Vector6C\000"
+ 2316      6F723643 
+ 2316      00
+ 2317              	.LASF37:
+ 2318 01ad 444D4131 		.ascii	"DMA1_Channel3_IRQn\000"
+ 2318      5F436861 
+ 2318      6E6E656C 
+ 2318      335F4952 
+ 2318      516E00
+ 2319              	.LASF84:
+ 2320 01c0 73656C66 		.ascii	"selfindex\000"
+ 2320      696E6465 
+ 2320      7800
+ 2321              	.LASF63:
+ 2322 01ca 55534152 		.ascii	"USART3_IRQn\000"
+ 2322      54335F49 
+ 2322      52516E00 
+ 2323              	.LASF102:
+ 2324 01d6 66756E63 		.ascii	"func\000"
+ 2324      00
+ 2325              	.LASF11:
+ 2326 01db 6C6F6E67 		.ascii	"long long int\000"
+ 2326      206C6F6E 
+ 2326      6720696E 
+ 2326      7400
+ 2327              	.LASF42:
+ 2328 01e9 41444331 		.ascii	"ADC1_2_IRQn\000"
+ 2328      5F325F49 
+ 2328      52516E00 
+ 2329              	.LASF61:
+ 2330 01f5 55534152 		.ascii	"USART1_IRQn\000"
+ 2330      54315F49 
+ 2330      52516E00 
+ 2331              	.LASF24:
+ 2332 0201 57574447 		.ascii	"WWDG_IRQn\000"
+ 2332      5F495251 
+ 2332      6E00
+ 2333              	.LASF8:
+ 2334 020b 6C6F6E67 		.ascii	"long int\000"
+ 2334      20696E74 
+ 2334      00
+ 2335              	.LASF64:
+ 2336 0214 45585449 		.ascii	"EXTI15_10_IRQn\000"
+ 2336      31355F31 
+ 2336      305F4952 
+ 2336      516E00
+ 2337              	.LASF55:
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 45
+
+
+ 2338 0223 49324331 		.ascii	"I2C1_EV_IRQn\000"
+ 2338      5F45565F 
+ 2338      4952516E 
+ 2338      00
+ 2339              	.LASF76:
+ 2340 0230 41484245 		.ascii	"AHBENR\000"
+ 2340      4E5200
+ 2341              	.LASF74:
+ 2342 0237 41504232 		.ascii	"APB2RSTR\000"
+ 2342      52535452 
+ 2342      00
+ 2343              	.LASF25:
+ 2344 0240 5056445F 		.ascii	"PVD_IRQn\000"
+ 2344      4952516E 
+ 2344      00
+ 2345              	.LASF54:
+ 2346 0249 54494D34 		.ascii	"TIM4_IRQn\000"
+ 2346      5F495251 
+ 2346      6E00
+ 2347              	.LASF68:
+ 2348 0253 43504152 		.ascii	"CPAR\000"
+ 2348      00
+ 2349              	.LASF52:
+ 2350 0258 54494D32 		.ascii	"TIM2_IRQn\000"
+ 2350      5F495251 
+ 2350      6E00
+ 2351              	.LASF92:
+ 2352 0262 56656374 		.ascii	"Vector70\000"
+ 2352      6F723730 
+ 2352      00
+ 2353              	.LASF57:
+ 2354 026b 49324332 		.ascii	"I2C2_EV_IRQn\000"
+ 2354      5F45565F 
+ 2354      4952516E 
+ 2354      00
+ 2355              	.LASF2:
+ 2356 0278 756E7369 		.ascii	"unsigned char\000"
+ 2356      676E6564 
+ 2356      20636861 
+ 2356      7200
+ 2357              	.LASF88:
+ 2358 0286 646D615F 		.ascii	"dma_func\000"
+ 2358      66756E63 
+ 2358      00
+ 2359              	.LASF58:
+ 2360 028f 49324332 		.ascii	"I2C2_ER_IRQn\000"
+ 2360      5F45525F 
+ 2360      4952516E 
+ 2360      00
+ 2361              	.LASF77:
+ 2362 029c 41504232 		.ascii	"APB2ENR\000"
+ 2362      454E5200 
+ 2363              	.LASF1:
+ 2364 02a4 7369676E 		.ascii	"signed char\000"
+ 2364      65642063 
+ 2364      68617200 
+ 2365              	.LASF93:
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 46
+
+
+ 2366 02b0 666C6167 		.ascii	"flags\000"
+ 2366      7300
+ 2367              	.LASF12:
+ 2368 02b6 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2368      206C6F6E 
+ 2368      6720756E 
+ 2368      7369676E 
+ 2368      65642069 
+ 2369              	.LASF9:
+ 2370 02cd 75696E74 		.ascii	"uint32_t\000"
+ 2370      33325F74 
+ 2370      00
+ 2371              	.LASF32:
+ 2372 02d6 45585449 		.ascii	"EXTI2_IRQn\000"
+ 2372      325F4952 
+ 2372      516E00
+ 2373              	.LASF96:
+ 2374 02e1 56656374 		.ascii	"Vector7C\000"
+ 2374      6F723743 
+ 2374      00
+ 2375              	.LASF5:
+ 2376 02ea 75696E74 		.ascii	"uint16_t\000"
+ 2376      31365F74 
+ 2376      00
+ 2377              	.LASF30:
+ 2378 02f3 45585449 		.ascii	"EXTI0_IRQn\000"
+ 2378      305F4952 
+ 2378      516E00
+ 2379              	.LASF18:
+ 2380 02fe 42757346 		.ascii	"BusFault_IRQn\000"
+ 2380      61756C74 
+ 2380      5F495251 
+ 2380      6E00
+ 2381              	.LASF20:
+ 2382 030c 53564361 		.ascii	"SVCall_IRQn\000"
+ 2382      6C6C5F49 
+ 2382      52516E00 
+ 2383              	.LASF47:
+ 2384 0318 45585449 		.ascii	"EXTI9_5_IRQn\000"
+ 2384      395F355F 
+ 2384      4952516E 
+ 2384      00
+ 2385              	.LASF103:
+ 2386 0325 70617261 		.ascii	"param\000"
+ 2386      6D00
+ 2387              	.LASF43:
+ 2388 032b 5553425F 		.ascii	"USB_HP_CAN1_TX_IRQn\000"
+ 2388      48505F43 
+ 2388      414E315F 
+ 2388      54585F49 
+ 2388      52516E00 
+ 2389              	.LASF6:
+ 2390 033f 73686F72 		.ascii	"short unsigned int\000"
+ 2390      7420756E 
+ 2390      7369676E 
+ 2390      65642069 
+ 2390      6E7400
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 47
+
+
+ 2391              	.LASF70:
+ 2392 0352 444D415F 		.ascii	"DMA_Channel_TypeDef\000"
+ 2392      4368616E 
+ 2392      6E656C5F 
+ 2392      54797065 
+ 2392      44656600 
+ 2393              	.LASF48:
+ 2394 0366 54494D31 		.ascii	"TIM1_BRK_IRQn\000"
+ 2394      5F42524B 
+ 2394      5F495251 
+ 2394      6E00
+ 2395              	.LASF45:
+ 2396 0374 43414E31 		.ascii	"CAN1_RX1_IRQn\000"
+ 2396      5F525831 
+ 2396      5F495251 
+ 2396      6E00
+ 2397              	.LASF67:
+ 2398 0382 434E4454 		.ascii	"CNDTR\000"
+ 2398      5200
+ 2399              	.LASF15:
+ 2400 0388 63686172 		.ascii	"char\000"
+ 2400      00
+ 2401              	.LASF7:
+ 2402 038d 696E7433 		.ascii	"int32_t\000"
+ 2402      325F7400 
+ 2403              	.LASF60:
+ 2404 0395 53504932 		.ascii	"SPI2_IRQn\000"
+ 2404      5F495251 
+ 2404      6E00
+ 2405              	.LASF13:
+ 2406 039f 626F6F6C 		.ascii	"bool_t\000"
+ 2406      5F7400
+ 2407              	.LASF87:
+ 2408 03a6 73746D33 		.ascii	"stm32_dmaisr_t\000"
+ 2408      325F646D 
+ 2408      61697372 
+ 2408      5F7400
+ 2409              	.LASF14:
+ 2410 03b5 5F426F6F 		.ascii	"_Bool\000"
+ 2410      6C00
+ 2411              	.LASF111:
+ 2412 03bb 433A5C70 		.ascii	"C:\\projects\\clock.git\\firmware\\firmware\000"
+ 2412      726F6A65 
+ 2412      6374735C 
+ 2412      636C6F63 
+ 2412      6B2E6769 
+ 2413              	.LASF71:
+ 2414 03e3 49464352 		.ascii	"IFCR\000"
+ 2414      00
+ 2415              	.LASF81:
+ 2416 03e8 6368616E 		.ascii	"channel\000"
+ 2416      6E656C00 
+ 2417              	.LASF65:
+ 2418 03f0 5254435F 		.ascii	"RTC_Alarm_IRQn\000"
+ 2418      416C6172 
+ 2418      6D5F4952 
+ 2418      516E00
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 48
+
+
+ 2419              	.LASF99:
+ 2420 03ff 646D6149 		.ascii	"dmaInit\000"
+ 2420      6E697400 
+ 2421              	.LASF41:
+ 2422 0407 444D4131 		.ascii	"DMA1_Channel7_IRQn\000"
+ 2422      5F436861 
+ 2422      6E6E656C 
+ 2422      375F4952 
+ 2422      516E00
+ 2423              	.LASF97:
+ 2424 041a 56656374 		.ascii	"Vector80\000"
+ 2424      6F723830 
+ 2424      00
+ 2425              	.LASF39:
+ 2426 0423 444D4131 		.ascii	"DMA1_Channel5_IRQn\000"
+ 2426      5F436861 
+ 2426      6E6E656C 
+ 2426      355F4952 
+ 2426      516E00
+ 2427              	.LASF36:
+ 2428 0436 444D4131 		.ascii	"DMA1_Channel2_IRQn\000"
+ 2428      5F436861 
+ 2428      6E6E656C 
+ 2428      325F4952 
+ 2428      516E00
+ 2429              	.LASF10:
+ 2430 0449 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2430      20756E73 
+ 2430      69676E65 
+ 2430      6420696E 
+ 2430      7400
+ 2431              	.LASF98:
+ 2432 045b 56656374 		.ascii	"Vector84\000"
+ 2432      6F723834 
+ 2432      00
+ 2433              	.LASF17:
+ 2434 0464 4D656D6F 		.ascii	"MemoryManagement_IRQn\000"
+ 2434      72794D61 
+ 2434      6E616765 
+ 2434      6D656E74 
+ 2434      5F495251 
+ 2435              	.LASF27:
+ 2436 047a 5254435F 		.ascii	"RTC_IRQn\000"
+ 2436      4952516E 
+ 2436      00
+ 2437              	.LASF50:
+ 2438 0483 54494D31 		.ascii	"TIM1_TRG_COM_IRQn\000"
+ 2438      5F545247 
+ 2438      5F434F4D 
+ 2438      5F495251 
+ 2438      6E00
+ 2439              	.LASF109:
+ 2440 0495 474E5520 		.ascii	"GNU C 4.5.0\000"
+ 2440      4320342E 
+ 2440      352E3000 
+ 2441              	.LASF16:
+ 2442 04a1 4E6F6E4D 		.ascii	"NonMaskableInt_IRQn\000"
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 49
+
+
+ 2442      61736B61 
+ 2442      626C6549 
+ 2442      6E745F49 
+ 2442      52516E00 
+ 2443              	.LASF69:
+ 2444 04b5 434D4152 		.ascii	"CMAR\000"
+ 2444      00
+ 2445              	.LASF51:
+ 2446 04ba 54494D31 		.ascii	"TIM1_CC_IRQn\000"
+ 2446      5F43435F 
+ 2446      4952516E 
+ 2446      00
+ 2447              	.LASF62:
+ 2448 04c7 55534152 		.ascii	"USART2_IRQn\000"
+ 2448      54325F49 
+ 2448      52516E00 
+ 2449              	.LASF49:
+ 2450 04d3 54494D31 		.ascii	"TIM1_UP_IRQn\000"
+ 2450      5F55505F 
+ 2450      4952516E 
+ 2450      00
+ 2451              	.LASF106:
+ 2452 04e0 5F73746D 		.ascii	"_stm32_dma_streams\000"
+ 2452      33325F64 
+ 2452      6D615F73 
+ 2452      74726561 
+ 2452      6D7300
+ 2453              	.LASF33:
+ 2454 04f3 45585449 		.ascii	"EXTI3_IRQn\000"
+ 2454      335F4952 
+ 2454      516E00
+ 2455              	.LASF113:
+ 2456 04fe 646D6153 		.ascii	"dmaStreamAllocate\000"
+ 2456      74726561 
+ 2456      6D416C6C 
+ 2456      6F636174 
+ 2456      6500
+ 2457              	.LASF90:
+ 2458 0510 646D615F 		.ascii	"dma_isr_redir_t\000"
+ 2458      6973725F 
+ 2458      72656469 
+ 2458      725F7400 
+ 2459              	.LASF108:
+ 2460 0520 646D615F 		.ascii	"dma_isr_redir\000"
+ 2460      6973725F 
+ 2460      72656469 
+ 2460      7200
+ 2461              	.LASF107:
+ 2462 052e 646D615F 		.ascii	"dma_streams_mask\000"
+ 2462      73747265 
+ 2462      616D735F 
+ 2462      6D61736B 
+ 2462      00
+ 2463              	.LASF83:
+ 2464 053f 69736869 		.ascii	"ishift\000"
+ 2464      667400
+ 2465              	.LASF105:
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 50
+
+
+ 2466 0546 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 2466      52784275 
+ 2466      66666572 
+ 2466      00
+ 2467              	.LASF0:
+ 2468 0553 756E7369 		.ascii	"unsigned int\000"
+ 2468      676E6564 
+ 2468      20696E74 
+ 2468      00
+ 2469              	.LASF56:
+ 2470 0560 49324331 		.ascii	"I2C1_ER_IRQn\000"
+ 2470      5F45525F 
+ 2470      4952516E 
+ 2470      00
+ 2471              	.LASF53:
+ 2472 056d 54494D33 		.ascii	"TIM3_IRQn\000"
+ 2472      5F495251 
+ 2472      6E00
+ 2473              	.LASF82:
+ 2474 0577 69666372 		.ascii	"ifcr\000"
+ 2474      00
+ 2475              	.LASF22:
+ 2476 057c 50656E64 		.ascii	"PendSV_IRQn\000"
+ 2476      53565F49 
+ 2476      52516E00 
+ 2477              	.LASF66:
+ 2478 0588 5553425F 		.ascii	"USB_FS_WKUP_IRQn\000"
+ 2478      46535F57 
+ 2478      4B55505F 
+ 2478      4952516E 
+ 2478      00
+ 2479              		.ident	"GCC: (GNU) 4.5.0"
+ARM GAS  C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s 			page 51
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32_dma.c
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:28     .rodata._stm32_dma_streams:00000000 _stm32_dma_streams
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:25     .rodata._stm32_dma_streams:00000000 $d
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:72     .bss.dma_streams_mask:00000000 $d
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:75     .bss.dma_streams_mask:00000000 dma_streams_mask
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:78     .bss.dma_isr_redir:00000000 $d
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:81     .bss.dma_isr_redir:00000000 dma_isr_redir
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:84     .text.Vector6C:00000000 $t
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:90     .text.Vector6C:00000000 Vector6C
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:141    .text.Vector70:00000000 $t
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:147    .text.Vector70:00000000 Vector70
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:199    .text.Vector74:00000000 $t
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:205    .text.Vector74:00000000 Vector74
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:257    .text.Vector78:00000000 $t
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:263    .text.Vector78:00000000 Vector78
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:315    .text.Vector7C:00000000 $t
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:321    .text.Vector7C:00000000 Vector7C
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:373    .text.Vector80:00000000 $t
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:379    .text.Vector80:00000000 Vector80
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:431    .text.Vector84:00000000 $t
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:437    .text.Vector84:00000000 Vector84
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:489    .text.dmaInit:00000000 $t
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:495    .text.dmaInit:00000000 dmaInit
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:554    .text.dmaStreamAllocate:00000000 $t
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:560    .text.dmaStreamAllocate:00000000 dmaStreamAllocate
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:687    .text.dmaStreamRelease:00000000 $t
+C:\Users\z80\AppData\Local\Temp\ccWCzWFa.s:693    .text.dmaStreamRelease:00000000 dmaStreamRelease
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+_port_irq_epilogue
+nvicEnableVector
+nvicDisableVector

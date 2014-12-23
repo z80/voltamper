@@ -1,23 +1,22 @@
 build/obj/i2c_ctrl.o: src/i2c_ctrl.c \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/stdlib.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/machine/ieeefp.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/_ansi.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/newlib.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/sys/config.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/sys/features.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/include/stddef.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/sys/reent.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/_ansi.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/sys/_types.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/machine/_types.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/machine/_default_types.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/sys/lock.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/machine/stdlib.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/alloca.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdlib.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/ieeefp.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/_ansi.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/newlib.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/config.h \
+ c:\programs\yagarto\bin\../lib/gcc/arm-none-eabi/4.5.0/include/stddef.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/reent.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/_ansi.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/_types.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/_types.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/_default_types.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/lock.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/stdlib.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/alloca.h \
  src/i2c_ctrl.h ../chibios_2.4.x/os/kernel/include/ch.h chconf.h \
  ../chibios_2.4.x/os/ports/GCC/ARMCMx/chtypes.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/include/stdint.h \
- /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/stdint.h \
+ c:\programs\yagarto\bin\../lib/gcc/arm-none-eabi/4.5.0/include/stdint.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdint.h \
  ../chibios_2.4.x/os/kernel/include/chlists.h \
  ../chibios_2.4.x/os/ports/GCC/ARMCMx/chcore.h \
  ../chibios_2.4.x/os/ports/GCC/ARMCMx/STM32F1xx/cmparams.h \
@@ -81,35 +80,33 @@ build/obj/i2c_ctrl.o: src/i2c_ctrl.c \
  ../chibios_2.4.x/os/various/chprintf.h src/read_ctrl.h src/write_ctrl.h \
  src/led_ctrl.h src/hdw_config.h
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/stdlib.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdlib.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/machine/ieeefp.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/ieeefp.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/_ansi.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/_ansi.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/newlib.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/newlib.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/sys/config.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/config.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/sys/features.h:
+c:\programs\yagarto\bin\../lib/gcc/arm-none-eabi/4.5.0/include/stddef.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/include/stddef.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/reent.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/sys/reent.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/_ansi.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/_ansi.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/_types.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/sys/_types.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/_types.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/machine/_types.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/_default_types.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/machine/_default_types.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/lock.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/sys/lock.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/stdlib.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/machine/stdlib.h:
-
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/alloca.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/alloca.h:
 
 src/i2c_ctrl.h:
 
@@ -119,9 +116,9 @@ chconf.h:
 
 ../chibios_2.4.x/os/ports/GCC/ARMCMx/chtypes.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/include/stdint.h:
+c:\programs\yagarto\bin\../lib/gcc/arm-none-eabi/4.5.0/include/stdint.h:
 
-/home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/include/stdint.h:
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdint.h:
 
 ../chibios_2.4.x/os/kernel/include/chlists.h:
 

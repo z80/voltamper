@@ -1,0 +1,1203 @@
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 18, 4
+  12              		.thumb
+  13              		.file	"crt0.c"
+  14              		.section	.debug_abbrev,"",%progbits
+  15              	.Ldebug_abbrev0:
+  16              		.section	.debug_info,"",%progbits
+  17              	.Ldebug_info0:
+  18              		.section	.debug_line,"",%progbits
+  19              	.Ldebug_line0:
+  20 0000 25010000 		.text
+  20      02008A00 
+  20      00000201 
+  20      FB0E0D00 
+  20      01010101 
+  21              	.Ltext0:
+  22              		.cfi_sections	.debug_frame
+  23              		.section	.text.__early_init,"ax",%progbits
+  24              		.align	2
+  25              		.p2align 4,,15
+  26              		.weak	__early_init
+  27              		.thumb
+  28              		.thumb_func
+  29              		.type	__early_init, %function
+  30              	__early_init:
+  31              	.LFB0:
+  32              		.file 1 "../chibios_2.6.3/os/ports/GCC/ARMCMx/crt0.c"
+  33              		.loc 1 234 0
+  34              		.cfi_startproc
+  35              		@ args = 0, pretend = 0, frame = 0
+  36              		@ frame_needed = 0, uses_anonymous_args = 0
+  37              		@ link register save eliminated.
+  38              		.loc 1 234 0
+  39 0000 7047     		bx	lr
+  40              		.cfi_endproc
+  41              	.LFE0:
+  42              		.size	__early_init, .-__early_init
+  43 0002 00BFAFF3 		.section	.text.__late_init,"ax",%progbits
+  43      0080AFF3 
+  43      0080AFF3 
+  43      0080
+  44              		.align	2
+  45              		.p2align 4,,15
+  46              		.weak	__late_init
+  47              		.thumb
+  48              		.thumb_func
+  49              		.type	__late_init, %function
+  50              	__late_init:
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 2
+
+
+  51              	.LFB1:
+  52              		.loc 1 246 0
+  53              		.cfi_startproc
+  54              		@ args = 0, pretend = 0, frame = 0
+  55              		@ frame_needed = 0, uses_anonymous_args = 0
+  56              		@ link register save eliminated.
+  57              		.loc 1 246 0
+  58 0000 7047     		bx	lr
+  59              		.cfi_endproc
+  60              	.LFE1:
+  61              		.size	__late_init, .-__late_init
+  62 0002 00BFAFF3 		.section	.text._default_exit,"ax",%progbits
+  62      0080AFF3 
+  62      0080AFF3 
+  62      0080
+  63              		.align	2
+  64              		.p2align 4,,15
+  65              		.weak	_default_exit
+  66              		.thumb
+  67              		.thumb_func
+  68              		.type	_default_exit, %function
+  69              	_default_exit:
+  70              	.LFB2:
+  71              		.loc 1 257 0
+  72              		.cfi_startproc
+  73              		@ Naked Function: prologue and epilogue provided by programmer.
+  74              		@ args = 0, pretend = 0, frame = 0
+  75              		@ frame_needed = 0, uses_anonymous_args = 0
+  76              	.L4:
+  77              		.loc 1 259 0 discriminator 1
+  78 0000 FEE7     		b	.L4
+  79              		.cfi_endproc
+  80              	.LFE2:
+  81              		.size	_default_exit, .-_default_exit
+  82 0002 00BFAFF3 		.section	.text.ResetHandler,"ax",%progbits
+  82      0080AFF3 
+  82      0080AFF3 
+  82      0080
+  83              		.align	2
+  84              		.p2align 4,,15
+  85              		.global	ResetHandler
+  86              		.thumb
+  87              		.thumb_func
+  88              		.type	ResetHandler, %function
+  89              	ResetHandler:
+  90              	.LFB3:
+  91              		.loc 1 268 0
+  92              		.cfi_startproc
+  93              		@ Naked Function: prologue and epilogue provided by programmer.
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 0, uses_anonymous_args = 0
+  96              		.loc 1 274 0
+  97              	@ 274 "../chibios_2.6.3/os/ports/GCC/ARMCMx/crt0.c" 1
+  98 0000 72B6     		cpsid   i
+  99              	@ 0 "" 2
+ 100              		.loc 1 275 0
+ 101              		.thumb
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 3
+
+
+ 102 0002 40F20004 		movw	r4, #:lower16:__process_stack_end__
+ 103 0006 C0F20004 		movt	r4, #:upper16:__process_stack_end__
+ 104              		.loc 1 276 0
+ 105              	@ 276 "../chibios_2.6.3/os/ports/GCC/ARMCMx/crt0.c" 1
+ 106 000a 84F30988 		msr     PSP, r4
+ 107              	@ 0 "" 2
+ 108              		.loc 1 294 0
+ 109              		.thumb
+ 110 000e 4FF00204 		mov	r4, #2
+ 111              		.loc 1 296 0
+ 112              	@ 296 "../chibios_2.6.3/os/ports/GCC/ARMCMx/crt0.c" 1
+ 113 0012 84F31488 		msr     CONTROL, r4
+ 114              	@ 0 "" 2
+ 115              		.loc 1 297 0
+ 116              	@ 297 "../chibios_2.6.3/os/ports/GCC/ARMCMx/crt0.c" 1
+ 117 0016 BFF36F8F 		isb
+ 118              	@ 0 "" 2
+ 119              		.thumb
+ 120              	.LBB2:
+ 121              		.loc 1 301 0
+ 122 001a 40F20004 		movw	r4, #:lower16:__main_stack_base__
+ 123 001e C0F20004 		movt	r4, #:upper16:__main_stack_base__
+ 124 0022 40F20005 		movw	r5, #:lower16:__main_stack_end__
+ 125 0026 C0F20005 		movt	r5, #:upper16:__main_stack_end__
+ 126 002a 04E0     		b	.L6
+ 127              	.L7:
+ 128              		.loc 1 301 0 is_stmt 0 discriminator 2
+ 129 002c 4FF05533 		mov	r3, #1431655765
+ 130 0030 2360     		str	r3, [r4, #0]
+ 131 0032 04F10404 		add	r4, r4, #4
+ 132              	.L6:
+ 133              		.loc 1 301 0 discriminator 1
+ 134 0036 AC42     		cmp	r4, r5
+ 135 0038 F8D3     		bcc	.L7
+ 136              	.LBE2:
+ 137              	.LBB3:
+ 138              		.loc 1 304 0 is_stmt 1
+ 139 003a 40F20004 		movw	r4, #:lower16:__process_stack_base__
+ 140 003e C0F20004 		movt	r4, #:upper16:__process_stack_base__
+ 141 0042 40F20005 		movw	r5, #:lower16:__process_stack_end__
+ 142 0046 C0F20005 		movt	r5, #:upper16:__process_stack_end__
+ 143 004a 04E0     		b	.L8
+ 144              	.L9:
+ 145              		.loc 1 304 0 is_stmt 0 discriminator 2
+ 146 004c 4FF05533 		mov	r3, #1431655765
+ 147 0050 2360     		str	r3, [r4, #0]
+ 148 0052 04F10404 		add	r4, r4, #4
+ 149              	.L8:
+ 150              		.loc 1 304 0 discriminator 1
+ 151 0056 AC42     		cmp	r4, r5
+ 152 0058 F8D3     		bcc	.L9
+ 153              	.LBE3:
+ 154              		.loc 1 310 0 is_stmt 1
+ 155 005a FFF7FEFF 		bl	__early_init
+ 156              	.LBB4:
+ 157              		.loc 1 317 0
+ 158 005e 40F20005 		movw	r5, #:lower16:_textdata
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 4
+
+
+ 159 0062 C0F20005 		movt	r5, #:upper16:_textdata
+ 160              		.loc 1 318 0
+ 161 0066 40F20004 		movw	r4, #:lower16:_data
+ 162 006a C0F20004 		movt	r4, #:upper16:_data
+ 163              		.loc 1 319 0
+ 164 006e 05E0     		b	.L10
+ 165              	.L11:
+ 166              		.loc 1 320 0
+ 167 0070 2B68     		ldr	r3, [r5, #0]
+ 168 0072 2360     		str	r3, [r4, #0]
+ 169 0074 04F10404 		add	r4, r4, #4
+ 170 0078 05F10405 		add	r5, r5, #4
+ 171              	.L10:
+ 172              		.loc 1 319 0 discriminator 1
+ 173 007c 40F20003 		movw	r3, #:lower16:_edata
+ 174 0080 C0F20003 		movt	r3, #:upper16:_edata
+ 175 0084 9C42     		cmp	r4, r3
+ 176 0086 F3D3     		bcc	.L11
+ 177              	.LBE4:
+ 178              	.LBB5:
+ 179              		.loc 1 326 0
+ 180 0088 40F20004 		movw	r4, #:lower16:_bss_start
+ 181 008c C0F20004 		movt	r4, #:upper16:_bss_start
+ 182 0090 40F20005 		movw	r5, #:lower16:_bss_end
+ 183 0094 C0F20005 		movt	r5, #:upper16:_bss_end
+ 184 0098 04E0     		b	.L12
+ 185              	.L13:
+ 186              		.loc 1 326 0 is_stmt 0 discriminator 2
+ 187 009a 4FF00003 		mov	r3, #0
+ 188 009e 2360     		str	r3, [r4, #0]
+ 189 00a0 04F10404 		add	r4, r4, #4
+ 190              	.L12:
+ 191              		.loc 1 326 0 discriminator 1
+ 192 00a4 AC42     		cmp	r4, r5
+ 193 00a6 F8D3     		bcc	.L13
+ 194              	.LBE5:
+ 195              		.loc 1 330 0 is_stmt 1
+ 196 00a8 FFF7FEFF 		bl	__late_init
+ 197              	.LBB6:
+ 198              		.loc 1 335 0
+ 199 00ac 40F20004 		movw	r4, #:lower16:__init_array_start
+ 200 00b0 C0F20004 		movt	r4, #:upper16:__init_array_start
+ 201              		.loc 1 336 0
+ 202 00b4 03E0     		b	.L14
+ 203              	.L15:
+ 204              		.loc 1 337 0
+ 205 00b6 2368     		ldr	r3, [r4, #0]
+ 206 00b8 9847     		blx	r3
+ 207              		.loc 1 338 0
+ 208 00ba 04F10404 		add	r4, r4, #4
+ 209              	.L14:
+ 210              		.loc 1 336 0 discriminator 1
+ 211 00be 40F20003 		movw	r3, #:lower16:__init_array_end
+ 212 00c2 C0F20003 		movt	r3, #:upper16:__init_array_end
+ 213 00c6 9C42     		cmp	r4, r3
+ 214 00c8 F5D3     		bcc	.L15
+ 215              	.LBE6:
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 5
+
+
+ 216              		.loc 1 344 0
+ 217 00ca FFF7FEFF 		bl	main
+ 218              	.LBB7:
+ 219              		.loc 1 349 0
+ 220 00ce 40F20004 		movw	r4, #:lower16:__fini_array_start
+ 221 00d2 C0F20004 		movt	r4, #:upper16:__fini_array_start
+ 222              		.loc 1 350 0
+ 223 00d6 03E0     		b	.L16
+ 224              	.L17:
+ 225              		.loc 1 351 0
+ 226 00d8 2368     		ldr	r3, [r4, #0]
+ 227 00da 9847     		blx	r3
+ 228              		.loc 1 352 0
+ 229 00dc 04F10404 		add	r4, r4, #4
+ 230              	.L16:
+ 231              		.loc 1 350 0 discriminator 1
+ 232 00e0 40F20003 		movw	r3, #:lower16:__fini_array_end
+ 233 00e4 C0F20003 		movt	r3, #:upper16:__fini_array_end
+ 234 00e8 9C42     		cmp	r4, r3
+ 235 00ea F5D3     		bcc	.L17
+ 236              	.LBE7:
+ 237              		.loc 1 358 0
+ 238 00ec FFF7FEFF 		bl	_default_exit
+ 239              		.loc 1 359 0
+ 240              		.cfi_endproc
+ 241              	.LFE3:
+ 242              		.size	ResetHandler, .-ResetHandler
+ 243              		.text
+ 244              	.Letext0:
+ 245              		.file 2 "c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/stdint.h"
+ 246              		.section	.debug_info
+ 247 0000 45030000 		.4byte	0x345
+ 248 0004 0200     		.2byte	0x2
+ 249 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 250 000a 04       		.byte	0x4
+ 251 000b 01       		.uleb128 0x1
+ 252 000c 12000000 		.4byte	.LASF29
+ 253 0010 01       		.byte	0x1
+ 254 0011 1E000000 		.4byte	.LASF30
+ 255 0015 C6010000 		.4byte	.LASF31
+ 256 0019 00000000 		.4byte	0x0
+ 257 001d 00000000 		.4byte	0x0
+ 258 0021 00000000 		.4byte	.Ldebug_ranges0+0x0
+ 259 0025 00000000 		.4byte	.Ldebug_line0
+ 260 0029 02       		.uleb128 0x2
+ 261 002a 01       		.byte	0x1
+ 262 002b 06       		.byte	0x6
+ 263 002c 91010000 		.4byte	.LASF0
+ 264 0030 03       		.uleb128 0x3
+ 265 0031 26010000 		.4byte	.LASF5
+ 266 0035 02       		.byte	0x2
+ 267 0036 2A       		.byte	0x2a
+ 268 0037 3B000000 		.4byte	0x3b
+ 269 003b 02       		.uleb128 0x2
+ 270 003c 01       		.byte	0x1
+ 271 003d 08       		.byte	0x8
+ 272 003e 78000000 		.4byte	.LASF1
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 6
+
+
+ 273 0042 02       		.uleb128 0x2
+ 274 0043 02       		.byte	0x2
+ 275 0044 05       		.byte	0x5
+ 276 0045 67010000 		.4byte	.LASF2
+ 277 0049 02       		.uleb128 0x2
+ 278 004a 02       		.byte	0x2
+ 279 004b 07       		.byte	0x7
+ 280 004c B1000000 		.4byte	.LASF3
+ 281 0050 02       		.uleb128 0x2
+ 282 0051 04       		.byte	0x4
+ 283 0052 05       		.byte	0x5
+ 284 0053 82010000 		.4byte	.LASF4
+ 285 0057 03       		.uleb128 0x3
+ 286 0058 79010000 		.4byte	.LASF6
+ 287 005c 02       		.byte	0x2
+ 288 005d 50       		.byte	0x50
+ 289 005e 62000000 		.4byte	0x62
+ 290 0062 02       		.uleb128 0x2
+ 291 0063 04       		.byte	0x4
+ 292 0064 07       		.byte	0x7
+ 293 0065 92000000 		.4byte	.LASF7
+ 294 0069 02       		.uleb128 0x2
+ 295 006a 08       		.byte	0x8
+ 296 006b 05       		.byte	0x5
+ 297 006c 45010000 		.4byte	.LASF8
+ 298 0070 02       		.uleb128 0x2
+ 299 0071 08       		.byte	0x8
+ 300 0072 07       		.byte	0x7
+ 301 0073 0F010000 		.4byte	.LASF9
+ 302 0077 04       		.uleb128 0x4
+ 303 0078 04       		.byte	0x4
+ 304 0079 05       		.byte	0x5
+ 305 007a 696E7400 		.ascii	"int\000"
+ 306 007e 02       		.uleb128 0x2
+ 307 007f 04       		.byte	0x4
+ 308 0080 07       		.byte	0x7
+ 309 0081 02010000 		.4byte	.LASF10
+ 310 0085 03       		.uleb128 0x3
+ 311 0086 71010000 		.4byte	.LASF11
+ 312 008a 01       		.byte	0x1
+ 313 008b 34       		.byte	0x34
+ 314 008c 90000000 		.4byte	0x90
+ 315 0090 05       		.uleb128 0x5
+ 316 0091 04       		.byte	0x4
+ 317 0092 96000000 		.4byte	0x96
+ 318 0096 06       		.uleb128 0x6
+ 319 0097 01       		.byte	0x1
+ 320 0098 03       		.uleb128 0x3
+ 321 0099 61000000 		.4byte	.LASF12
+ 322 009d 01       		.byte	0x1
+ 323 009e 35       		.byte	0x35
+ 324 009f A3000000 		.4byte	0xa3
+ 325 00a3 05       		.uleb128 0x5
+ 326 00a4 04       		.byte	0x4
+ 327 00a5 85000000 		.4byte	0x85
+ 328 00a9 07       		.uleb128 0x7
+ 329 00aa 01       		.byte	0x1
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 7
+
+
+ 330 00ab 38010000 		.4byte	.LASF13
+ 331 00af 01       		.byte	0x1
+ 332 00b0 EA       		.byte	0xea
+ 333 00b1 01       		.byte	0x1
+ 334 00b2 00000000 		.4byte	.LFB0
+ 335 00b6 02000000 		.4byte	.LFE0
+ 336 00ba 02       		.byte	0x2
+ 337 00bb 7D       		.byte	0x7d
+ 338 00bc 00       		.sleb128 0
+ 339 00bd 07       		.uleb128 0x7
+ 340 00be 01       		.byte	0x1
+ 341 00bf 86000000 		.4byte	.LASF14
+ 342 00c3 01       		.byte	0x1
+ 343 00c4 F6       		.byte	0xf6
+ 344 00c5 01       		.byte	0x1
+ 345 00c6 00000000 		.4byte	.LFB1
+ 346 00ca 02000000 		.4byte	.LFE1
+ 347 00ce 02       		.byte	0x2
+ 348 00cf 7D       		.byte	0x7d
+ 349 00d0 00       		.sleb128 0
+ 350 00d1 08       		.uleb128 0x8
+ 351 00d2 01       		.byte	0x1
+ 352 00d3 6A000000 		.4byte	.LASF15
+ 353 00d7 01       		.byte	0x1
+ 354 00d8 0101     		.2byte	0x101
+ 355 00da 01       		.byte	0x1
+ 356 00db 00000000 		.4byte	.LFB2
+ 357 00df 02000000 		.4byte	.LFE2
+ 358 00e3 02       		.byte	0x2
+ 359 00e4 7D       		.byte	0x7d
+ 360 00e5 00       		.sleb128 0
+ 361 00e6 09       		.uleb128 0x9
+ 362 00e7 01       		.byte	0x1
+ 363 00e8 A4000000 		.4byte	.LASF32
+ 364 00ec 01       		.byte	0x1
+ 365 00ed 0C01     		.2byte	0x10c
+ 366 00ef 01       		.byte	0x1
+ 367 00f0 00000000 		.4byte	.LFB3
+ 368 00f4 F0000000 		.4byte	.LFE3
+ 369 00f8 02       		.byte	0x2
+ 370 00f9 7D       		.byte	0x7d
+ 371 00fa 00       		.sleb128 0
+ 372 00fb F0010000 		.4byte	0x1f0
+ 373 00ff 0A       		.uleb128 0xa
+ 374 0100 70737000 		.ascii	"psp\000"
+ 375 0104 01       		.byte	0x1
+ 376 0105 0D01     		.2byte	0x10d
+ 377 0107 57000000 		.4byte	0x57
+ 378 010b 01       		.byte	0x1
+ 379 010c 54       		.byte	0x54
+ 380 010d 0A       		.uleb128 0xa
+ 381 010e 72656700 		.ascii	"reg\000"
+ 382 0112 01       		.byte	0x1
+ 383 0113 0D01     		.2byte	0x10d
+ 384 0115 57000000 		.4byte	0x57
+ 385 0119 01       		.byte	0x1
+ 386 011a 54       		.byte	0x54
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 8
+
+
+ 387 011b 0B       		.uleb128 0xb
+ 388 011c 1A000000 		.4byte	.LBB2
+ 389 0120 3A000000 		.4byte	.LBE2
+ 390 0124 43010000 		.4byte	0x143
+ 391 0128 0A       		.uleb128 0xa
+ 392 0129 703100   		.ascii	"p1\000"
+ 393 012c 01       		.byte	0x1
+ 394 012d 2D01     		.2byte	0x12d
+ 395 012f F0010000 		.4byte	0x1f0
+ 396 0133 01       		.byte	0x1
+ 397 0134 54       		.byte	0x54
+ 398 0135 0A       		.uleb128 0xa
+ 399 0136 703200   		.ascii	"p2\000"
+ 400 0139 01       		.byte	0x1
+ 401 013a 2D01     		.2byte	0x12d
+ 402 013c F0010000 		.4byte	0x1f0
+ 403 0140 01       		.byte	0x1
+ 404 0141 55       		.byte	0x55
+ 405 0142 00       		.byte	0x0
+ 406 0143 0B       		.uleb128 0xb
+ 407 0144 3A000000 		.4byte	.LBB3
+ 408 0148 5A000000 		.4byte	.LBE3
+ 409 014c 6B010000 		.4byte	0x16b
+ 410 0150 0A       		.uleb128 0xa
+ 411 0151 703100   		.ascii	"p1\000"
+ 412 0154 01       		.byte	0x1
+ 413 0155 3001     		.2byte	0x130
+ 414 0157 F0010000 		.4byte	0x1f0
+ 415 015b 01       		.byte	0x1
+ 416 015c 54       		.byte	0x54
+ 417 015d 0A       		.uleb128 0xa
+ 418 015e 703200   		.ascii	"p2\000"
+ 419 0161 01       		.byte	0x1
+ 420 0162 3001     		.2byte	0x130
+ 421 0164 F0010000 		.4byte	0x1f0
+ 422 0168 01       		.byte	0x1
+ 423 0169 55       		.byte	0x55
+ 424 016a 00       		.byte	0x0
+ 425 016b 0B       		.uleb128 0xb
+ 426 016c 5E000000 		.4byte	.LBB4
+ 427 0170 88000000 		.4byte	.LBE4
+ 428 0174 93010000 		.4byte	0x193
+ 429 0178 0A       		.uleb128 0xa
+ 430 0179 747000   		.ascii	"tp\000"
+ 431 017c 01       		.byte	0x1
+ 432 017d 3B01     		.2byte	0x13b
+ 433 017f F0010000 		.4byte	0x1f0
+ 434 0183 01       		.byte	0x1
+ 435 0184 55       		.byte	0x55
+ 436 0185 0A       		.uleb128 0xa
+ 437 0186 647000   		.ascii	"dp\000"
+ 438 0189 01       		.byte	0x1
+ 439 018a 3B01     		.2byte	0x13b
+ 440 018c F0010000 		.4byte	0x1f0
+ 441 0190 01       		.byte	0x1
+ 442 0191 54       		.byte	0x54
+ 443 0192 00       		.byte	0x0
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 9
+
+
+ 444 0193 0B       		.uleb128 0xb
+ 445 0194 88000000 		.4byte	.LBB5
+ 446 0198 A8000000 		.4byte	.LBE5
+ 447 019c BB010000 		.4byte	0x1bb
+ 448 01a0 0A       		.uleb128 0xa
+ 449 01a1 703100   		.ascii	"p1\000"
+ 450 01a4 01       		.byte	0x1
+ 451 01a5 4601     		.2byte	0x146
+ 452 01a7 F0010000 		.4byte	0x1f0
+ 453 01ab 01       		.byte	0x1
+ 454 01ac 54       		.byte	0x54
+ 455 01ad 0A       		.uleb128 0xa
+ 456 01ae 703200   		.ascii	"p2\000"
+ 457 01b1 01       		.byte	0x1
+ 458 01b2 4601     		.2byte	0x146
+ 459 01b4 F0010000 		.4byte	0x1f0
+ 460 01b8 01       		.byte	0x1
+ 461 01b9 55       		.byte	0x55
+ 462 01ba 00       		.byte	0x0
+ 463 01bb 0B       		.uleb128 0xb
+ 464 01bc AC000000 		.4byte	.LBB6
+ 465 01c0 CA000000 		.4byte	.LBE6
+ 466 01c4 D7010000 		.4byte	0x1d7
+ 467 01c8 0A       		.uleb128 0xa
+ 468 01c9 66707000 		.ascii	"fpp\000"
+ 469 01cd 01       		.byte	0x1
+ 470 01ce 4F01     		.2byte	0x14f
+ 471 01d0 98000000 		.4byte	0x98
+ 472 01d4 01       		.byte	0x1
+ 473 01d5 54       		.byte	0x54
+ 474 01d6 00       		.byte	0x0
+ 475 01d7 0C       		.uleb128 0xc
+ 476 01d8 CE000000 		.4byte	.LBB7
+ 477 01dc EC000000 		.4byte	.LBE7
+ 478 01e0 0A       		.uleb128 0xa
+ 479 01e1 66707000 		.ascii	"fpp\000"
+ 480 01e5 01       		.byte	0x1
+ 481 01e6 5D01     		.2byte	0x15d
+ 482 01e8 98000000 		.4byte	0x98
+ 483 01ec 01       		.byte	0x1
+ 484 01ed 54       		.byte	0x54
+ 485 01ee 00       		.byte	0x0
+ 486 01ef 00       		.byte	0x0
+ 487 01f0 05       		.uleb128 0x5
+ 488 01f1 04       		.byte	0x4
+ 489 01f2 57000000 		.4byte	0x57
+ 490 01f6 0D       		.uleb128 0xd
+ 491 01f7 53010000 		.4byte	.LASF16
+ 492 01fb 01       		.byte	0x1
+ 493 01fc 8B       		.byte	0x8b
+ 494 01fd 57000000 		.4byte	0x57
+ 495 0201 01       		.byte	0x1
+ 496 0202 01       		.byte	0x1
+ 497 0203 0D       		.uleb128 0xd
+ 498 0204 EE010000 		.4byte	.LASF17
+ 499 0208 01       		.byte	0x1
+ 500 0209 93       		.byte	0x93
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 10
+
+
+ 501 020a 57000000 		.4byte	0x57
+ 502 020e 01       		.byte	0x1
+ 503 020f 01       		.byte	0x1
+ 504 0210 0D       		.uleb128 0xd
+ 505 0211 4A000000 		.4byte	.LASF18
+ 506 0215 01       		.byte	0x1
+ 507 0216 9A       		.byte	0x9a
+ 508 0217 57000000 		.4byte	0x57
+ 509 021b 01       		.byte	0x1
+ 510 021c 01       		.byte	0x1
+ 511 021d 0D       		.uleb128 0xd
+ 512 021e 9D010000 		.4byte	.LASF19
+ 513 0222 01       		.byte	0x1
+ 514 0223 A1       		.byte	0xa1
+ 515 0224 57000000 		.4byte	0x57
+ 516 0228 01       		.byte	0x1
+ 517 0229 01       		.byte	0x1
+ 518 022a 0D       		.uleb128 0xd
+ 519 022b 2E010000 		.4byte	.LASF20
+ 520 022f 01       		.byte	0x1
+ 521 0230 A7       		.byte	0xa7
+ 522 0231 57000000 		.4byte	0x57
+ 523 0235 01       		.byte	0x1
+ 524 0236 01       		.byte	0x1
+ 525 0237 0D       		.uleb128 0xd
+ 526 0238 8B010000 		.4byte	.LASF21
+ 527 023c 01       		.byte	0x1
+ 528 023d AD       		.byte	0xad
+ 529 023e 57000000 		.4byte	0x57
+ 530 0242 01       		.byte	0x1
+ 531 0243 01       		.byte	0x1
+ 532 0244 0D       		.uleb128 0xd
+ 533 0245 0B000000 		.4byte	.LASF22
+ 534 0249 01       		.byte	0x1
+ 535 024a B3       		.byte	0xb3
+ 536 024b 57000000 		.4byte	0x57
+ 537 024f 01       		.byte	0x1
+ 538 0250 01       		.byte	0x1
+ 539 0251 0D       		.uleb128 0xd
+ 540 0252 00000000 		.4byte	.LASF23
+ 541 0256 01       		.byte	0x1
+ 542 0257 B9       		.byte	0xb9
+ 543 0258 57000000 		.4byte	0x57
+ 544 025c 01       		.byte	0x1
+ 545 025d 01       		.byte	0x1
+ 546 025e 0D       		.uleb128 0xd
+ 547 025f E8000000 		.4byte	.LASF24
+ 548 0263 01       		.byte	0x1
+ 549 0264 BF       		.byte	0xbf
+ 550 0265 57000000 		.4byte	0x57
+ 551 0269 01       		.byte	0x1
+ 552 026a 01       		.byte	0x1
+ 553 026b 0D       		.uleb128 0xd
+ 554 026c B3010000 		.4byte	.LASF25
+ 555 0270 01       		.byte	0x1
+ 556 0271 C5       		.byte	0xc5
+ 557 0272 85000000 		.4byte	0x85
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 11
+
+
+ 558 0276 01       		.byte	0x1
+ 559 0277 01       		.byte	0x1
+ 560 0278 0D       		.uleb128 0xd
+ 561 0279 F1000000 		.4byte	.LASF26
+ 562 027d 01       		.byte	0x1
+ 563 027e CB       		.byte	0xcb
+ 564 027f 85000000 		.4byte	0x85
+ 565 0283 01       		.byte	0x1
+ 566 0284 01       		.byte	0x1
+ 567 0285 0D       		.uleb128 0xd
+ 568 0286 C4000000 		.4byte	.LASF27
+ 569 028a 01       		.byte	0x1
+ 570 028b D1       		.byte	0xd1
+ 571 028c 85000000 		.4byte	0x85
+ 572 0290 01       		.byte	0x1
+ 573 0291 01       		.byte	0x1
+ 574 0292 0D       		.uleb128 0xd
+ 575 0293 D7000000 		.4byte	.LASF28
+ 576 0297 01       		.byte	0x1
+ 577 0298 D7       		.byte	0xd7
+ 578 0299 85000000 		.4byte	0x85
+ 579 029d 01       		.byte	0x1
+ 580 029e 01       		.byte	0x1
+ 581 029f 0D       		.uleb128 0xd
+ 582 02a0 53010000 		.4byte	.LASF16
+ 583 02a4 01       		.byte	0x1
+ 584 02a5 8B       		.byte	0x8b
+ 585 02a6 57000000 		.4byte	0x57
+ 586 02aa 01       		.byte	0x1
+ 587 02ab 01       		.byte	0x1
+ 588 02ac 0D       		.uleb128 0xd
+ 589 02ad EE010000 		.4byte	.LASF17
+ 590 02b1 01       		.byte	0x1
+ 591 02b2 93       		.byte	0x93
+ 592 02b3 57000000 		.4byte	0x57
+ 593 02b7 01       		.byte	0x1
+ 594 02b8 01       		.byte	0x1
+ 595 02b9 0D       		.uleb128 0xd
+ 596 02ba 4A000000 		.4byte	.LASF18
+ 597 02be 01       		.byte	0x1
+ 598 02bf 9A       		.byte	0x9a
+ 599 02c0 57000000 		.4byte	0x57
+ 600 02c4 01       		.byte	0x1
+ 601 02c5 01       		.byte	0x1
+ 602 02c6 0D       		.uleb128 0xd
+ 603 02c7 9D010000 		.4byte	.LASF19
+ 604 02cb 01       		.byte	0x1
+ 605 02cc A1       		.byte	0xa1
+ 606 02cd 57000000 		.4byte	0x57
+ 607 02d1 01       		.byte	0x1
+ 608 02d2 01       		.byte	0x1
+ 609 02d3 0D       		.uleb128 0xd
+ 610 02d4 2E010000 		.4byte	.LASF20
+ 611 02d8 01       		.byte	0x1
+ 612 02d9 A7       		.byte	0xa7
+ 613 02da 57000000 		.4byte	0x57
+ 614 02de 01       		.byte	0x1
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 12
+
+
+ 615 02df 01       		.byte	0x1
+ 616 02e0 0D       		.uleb128 0xd
+ 617 02e1 8B010000 		.4byte	.LASF21
+ 618 02e5 01       		.byte	0x1
+ 619 02e6 AD       		.byte	0xad
+ 620 02e7 57000000 		.4byte	0x57
+ 621 02eb 01       		.byte	0x1
+ 622 02ec 01       		.byte	0x1
+ 623 02ed 0D       		.uleb128 0xd
+ 624 02ee 0B000000 		.4byte	.LASF22
+ 625 02f2 01       		.byte	0x1
+ 626 02f3 B3       		.byte	0xb3
+ 627 02f4 57000000 		.4byte	0x57
+ 628 02f8 01       		.byte	0x1
+ 629 02f9 01       		.byte	0x1
+ 630 02fa 0D       		.uleb128 0xd
+ 631 02fb 00000000 		.4byte	.LASF23
+ 632 02ff 01       		.byte	0x1
+ 633 0300 B9       		.byte	0xb9
+ 634 0301 57000000 		.4byte	0x57
+ 635 0305 01       		.byte	0x1
+ 636 0306 01       		.byte	0x1
+ 637 0307 0D       		.uleb128 0xd
+ 638 0308 E8000000 		.4byte	.LASF24
+ 639 030c 01       		.byte	0x1
+ 640 030d BF       		.byte	0xbf
+ 641 030e 57000000 		.4byte	0x57
+ 642 0312 01       		.byte	0x1
+ 643 0313 01       		.byte	0x1
+ 644 0314 0D       		.uleb128 0xd
+ 645 0315 B3010000 		.4byte	.LASF25
+ 646 0319 01       		.byte	0x1
+ 647 031a C5       		.byte	0xc5
+ 648 031b 85000000 		.4byte	0x85
+ 649 031f 01       		.byte	0x1
+ 650 0320 01       		.byte	0x1
+ 651 0321 0D       		.uleb128 0xd
+ 652 0322 F1000000 		.4byte	.LASF26
+ 653 0326 01       		.byte	0x1
+ 654 0327 CB       		.byte	0xcb
+ 655 0328 85000000 		.4byte	0x85
+ 656 032c 01       		.byte	0x1
+ 657 032d 01       		.byte	0x1
+ 658 032e 0D       		.uleb128 0xd
+ 659 032f C4000000 		.4byte	.LASF27
+ 660 0333 01       		.byte	0x1
+ 661 0334 D1       		.byte	0xd1
+ 662 0335 85000000 		.4byte	0x85
+ 663 0339 01       		.byte	0x1
+ 664 033a 01       		.byte	0x1
+ 665 033b 0D       		.uleb128 0xd
+ 666 033c D7000000 		.4byte	.LASF28
+ 667 0340 01       		.byte	0x1
+ 668 0341 D7       		.byte	0xd7
+ 669 0342 85000000 		.4byte	0x85
+ 670 0346 01       		.byte	0x1
+ 671 0347 01       		.byte	0x1
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 13
+
+
+ 672 0348 00       		.byte	0x0
+ 673              		.section	.debug_abbrev
+ 674 0000 01       		.uleb128 0x1
+ 675 0001 11       		.uleb128 0x11
+ 676 0002 01       		.byte	0x1
+ 677 0003 25       		.uleb128 0x25
+ 678 0004 0E       		.uleb128 0xe
+ 679 0005 13       		.uleb128 0x13
+ 680 0006 0B       		.uleb128 0xb
+ 681 0007 03       		.uleb128 0x3
+ 682 0008 0E       		.uleb128 0xe
+ 683 0009 1B       		.uleb128 0x1b
+ 684 000a 0E       		.uleb128 0xe
+ 685 000b 11       		.uleb128 0x11
+ 686 000c 01       		.uleb128 0x1
+ 687 000d 52       		.uleb128 0x52
+ 688 000e 01       		.uleb128 0x1
+ 689 000f 55       		.uleb128 0x55
+ 690 0010 06       		.uleb128 0x6
+ 691 0011 10       		.uleb128 0x10
+ 692 0012 06       		.uleb128 0x6
+ 693 0013 00       		.byte	0x0
+ 694 0014 00       		.byte	0x0
+ 695 0015 02       		.uleb128 0x2
+ 696 0016 24       		.uleb128 0x24
+ 697 0017 00       		.byte	0x0
+ 698 0018 0B       		.uleb128 0xb
+ 699 0019 0B       		.uleb128 0xb
+ 700 001a 3E       		.uleb128 0x3e
+ 701 001b 0B       		.uleb128 0xb
+ 702 001c 03       		.uleb128 0x3
+ 703 001d 0E       		.uleb128 0xe
+ 704 001e 00       		.byte	0x0
+ 705 001f 00       		.byte	0x0
+ 706 0020 03       		.uleb128 0x3
+ 707 0021 16       		.uleb128 0x16
+ 708 0022 00       		.byte	0x0
+ 709 0023 03       		.uleb128 0x3
+ 710 0024 0E       		.uleb128 0xe
+ 711 0025 3A       		.uleb128 0x3a
+ 712 0026 0B       		.uleb128 0xb
+ 713 0027 3B       		.uleb128 0x3b
+ 714 0028 0B       		.uleb128 0xb
+ 715 0029 49       		.uleb128 0x49
+ 716 002a 13       		.uleb128 0x13
+ 717 002b 00       		.byte	0x0
+ 718 002c 00       		.byte	0x0
+ 719 002d 04       		.uleb128 0x4
+ 720 002e 24       		.uleb128 0x24
+ 721 002f 00       		.byte	0x0
+ 722 0030 0B       		.uleb128 0xb
+ 723 0031 0B       		.uleb128 0xb
+ 724 0032 3E       		.uleb128 0x3e
+ 725 0033 0B       		.uleb128 0xb
+ 726 0034 03       		.uleb128 0x3
+ 727 0035 08       		.uleb128 0x8
+ 728 0036 00       		.byte	0x0
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 14
+
+
+ 729 0037 00       		.byte	0x0
+ 730 0038 05       		.uleb128 0x5
+ 731 0039 0F       		.uleb128 0xf
+ 732 003a 00       		.byte	0x0
+ 733 003b 0B       		.uleb128 0xb
+ 734 003c 0B       		.uleb128 0xb
+ 735 003d 49       		.uleb128 0x49
+ 736 003e 13       		.uleb128 0x13
+ 737 003f 00       		.byte	0x0
+ 738 0040 00       		.byte	0x0
+ 739 0041 06       		.uleb128 0x6
+ 740 0042 15       		.uleb128 0x15
+ 741 0043 00       		.byte	0x0
+ 742 0044 27       		.uleb128 0x27
+ 743 0045 0C       		.uleb128 0xc
+ 744 0046 00       		.byte	0x0
+ 745 0047 00       		.byte	0x0
+ 746 0048 07       		.uleb128 0x7
+ 747 0049 2E       		.uleb128 0x2e
+ 748 004a 00       		.byte	0x0
+ 749 004b 3F       		.uleb128 0x3f
+ 750 004c 0C       		.uleb128 0xc
+ 751 004d 03       		.uleb128 0x3
+ 752 004e 0E       		.uleb128 0xe
+ 753 004f 3A       		.uleb128 0x3a
+ 754 0050 0B       		.uleb128 0xb
+ 755 0051 3B       		.uleb128 0x3b
+ 756 0052 0B       		.uleb128 0xb
+ 757 0053 27       		.uleb128 0x27
+ 758 0054 0C       		.uleb128 0xc
+ 759 0055 11       		.uleb128 0x11
+ 760 0056 01       		.uleb128 0x1
+ 761 0057 12       		.uleb128 0x12
+ 762 0058 01       		.uleb128 0x1
+ 763 0059 40       		.uleb128 0x40
+ 764 005a 0A       		.uleb128 0xa
+ 765 005b 00       		.byte	0x0
+ 766 005c 00       		.byte	0x0
+ 767 005d 08       		.uleb128 0x8
+ 768 005e 2E       		.uleb128 0x2e
+ 769 005f 00       		.byte	0x0
+ 770 0060 3F       		.uleb128 0x3f
+ 771 0061 0C       		.uleb128 0xc
+ 772 0062 03       		.uleb128 0x3
+ 773 0063 0E       		.uleb128 0xe
+ 774 0064 3A       		.uleb128 0x3a
+ 775 0065 0B       		.uleb128 0xb
+ 776 0066 3B       		.uleb128 0x3b
+ 777 0067 05       		.uleb128 0x5
+ 778 0068 27       		.uleb128 0x27
+ 779 0069 0C       		.uleb128 0xc
+ 780 006a 11       		.uleb128 0x11
+ 781 006b 01       		.uleb128 0x1
+ 782 006c 12       		.uleb128 0x12
+ 783 006d 01       		.uleb128 0x1
+ 784 006e 40       		.uleb128 0x40
+ 785 006f 0A       		.uleb128 0xa
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 15
+
+
+ 786 0070 00       		.byte	0x0
+ 787 0071 00       		.byte	0x0
+ 788 0072 09       		.uleb128 0x9
+ 789 0073 2E       		.uleb128 0x2e
+ 790 0074 01       		.byte	0x1
+ 791 0075 3F       		.uleb128 0x3f
+ 792 0076 0C       		.uleb128 0xc
+ 793 0077 03       		.uleb128 0x3
+ 794 0078 0E       		.uleb128 0xe
+ 795 0079 3A       		.uleb128 0x3a
+ 796 007a 0B       		.uleb128 0xb
+ 797 007b 3B       		.uleb128 0x3b
+ 798 007c 05       		.uleb128 0x5
+ 799 007d 27       		.uleb128 0x27
+ 800 007e 0C       		.uleb128 0xc
+ 801 007f 11       		.uleb128 0x11
+ 802 0080 01       		.uleb128 0x1
+ 803 0081 12       		.uleb128 0x12
+ 804 0082 01       		.uleb128 0x1
+ 805 0083 40       		.uleb128 0x40
+ 806 0084 0A       		.uleb128 0xa
+ 807 0085 01       		.uleb128 0x1
+ 808 0086 13       		.uleb128 0x13
+ 809 0087 00       		.byte	0x0
+ 810 0088 00       		.byte	0x0
+ 811 0089 0A       		.uleb128 0xa
+ 812 008a 34       		.uleb128 0x34
+ 813 008b 00       		.byte	0x0
+ 814 008c 03       		.uleb128 0x3
+ 815 008d 08       		.uleb128 0x8
+ 816 008e 3A       		.uleb128 0x3a
+ 817 008f 0B       		.uleb128 0xb
+ 818 0090 3B       		.uleb128 0x3b
+ 819 0091 05       		.uleb128 0x5
+ 820 0092 49       		.uleb128 0x49
+ 821 0093 13       		.uleb128 0x13
+ 822 0094 02       		.uleb128 0x2
+ 823 0095 0A       		.uleb128 0xa
+ 824 0096 00       		.byte	0x0
+ 825 0097 00       		.byte	0x0
+ 826 0098 0B       		.uleb128 0xb
+ 827 0099 0B       		.uleb128 0xb
+ 828 009a 01       		.byte	0x1
+ 829 009b 11       		.uleb128 0x11
+ 830 009c 01       		.uleb128 0x1
+ 831 009d 12       		.uleb128 0x12
+ 832 009e 01       		.uleb128 0x1
+ 833 009f 01       		.uleb128 0x1
+ 834 00a0 13       		.uleb128 0x13
+ 835 00a1 00       		.byte	0x0
+ 836 00a2 00       		.byte	0x0
+ 837 00a3 0C       		.uleb128 0xc
+ 838 00a4 0B       		.uleb128 0xb
+ 839 00a5 01       		.byte	0x1
+ 840 00a6 11       		.uleb128 0x11
+ 841 00a7 01       		.uleb128 0x1
+ 842 00a8 12       		.uleb128 0x12
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 16
+
+
+ 843 00a9 01       		.uleb128 0x1
+ 844 00aa 00       		.byte	0x0
+ 845 00ab 00       		.byte	0x0
+ 846 00ac 0D       		.uleb128 0xd
+ 847 00ad 34       		.uleb128 0x34
+ 848 00ae 00       		.byte	0x0
+ 849 00af 03       		.uleb128 0x3
+ 850 00b0 0E       		.uleb128 0xe
+ 851 00b1 3A       		.uleb128 0x3a
+ 852 00b2 0B       		.uleb128 0xb
+ 853 00b3 3B       		.uleb128 0x3b
+ 854 00b4 0B       		.uleb128 0xb
+ 855 00b5 49       		.uleb128 0x49
+ 856 00b6 13       		.uleb128 0x13
+ 857 00b7 3F       		.uleb128 0x3f
+ 858 00b8 0C       		.uleb128 0xc
+ 859 00b9 3C       		.uleb128 0x3c
+ 860 00ba 0C       		.uleb128 0xc
+ 861 00bb 00       		.byte	0x0
+ 862 00bc 00       		.byte	0x0
+ 863 00bd 00       		.byte	0x0
+ 864              		.section	.debug_pubnames,"",%progbits
+ 865 0000 52000000 		.4byte	0x52
+ 866 0004 0200     		.2byte	0x2
+ 867 0006 00000000 		.4byte	.Ldebug_info0
+ 868 000a 49030000 		.4byte	0x349
+ 869 000e A9000000 		.4byte	0xa9
+ 870 0012 5F5F6561 		.ascii	"__early_init\000"
+ 870      726C795F 
+ 870      696E6974 
+ 870      00
+ 871 001f BD000000 		.4byte	0xbd
+ 872 0023 5F5F6C61 		.ascii	"__late_init\000"
+ 872      74655F69 
+ 872      6E697400 
+ 873 002f D1000000 		.4byte	0xd1
+ 874 0033 5F646566 		.ascii	"_default_exit\000"
+ 874      61756C74 
+ 874      5F657869 
+ 874      7400
+ 875 0041 E6000000 		.4byte	0xe6
+ 876 0045 52657365 		.ascii	"ResetHandler\000"
+ 876      7448616E 
+ 876      646C6572 
+ 876      00
+ 877 0052 00000000 		.4byte	0x0
+ 878              		.section	.debug_pubtypes,"",%progbits
+ 879 0000 40000000 		.4byte	0x40
+ 880 0004 0200     		.2byte	0x2
+ 881 0006 00000000 		.4byte	.Ldebug_info0
+ 882 000a 49030000 		.4byte	0x349
+ 883 000e 30000000 		.4byte	0x30
+ 884 0012 75696E74 		.ascii	"uint8_t\000"
+ 884      385F7400 
+ 885 001a 57000000 		.4byte	0x57
+ 886 001e 75696E74 		.ascii	"uint32_t\000"
+ 886      33325F74 
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 17
+
+
+ 886      00
+ 887 0027 85000000 		.4byte	0x85
+ 888 002b 66756E63 		.ascii	"funcp_t\000"
+ 888      705F7400 
+ 889 0033 98000000 		.4byte	0x98
+ 890 0037 66756E63 		.ascii	"funcpp_t\000"
+ 890      70705F74 
+ 890      00
+ 891 0040 00000000 		.4byte	0x0
+ 892              		.section	.debug_aranges,"",%progbits
+ 893 0000 34000000 		.4byte	0x34
+ 894 0004 0200     		.2byte	0x2
+ 895 0006 00000000 		.4byte	.Ldebug_info0
+ 896 000a 04       		.byte	0x4
+ 897 000b 00       		.byte	0x0
+ 898 000c 0000     		.2byte	0x0
+ 899 000e 0000     		.2byte	0x0
+ 900 0010 00000000 		.4byte	.LFB0
+ 901 0014 02000000 		.4byte	.LFE0-.LFB0
+ 902 0018 00000000 		.4byte	.LFB1
+ 903 001c 02000000 		.4byte	.LFE1-.LFB1
+ 904 0020 00000000 		.4byte	.LFB2
+ 905 0024 02000000 		.4byte	.LFE2-.LFB2
+ 906 0028 00000000 		.4byte	.LFB3
+ 907 002c F0000000 		.4byte	.LFE3-.LFB3
+ 908 0030 00000000 		.4byte	0x0
+ 909 0034 00000000 		.4byte	0x0
+ 910              		.section	.debug_ranges,"",%progbits
+ 911              	.Ldebug_ranges0:
+ 912 0000 00000000 		.4byte	.LFB0
+ 913 0004 02000000 		.4byte	.LFE0
+ 914 0008 00000000 		.4byte	.LFB1
+ 915 000c 02000000 		.4byte	.LFE1
+ 916 0010 00000000 		.4byte	.LFB2
+ 917 0014 02000000 		.4byte	.LFE2
+ 918 0018 00000000 		.4byte	.LFB3
+ 919 001c F0000000 		.4byte	.LFE3
+ 920 0020 00000000 		.4byte	0x0
+ 921 0024 00000000 		.4byte	0x0
+ 922              		.section	.debug_str,"MS",%progbits,1
+ 923              	.LASF23:
+ 924 0000 5F627373 		.ascii	"_bss_start\000"
+ 924      5F737461 
+ 924      727400
+ 925              	.LASF22:
+ 926 000b 5F656461 		.ascii	"_edata\000"
+ 926      746100
+ 927              	.LASF29:
+ 928 0012 474E5520 		.ascii	"GNU C 4.5.0\000"
+ 928      4320342E 
+ 928      352E3000 
+ 929              	.LASF30:
+ 930 001e 2E2E2F63 		.ascii	"../chibios_2.6.3/os/ports/GCC/ARMCMx/crt0.c\000"
+ 930      68696269 
+ 930      6F735F32 
+ 930      2E362E33 
+ 930      2F6F732F 
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 18
+
+
+ 931              	.LASF18:
+ 932 004a 5F5F7072 		.ascii	"__process_stack_base__\000"
+ 932      6F636573 
+ 932      735F7374 
+ 932      61636B5F 
+ 932      62617365 
+ 933              	.LASF12:
+ 934 0061 66756E63 		.ascii	"funcpp_t\000"
+ 934      70705F74 
+ 934      00
+ 935              	.LASF15:
+ 936 006a 5F646566 		.ascii	"_default_exit\000"
+ 936      61756C74 
+ 936      5F657869 
+ 936      7400
+ 937              	.LASF1:
+ 938 0078 756E7369 		.ascii	"unsigned char\000"
+ 938      676E6564 
+ 938      20636861 
+ 938      7200
+ 939              	.LASF14:
+ 940 0086 5F5F6C61 		.ascii	"__late_init\000"
+ 940      74655F69 
+ 940      6E697400 
+ 941              	.LASF7:
+ 942 0092 6C6F6E67 		.ascii	"long unsigned int\000"
+ 942      20756E73 
+ 942      69676E65 
+ 942      6420696E 
+ 942      7400
+ 943              	.LASF32:
+ 944 00a4 52657365 		.ascii	"ResetHandler\000"
+ 944      7448616E 
+ 944      646C6572 
+ 944      00
+ 945              	.LASF3:
+ 946 00b1 73686F72 		.ascii	"short unsigned int\000"
+ 946      7420756E 
+ 946      7369676E 
+ 946      65642069 
+ 946      6E7400
+ 947              	.LASF27:
+ 948 00c4 5F5F6669 		.ascii	"__fini_array_start\000"
+ 948      6E695F61 
+ 948      72726179 
+ 948      5F737461 
+ 948      727400
+ 949              	.LASF28:
+ 950 00d7 5F5F6669 		.ascii	"__fini_array_end\000"
+ 950      6E695F61 
+ 950      72726179 
+ 950      5F656E64 
+ 950      00
+ 951              	.LASF24:
+ 952 00e8 5F627373 		.ascii	"_bss_end\000"
+ 952      5F656E64 
+ 952      00
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 19
+
+
+ 953              	.LASF26:
+ 954 00f1 5F5F696E 		.ascii	"__init_array_end\000"
+ 954      69745F61 
+ 954      72726179 
+ 954      5F656E64 
+ 954      00
+ 955              	.LASF10:
+ 956 0102 756E7369 		.ascii	"unsigned int\000"
+ 956      676E6564 
+ 956      20696E74 
+ 956      00
+ 957              	.LASF9:
+ 958 010f 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 958      206C6F6E 
+ 958      6720756E 
+ 958      7369676E 
+ 958      65642069 
+ 959              	.LASF5:
+ 960 0126 75696E74 		.ascii	"uint8_t\000"
+ 960      385F7400 
+ 961              	.LASF20:
+ 962 012e 5F746578 		.ascii	"_textdata\000"
+ 962      74646174 
+ 962      6100
+ 963              	.LASF13:
+ 964 0138 5F5F6561 		.ascii	"__early_init\000"
+ 964      726C795F 
+ 964      696E6974 
+ 964      00
+ 965              	.LASF8:
+ 966 0145 6C6F6E67 		.ascii	"long long int\000"
+ 966      206C6F6E 
+ 966      6720696E 
+ 966      7400
+ 967              	.LASF16:
+ 968 0153 5F5F6D61 		.ascii	"__main_stack_base__\000"
+ 968      696E5F73 
+ 968      7461636B 
+ 968      5F626173 
+ 968      655F5F00 
+ 969              	.LASF2:
+ 970 0167 73686F72 		.ascii	"short int\000"
+ 970      7420696E 
+ 970      7400
+ 971              	.LASF11:
+ 972 0171 66756E63 		.ascii	"funcp_t\000"
+ 972      705F7400 
+ 973              	.LASF6:
+ 974 0179 75696E74 		.ascii	"uint32_t\000"
+ 974      33325F74 
+ 974      00
+ 975              	.LASF4:
+ 976 0182 6C6F6E67 		.ascii	"long int\000"
+ 976      20696E74 
+ 976      00
+ 977              	.LASF21:
+ 978 018b 5F646174 		.ascii	"_data\000"
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 20
+
+
+ 978      6100
+ 979              	.LASF0:
+ 980 0191 7369676E 		.ascii	"signed char\000"
+ 980      65642063 
+ 980      68617200 
+ 981              	.LASF19:
+ 982 019d 5F5F7072 		.ascii	"__process_stack_end__\000"
+ 982      6F636573 
+ 982      735F7374 
+ 982      61636B5F 
+ 982      656E645F 
+ 983              	.LASF25:
+ 984 01b3 5F5F696E 		.ascii	"__init_array_start\000"
+ 984      69745F61 
+ 984      72726179 
+ 984      5F737461 
+ 984      727400
+ 985              	.LASF31:
+ 986 01c6 433A5C70 		.ascii	"C:\\projects\\clock.git\\firmware\\firmware\000"
+ 986      726F6A65 
+ 986      6374735C 
+ 986      636C6F63 
+ 986      6B2E6769 
+ 987              	.LASF17:
+ 988 01ee 5F5F6D61 		.ascii	"__main_stack_end__\000"
+ 988      696E5F73 
+ 988      7461636B 
+ 988      5F656E64 
+ 988      5F5F00
+ 989              		.ident	"GCC: (GNU) 4.5.0"
+ARM GAS  C:\Users\z80\AppData\Local\Temp\cctySiFJ.s 			page 21
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 crt0.c
+C:\Users\z80\AppData\Local\Temp\cctySiFJ.s:24     .text.__early_init:00000000 $t
+C:\Users\z80\AppData\Local\Temp\cctySiFJ.s:30     .text.__early_init:00000000 __early_init
+C:\Users\z80\AppData\Local\Temp\cctySiFJ.s:44     .text.__late_init:00000000 $t
+C:\Users\z80\AppData\Local\Temp\cctySiFJ.s:50     .text.__late_init:00000000 __late_init
+C:\Users\z80\AppData\Local\Temp\cctySiFJ.s:63     .text._default_exit:00000000 $t
+C:\Users\z80\AppData\Local\Temp\cctySiFJ.s:69     .text._default_exit:00000000 _default_exit
+C:\Users\z80\AppData\Local\Temp\cctySiFJ.s:83     .text.ResetHandler:00000000 $t
+C:\Users\z80\AppData\Local\Temp\cctySiFJ.s:89     .text.ResetHandler:00000000 ResetHandler
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+__process_stack_end__
+__main_stack_base__
+__main_stack_end__
+__process_stack_base__
+_textdata
+_data
+_edata
+_bss_start
+_bss_end
+__init_array_start
+__init_array_end
+main
+__fini_array_start
+__fini_array_end
