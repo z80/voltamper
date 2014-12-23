@@ -8,6 +8,7 @@
 static void cmd_sdiotest(BaseSequentialStream *chp, int argc, char *argv[]);
 static void setDac( BaseSequentialStream *chp, int argc, char *argv[] );
 static void fillDac( BaseSequentialStream *chp, int argc, char *argv[] );
+static void setDacDiv( BaseSequentialStream *chp, int argc, char *argv[] );
 
 void initUsbIo( void )
 {
@@ -58,6 +59,22 @@ static void cmd_sdiotest(BaseSequentialStream *chp, int argc, char *argv[])
 	(void)argc;
 	(void)argv;
 }
+
+static void setDac( BaseSequentialStream *chp, int argc, char *argv[] )
+{
+
+}
+
+static void fillDac( BaseSequentialStream *chp, int argc, char *argv[] )
+{
+
+}
+
+static void setDacDiv( BaseSequentialStream *chp, int argc, char *argv[] )
+{
+
+}
+
 
 
 
