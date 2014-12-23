@@ -1,16 +1,31 @@
+/*
+    ChibiOS/RT - Copyright (C) 2006-2013 Giovanni Di Sirio
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/
 
 #ifndef _BOARD_H_
 #define _BOARD_H_
 
 /*
- * Setup for the Olimex STM33-P103 proto board.
+ * Setup for the Olimex STM32-103STK proto board.
  */
 
 /*
  * Board identifier.
  */
-#define BOARD_OLIMEX_STM32_P103
-#define BOARD_NAME              "Olimex STM32-P103"
+#define BOARD_OLIMEX_STM32_103STK
+#define BOARD_NAME              "my ctrl-board"
 
 /*
  * Board frequencies.
@@ -26,17 +41,27 @@
 /*
  * IO pins assignments.
  */
-#define GPIOA_BUTTON            0
-#define GPIOA_SPI1NSS           4
+#define GPIOA_BUTTON_WAKEUP     0
+#define GPIOC_BUTTON_TAMPER     13
+#define GPIOC_JOY               5
+#define GPIOC_JOY_CENTER_BUT    6
 
+#define GPIOA_SPI1NSS           4
 #define GPIOB_SPI2NSS           12
 
+#define GPIOC_MMCWP             2
+#define GPIOC_MMCCP             1
+
 #define GPIOC_USB_P             4
-#define GPIOC_MMCWP             6
-#define GPIOC_MMCCP             7
-#define GPIOC_CAN_CNTL          10
-#define GPIOA_USB_DISC          9
+#define GPIOC_LCD_RES           7
+#define GPIOC_NRF_CE            8
+#define GPIOC_NRF_IRQ           9
+#define GPIOC_LCD_E             10
+
+#define GPIOC_USB_DISC          11
 #define GPIOC_LED               12
+
+#define GPIOB_ACCEL_IRQ         5
 
 /*
  * I/O ports initial setup, this configuration is established soon after reset
@@ -69,33 +94,37 @@
  * PA2  - Alternate output  (USART2 TX).
  * PA3  - Normal input      (USART2 RX).
  */
-#define VAL_GPIOACRL            0x88884B84      /*  PA7...PA0 */
-#define VAL_GPIOACRH            0x88888888      /* PA15...PA8 */
+#define VAL_GPIOACRL            0x44444444      /*  PA7...PA0 */
+#define VAL_GPIOACRH            0x44444444      /* PA15...PA8 */
 #define VAL_GPIOAODR            0xFFFFFFFF
 
 /*
  * Port B setup.
  * Everything input with pull-up except:
- * PB13 - Alternate output  (MMC SPI2 SCK).
- * PB14 - Normal input      (MMC SPI2 MISO).
- * PB15 - Alternate output  (MMC SPI2 MOSI).
+ * PB6,7   - Alternate open drain (I2C1).
+ * PB10,11 - Alternate open drain (I2C2).
+ * PB12    - Push Pull output  (MMC SPI2 NSS).
+ * PB13    - Alternate output  (MMC SPI2 SCK).
+ * PB14    - Normal input      (MMC SPI2 MISO).
+ * PB15    - Alternate output  (MMC SPI2 MOSI).
  */
-#define VAL_GPIOBCRL            0x88888888      /*  PB7...PB0 */
-#define VAL_GPIOBCRH            0xB4B88888      /* PB15...PB8 */
+#define VAL_GPIOBCRL            0x44444444      /*  PB7...PB0 */
+#define VAL_GPIOBCRH            0x44444444      /* PB15...PB8 */
 #define VAL_GPIOBODR            0xFFFFFFFF
 
 /*
  * Port C setup.
  * Everything input with pull-up except:
  * PC4  - Normal input because there is an external resistor.
+ * PC5  - Analog input (joystick).
  * PC6  - Normal input because there is an external resistor.
  * PC7  - Normal input because there is an external resistor.
  * PC10 - Push Pull output (CAN CNTRL).
  * PC11 - Push Pull output (USB DISC).
- * PC12 - Push Pull output (LED).
+ * PC12 - Open Drain output (LED).
  */
-#define VAL_GPIOCCRL            0x44848888      /*  PC7...PC0 */
-#define VAL_GPIOCCRH            0x88833388      /* PC15...PC8 */
+#define VAL_GPIOCCRL            0x44444444      /*  PC7...PC0 */
+#define VAL_GPIOCCRH            0x44444444      /* PC15...PC8 */
 #define VAL_GPIOCODR            0xFFFFFFFF
 
 /*
@@ -104,8 +133,8 @@
  * PD0  - Normal input (XTAL).
  * PD1  - Normal input (XTAL).
  */
-#define VAL_GPIODCRL            0x88888844      /*  PD7...PD0 */
-#define VAL_GPIODCRH            0x88888888      /* PD15...PD8 */
+#define VAL_GPIODCRL            0x44444444      /*  PD7...PD0 */
+#define VAL_GPIODCRH            0x44444444      /* PD15...PD8 */
 #define VAL_GPIODODR            0xFFFFFFFF
 
 /*
@@ -119,16 +148,12 @@
 /*
  * USB bus activation macro, required by the USB driver.
  */
-#define usb_lld_connect_bus(usbp) \
-                      palSetPad( GPIOA, GPIOA_USB_DISC ); \
-                      palSetPadMode( GPIOA, GPIOA_USB_DISC, PAL_MODE_OUTPUT_PUSHPULL );
+#define usb_lld_connect_bus(usbp) palClearPad(GPIOC, GPIOC_USB_DISC)
 
 /*
  * USB bus de-activation macro, required by the USB driver.
  */
-#define usb_lld_disconnect_bus(usbp) \
-                      palClearPad( GPIOA, GPIOA_USB_DISC ); \
-                      palSetPadMode( GPIOA, GPIOA_USB_DISC, PAL_MODE_OUTPUT_PUSHPULL );
+#define usb_lld_disconnect_bus(usbp) palSetPad(GPIOC, GPIOC_USB_DISC)
 
 #if !defined(_FROM_ASM_)
 #ifdef __cplusplus

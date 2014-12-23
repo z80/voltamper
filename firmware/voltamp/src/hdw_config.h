@@ -2,6 +2,10 @@
 #ifndef __HDW_CONFIG_H_
 #define __HDW_CONFIG_H_
 
+//SHELL WORKING AREA
+#define SHELL_WA_SIZE 2048
+
+
 // LEDs
 #define LED_PORT   GPIOB
 #define LED_0_PIN  14

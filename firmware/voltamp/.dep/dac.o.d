@@ -1,4 +1,4 @@
-build/obj/i2c_lld.o: ../chibios_2.4.x/os/hal/platforms/STM32/i2c_lld.c \
+build/obj/dac.o: src/dac.c src/dac.h \
  ../chibios_2.4.x/os/kernel/include/ch.h chconf.h \
  ../chibios_2.4.x/os/ports/GCC/ARMCMx/chtypes.h \
  c:\programs\yagarto\bin\../lib/gcc/arm-none-eabi/4.5.0/include/stddef.h \
@@ -62,6 +62,8 @@ build/obj/i2c_lld.o: ../chibios_2.4.x/os/hal/platforms/STM32/i2c_lld.c \
  ../chibios_2.4.x/os/hal/include/usb.h \
  ../chibios_2.4.x/os/hal/include/mmc_spi.h \
  ../chibios_2.4.x/os/hal/include/serial_usb.h
+
+src/dac.h:
 
 ../chibios_2.4.x/os/kernel/include/ch.h:
 

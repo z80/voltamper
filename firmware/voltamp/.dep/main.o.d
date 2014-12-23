@@ -44,6 +44,7 @@ build/obj/main.o: src/main.c ../chibios_2.4.x/os/kernel/include/ch.h \
  ../chibios_2.4.x/os/hal/include/pal.h \
  ../chibios_2.4.x/os/hal/platforms/STM32/GPIOv1/pal_lld.h \
  ../chibios_2.4.x/os/hal/include/adc.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32F1xx/adc_lld.h \
  ../chibios_2.4.x/os/hal/include/can.h \
  ../chibios_2.4.x/os/hal/include/ext.h \
  ../chibios_2.4.x/os/hal/include/gpt.h \
@@ -58,12 +59,9 @@ build/obj/main.o: src/main.c ../chibios_2.4.x/os/kernel/include/ch.h \
  ../chibios_2.4.x/os/hal/include/spi.h \
  ../chibios_2.4.x/os/hal/include/uart.h \
  ../chibios_2.4.x/os/hal/include/usb.h \
- ../chibios_2.4.x/os/hal/platforms/STM32/USBv1/usb_lld.h \
- ../chibios_2.4.x/os/hal/platforms/STM32/USBv1/stm32_usb.h \
  ../chibios_2.4.x/os/hal/include/mmc_spi.h \
  ../chibios_2.4.x/os/hal/include/serial_usb.h src/iwdg/iwdg.h \
- src/iwdg/iwdg_lld.h src/usb_ctrl.h src/led_ctrl.h src/read_ctrl.h \
- src/write_ctrl.h src/i2c_ctrl.h ../chibios_2.4.x/os/various/shell.h
+ src/iwdg/iwdg_lld.h src/i2c_ctrl.h ../chibios_2.4.x/os/various/shell.h
 
 ../chibios_2.4.x/os/kernel/include/ch.h:
 
@@ -165,6 +163,8 @@ mcuconf.h:
 
 ../chibios_2.4.x/os/hal/include/adc.h:
 
+../chibios_2.4.x/os/hal/platforms/STM32F1xx/adc_lld.h:
+
 ../chibios_2.4.x/os/hal/include/can.h:
 
 ../chibios_2.4.x/os/hal/include/ext.h:
@@ -193,10 +193,6 @@ mcuconf.h:
 
 ../chibios_2.4.x/os/hal/include/usb.h:
 
-../chibios_2.4.x/os/hal/platforms/STM32/USBv1/usb_lld.h:
-
-../chibios_2.4.x/os/hal/platforms/STM32/USBv1/stm32_usb.h:
-
 ../chibios_2.4.x/os/hal/include/mmc_spi.h:
 
 ../chibios_2.4.x/os/hal/include/serial_usb.h:
@@ -204,14 +200,6 @@ mcuconf.h:
 src/iwdg/iwdg.h:
 
 src/iwdg/iwdg_lld.h:
-
-src/usb_ctrl.h:
-
-src/led_ctrl.h:
-
-src/read_ctrl.h:
-
-src/write_ctrl.h:
 
 src/i2c_ctrl.h:
 

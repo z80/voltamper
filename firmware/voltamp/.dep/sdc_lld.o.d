@@ -57,6 +57,7 @@ build/obj/sdc_lld.o: ../chibios_2.4.x/os/hal/platforms/STM32/sdc_lld.c \
  ../chibios_2.4.x/os/hal/include/pal.h \
  ../chibios_2.4.x/os/hal/platforms/STM32/GPIOv1/pal_lld.h \
  ../chibios_2.4.x/os/hal/include/adc.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32F1xx/adc_lld.h \
  ../chibios_2.4.x/os/hal/include/can.h \
  ../chibios_2.4.x/os/hal/include/ext.h \
  ../chibios_2.4.x/os/hal/include/gpt.h \
@@ -71,8 +72,6 @@ build/obj/sdc_lld.o: ../chibios_2.4.x/os/hal/platforms/STM32/sdc_lld.c \
  ../chibios_2.4.x/os/hal/include/spi.h \
  ../chibios_2.4.x/os/hal/include/uart.h \
  ../chibios_2.4.x/os/hal/include/usb.h \
- ../chibios_2.4.x/os/hal/platforms/STM32/USBv1/usb_lld.h \
- ../chibios_2.4.x/os/hal/platforms/STM32/USBv1/stm32_usb.h \
  ../chibios_2.4.x/os/hal/include/mmc_spi.h \
  ../chibios_2.4.x/os/hal/include/serial_usb.h
 
@@ -200,6 +199,8 @@ mcuconf.h:
 
 ../chibios_2.4.x/os/hal/include/adc.h:
 
+../chibios_2.4.x/os/hal/platforms/STM32F1xx/adc_lld.h:
+
 ../chibios_2.4.x/os/hal/include/can.h:
 
 ../chibios_2.4.x/os/hal/include/ext.h:
@@ -227,10 +228,6 @@ mcuconf.h:
 ../chibios_2.4.x/os/hal/include/uart.h:
 
 ../chibios_2.4.x/os/hal/include/usb.h:
-
-../chibios_2.4.x/os/hal/platforms/STM32/USBv1/usb_lld.h:
-
-../chibios_2.4.x/os/hal/platforms/STM32/USBv1/stm32_usb.h:
 
 ../chibios_2.4.x/os/hal/include/mmc_spi.h:
 

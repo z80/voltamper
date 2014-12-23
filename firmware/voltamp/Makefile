@@ -72,7 +72,7 @@ include $(CHIBIOS)/test/test.mk
 # Ovverride PORTLD to custom one.
 PORTLD=./portld
 # Define linker script file here
-LDSCRIPT= $(PORTLD)/STM32F103C8T6.ld
+LDSCRIPT= $(PORTLD)/STM32F100.ld
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -88,11 +88,7 @@ CSRC = $(PORTSRC) \
        $(CHIBIOS)/os/various/chprintf.c \
        ./src/main.c \
        ./src/base64.c \
-       ./src/usb_ctrl.c \
-       ./src/read_ctrl.c \
-       ./src/write_ctrl.c \
-       ./src/i2c_ctrl.c \
-       ./src/led_ctrl.c \
+       ./src/dac.c \
        ./src/iwdg/iwdg.c \
        ./src/iwdg/iwdg_lld.c
        
