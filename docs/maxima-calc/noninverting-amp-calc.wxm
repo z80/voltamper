@@ -10,27 +10,27 @@ eq: (Vin-Vdd)/Rvdd + (Vin-Vout)/Rout + Vin/Rgnd = 0;
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-solution: solve( [eq], Vout );
+eq: subst( r, Rvdd, eq );
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-expr: rhs( solution[1] );
+eq1: subst( 0, Vin, eq );
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-res: subst( r*K, Rout, solution);
+eq1: subst( -K*Vdd/2, Vout, eq1 );
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-res: subst( r, Rvdd, res);
+eq2: subst( Vdd, Vin, eq );
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-res: subst( K*r, Rgnd, res);
+eq2: subst( K*Vdd/2, Vout, eq2 );
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-ratsimp(%);
+ratsimp( solve( [eq1, eq2], [Rgnd, Rout] ) );
 /* [wxMaxima: input   end   ] */
 
 /* Maxima can't load/batch files which end with a comment! */
