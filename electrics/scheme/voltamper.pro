@@ -1,4 +1,4 @@
-update=12/22/2014 11:41:18 AM
+update=12/23/2014 4:05:24 PM
 version=1
 last_client=eeschema
 [general]
@@ -101,3 +101,5 @@ LibName36=ncp3063
 LibName37=my_comps
 LibName38=tda2030a
 LibName39=spartan-sip-9007
+LibName40=ad825
+LibName41=opa551
