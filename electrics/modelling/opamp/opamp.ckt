@@ -7,13 +7,16 @@
 
 * Component Definitions
 C101 0 Vc 10p
+C201 3 Vout 100p
 R101 0 Vout 1k
 R102 Vc Vout 1k
+R201 3 Vout 10k
+R202 0 3 1k
 V101 0 1 DC 12V
 V102 2 0 DC 12V
 * Signal source (V123 Vin 0 dc 5V ac 1V)
-V123 Vin 0 AC 1.65
-XU100 Vin 0 2 1 Vout AD825
+V123 Vin 0 AC 500.00m
+XU100 Vin 3 2 1 Vout AD825
 
 * Sub-Circuit Definitions
 .SUBCKT AD825    1 2 99 50 30
@@ -87,8 +90,8 @@ Fsy4   0 50 Vi2 1
 
 * NG-Spice Simulation Commands
 .OPTIONS NOPAGE NUMDGT=6 UNITS=Degrees WIDTH=72 VNTOL=0.00m
-.PRINT AC VDB(Vout) VP(Vout)
-.AC DEC 10 10.00K 50.00Meg
+.PRINT AC VDB(Vout) VDB(Vin)
+.AC DEC 10 1.00K 100.00K
 
 .END
 
