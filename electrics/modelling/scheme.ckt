@@ -5,9 +5,6 @@
 
 * Schematic : /home/z80/projects/voltamper.git/electrics/modelling/scheme.sch
 
-* Include Directives
-.INCLUDE ./simulation.cmd
-
 * Component Definitions
 C101 3 Vbase 2.2uF
 C102 0 2 1pF
@@ -30,9 +27,9 @@ VINPUT101 Vin 0 AC 12.00
 +               Tr=239.5n Tf=301.2p Itf=.4 Vtf=4 Xtf=2 Rb=10)
 
 * NG-Spice Simulation Commands
-.OPTIONS NOPAGE NUMDGT=6 UNITS=Degrees WIDTH=104 VNTOL=0.00m
-.PRINT AC VDB(Vbase) VDB(Vout) VDB(Vcc) VDB(Vin)
-.AC DEC 10 1.00K 100.00K
+.OPTIONS NOPAGE NUMDGT=6 UNITS=Degrees WIDTH=88 VNTOL=0.00m
+.PRINT AC VDB(Vbase) VDB(Vout) VDB(Vin)
+.AC DEC 10 1.00K 100.00Meg
 
 .END
 
