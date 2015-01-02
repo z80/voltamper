@@ -21,7 +21,7 @@ R105 Vin 3 10
 R106 0 Vout 100k
 VCC101 Vcc 0 DC 15V
 * Signal source (VINPUT101 Vin 0 dc 1.6V AC 10MV SIN(0 1MV 1KHZ))
-VINPUT101 Vin 0 AC 15.00
+VINPUT101 Vin 0 AC 12.00
 
 * Model Definitions
 .model 2N3904   NPN(Is=6.734f Xti=3 Eg=1.11 Vaf=74.03 Bf=416.4 Ne=1.259
@@ -30,8 +30,8 @@ VINPUT101 Vin 0 AC 15.00
 +               Tr=239.5n Tf=301.2p Itf=.4 Vtf=4 Xtf=2 Rb=10)
 
 * NG-Spice Simulation Commands
-.OPTIONS NOPAGE NUMDGT=6 UNITS=Degrees WIDTH=616 VNTOL=0.00m
-.PRINT AC VDB(Vin,0) VDB(Vcc,0) VDB(3,Vbase) 0-VDB(2) VDB(1,Vout) VDB(1,Vcc) VDB(Vbase,Vcc) 0-VDB(Vbase) 0-VDB(2) VDB(Vin,3) 0-VDB(Vout) VDB(Vbase) VDB(Vout) VDB(Vcc) VDB(Vin) VDB(1) VDB(2) VDB(3) VP(Vin,0) VP(Vcc,0) VP(3,Vbase) 0-VP(2) VP(1,Vout) VP(1,Vcc) VP(Vbase,Vcc) 0-VP(Vbase) 0-VP(2) VP(Vin,3) 0-VP(Vout) VP(Vbase) VP(Vout) VP(Vcc) VP(Vin) VP(1) VP(2) VP(3)
+.OPTIONS NOPAGE NUMDGT=6 UNITS=Degrees WIDTH=104 VNTOL=0.00m
+.PRINT AC VDB(Vbase) VDB(Vout) VDB(Vcc) VDB(Vin)
 .AC DEC 10 1.00K 100.00K
 
 .END
