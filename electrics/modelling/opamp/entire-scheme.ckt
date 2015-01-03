@@ -6,19 +6,28 @@
 * Schematic : /home/z80/projects/voltamper.git/electrics/modelling/opamp/entire-scheme.sch
 
 * Component Definitions
-C1 1 Vint01 10n
-R1 Vint02 2 10k
-R2 2 Vint01 10k
-R3 Vint02 0 10k
+C1 0 Vres 4.7u
+C2 1 Vint01 10n
+C3 3 Vint02 4.7u
+R1 2 Vint01 1k
+R10 Vfb 3 1k
+R2 Vint02 Vres 10
+R3 2 0 120k
 R4 1 Vdd 10k
 R5 Vint01 1 40k
-R6 0 1 13300
-V1 Vin 0 dc 1650mv ac 1650mv
-V2 Vdd 0 DC 3300MV
-V3 vp 0 DC 12V
-V4 0 vm DC 12V
+R6 Vres 4 10k
+R7 Vint02 3 120k
+R8 Vres 0 10k
+R9 0 1 13300
+* Signal source (V1 Vin 0 dc 1650mv ac 0mv)
+V1 Vin 0 SIN( 1.65 1.65 1.00K 0.00m 0.00 )
+V2 4 0 pulse -1 1 10n 10n 10n 1u 2u
+V3 Vdd 0 DC 3300MV
+V4 vp 0 DC 12V
+V5 0 vm DC 12V
 XU1 Vin 1 vp vm Vint01 LM258/NS
-XU2 0 2 vp vm Vint02 LM258/NS
+XU2 2 3 vp vm Vint02 LM258/NS
+XU3 Vres Vfb vp vm Vfb AD825
 
 * Sub-Circuit Definitions
 .SUBCKT AD825    1 2 99 50 30
@@ -180,8 +189,8 @@ RL3 22 28 100K
 
 * NG-Spice Simulation Commands
 .OPTIONS NOPAGE NUMDGT=6 UNITS=Degrees WIDTH=104 VNTOL=0.00m
-.PRINT DC V(Vint01) V(Vint02)
-.DC V1 0.00 3.30 330.00m
+.PRINT TRAN V(Vint01) V(Vint02) V(Vres) V(Vfb) V(Vin)
+.TRAN 1.00u 10.00m 0.00m
 
 .END
 
