@@ -217,6 +217,12 @@ pa_panel_vw_min_max_update(gpointer p, gpointer d)
    wp->max_xval = MAX( wavevar_ivar_get_max(vw->var), wp->max_xval);
    /* we should set it to the wds with max xvals */
    wp->ud->curwds = vw->var->wds;
+   GawLabels *lbx = wp->ud->xLabels;
+   if ( lbx )
+   {
+	   al_label_update_min_max_vals( lbx, wp->min_xval, wp->max_xval );
+	   az_cmd_zoom_absolute( wp->ud, wp->min_xval, wp->max_xval );
+   }
 
    double min_yval = MIN( wavevar_val_get_min(vw->var), lby->min_val);
    double max_yval = MAX( wavevar_val_get_max(vw->var), lby->max_val);

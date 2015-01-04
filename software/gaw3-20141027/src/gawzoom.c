@@ -49,11 +49,15 @@ gint az_cmd_zoom_absolute(UserData *ud, double start, double end )
     * Scroll bar always goes from zero to one.
     * Perform an appropriate transform based on lin/log
     */
-   if ( lbx->logAxis ) {
-      scroll_start = ( lbx->start_Lval - lbx->min_Lval ) / 
-	 ( lbx->max_Lval - lbx->min_Lval );
-      scroll_end   =  ( lbx->end_Lval  - lbx->min_Lval ) / 
-	 ( lbx->max_Lval - lbx->min_Lval );
+   if ( lbx->logAxis && lbx->logAble ) {
+      scroll_start = (lbx->max_Lval > lbx->min_Lval) ?
+    		  	  ( lbx->start_Lval - lbx->min_Lval ) /
+    		  	  ( lbx->max_Lval - lbx->min_Lval ) :
+    		  	  0.0;
+      scroll_end   = (lbx->max_Lval > lbx->min_Lval) ?
+    		  	  ( lbx->end_Lval  - lbx->min_Lval ) /
+    		  	  ( lbx->max_Lval - lbx->min_Lval ) :
+    		  	  0.0;
    } else {
       scroll_start = ( lbx->start_val - lbx->min_val ) /
 	 ( lbx->max_val - lbx->min_val );
@@ -88,7 +92,7 @@ void az_zoom_in_gaction (GSimpleAction *action, GVariant *param, gpointer user_d
    double end;
    GawLabels *lbx = ud->xLabels;
    
-   if ( lbx->logAxis ) {
+   if ( lbx->logAxis && lbx->logAble ) {
       start = pow( 10, lbx->start_Lval + ( lbx->end_Lval - lbx->start_Lval ) / 4 );
       end   = pow( 10, lbx->end_Lval   - ( lbx->end_Lval - lbx->start_Lval ) / 4 );
    } else {
@@ -114,7 +118,7 @@ az_zoom_out_gaction (GSimpleAction *action, GVariant *param, gpointer user_data 
    double end;
    GawLabels *lbx = ud->xLabels;
    
-   if ( lbx->logAxis ) {
+   if ( lbx->logAxis && lbx->logAble ) {
       start = pow( 10, lbx->start_Lval - ( lbx->end_Lval - lbx->start_Lval ) / 2 );
       end   = pow( 10, lbx->end_Lval   + ( lbx->end_Lval - lbx->start_Lval ) / 2 );
    } else {
@@ -146,7 +150,7 @@ az_zoom_cursor0_centered_gaction (GSimpleAction *action, GVariant *param, gpoint
       double xval = csp->xval;
       double Lxval = 0;
       
-      if ( lbx->logAxis ) {
+      if ( lbx->logAxis && lbx->logAble ) {
 	 Lxval = log10(xval);
 	 start = pow( 10, lbx->start_Lval + (( Lxval  - lbx->start_Lval ) / 4) );
 	 end   = pow( 10, lbx->end_Lval   + (( Lxval  - lbx->end_Lval   ) / 4) );

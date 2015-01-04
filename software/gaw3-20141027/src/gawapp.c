@@ -366,11 +366,14 @@ ap_x_scroll_handler_cb(GtkWidget *widget, gpointer data )
    gdouble value = gtk_adjustment_get_value(adj);
    gdouble page_size = gtk_adjustment_get_page_size(adj);
 
-   if ( lbx->logAxis ) {
-      start = lbx->min_val * pow( lbx->max_val /
-					   lbx->min_val, value );
-      end   = lbx->min_val * pow( lbx->max_val / lbx->min_val,
- 					   value + page_size );
+   if ( lbx->logAxis && lbx->logAble ) {
+
+      start = ((lbx->min_val > DBL_EPSILON) || (lbx->min_val < -DBL_EPSILON)) ?
+    		  	  lbx->min_val * pow( lbx->max_val / lbx->min_val, value ) :
+    		  	  0.0;
+      end = ((lbx->min_val > DBL_EPSILON) || (lbx->min_val < -DBL_EPSILON)) ?
+    		  	  lbx->min_val * pow( lbx->max_val / lbx->min_val, value + page_size ) :
+    		  	  0.0;
    } else {
       start = lbx->min_val + value * ( lbx->max_val - lbx->min_val );
       end =  lbx->min_val + 
