@@ -6,9 +6,9 @@
 * Schematic : /home/z80/projects/voltamper.git/electrics/modelling/opamp/entire-scheme.sch
 
 * Component Definitions
-C1 0 Vres 4.7u
-C2 1 Vint01 10n
-C3 3 Vint02 4.7u
+C1 0 Vres 100n
+C2 1 Vint01 100n
+C3 3 Vint02 100n
 R1 2 Vint01 1k
 R10 Vfb 3 1k
 R2 Vint02 Vres 10
@@ -19,7 +19,7 @@ R6 Vres 4 10k
 R7 Vint02 3 120k
 R8 Vres 0 10k
 R9 0 1 13300
-* Signal source (V1 Vin 0 dc 1650mv ac 0mv)
+* Signal source (V1 Vin 0 dc 1650mv ac 1650mv 1khz)
 V1 Vin 0 SIN( 1.65 1.65 1.00K 0.00m 0.00 )
 V2 4 0 pulse -1 1 10n 10n 10n 1u 2u
 V3 Vdd 0 DC 3300MV
@@ -190,7 +190,7 @@ RL3 22 28 100K
 * NG-Spice Simulation Commands
 .OPTIONS NOPAGE NUMDGT=6 UNITS=Degrees WIDTH=104 VNTOL=0.00m
 .PRINT TRAN V(Vint01) V(Vint02) V(Vres) V(Vfb) V(Vin)
-.TRAN 1.00u 10.00m 0.00m
+.TRAN 0.10m 1.50m 0.00m
 
 .END
 
