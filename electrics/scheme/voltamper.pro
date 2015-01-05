@@ -1,13 +1,8 @@
-update=12/24/2014 11:39:58 AM
+update=Mon 05 Jan 2015 09:05:29 AM MSK
 version=1
-last_client=eeschema
+last_client=cvpcb
 [general]
 version=1
-[cvpcb]
-version=1
-NetIExt=net
-[cvpcb/libraries]
-EquName1=devcms
 [pcbnew]
 version=1
 LastNetListRead=voltamper.net
@@ -28,7 +23,6 @@ DrawSegmentWidth=0.200000000000
 BoardOutlineThickness=0.100000000000
 ModuleOutlineThickness=0.150000000000
 [pcbnew/libraries]
-LibDir=../libs
 LibName1=sockets
 LibName2=connect
 LibName3=discret
@@ -53,6 +47,8 @@ LibName21=RLB0914
 LibName22=sparta-sip-9007
 LibName23=TDA2030A
 LibName24=cp2102
+LibName25=opa551-ddpack-7
+LibDir=../libs
 [eeschema]
 version=1
 LibDir=../libs
@@ -104,3 +100,9 @@ LibName39=spartan-sip-9007
 LibName40=ad825
 LibName41=opa551
 LibName42=lm258a
+LibName43=ada4000
+[cvpcb]
+version=1
+NetIExt=net
+[cvpcb/libraries]
+EquName1=devcms
