@@ -1,11 +1,11 @@
-PCBNEW-LibModule-V1  Mon 05 Jan 2015 09:07:43 AM MSK
+PCBNEW-LibModule-V1  1/12/2015 10:07:38 AM
 # encoding utf-8
 Units mm
 $INDEX
 OPA551
 $EndINDEX
 $MODULE OPA551
-Po 0 0 0 15 54AA2A25 00000000 ~~
+Po 0 0 0 15 54B40D63 00000000 ~~
 Li OPA551
 Sc 0
 AR 
@@ -62,7 +62,7 @@ Ne 0 ""
 Po 3.81 3.74
 $EndPAD
 $PAD
-Sh "8" R 10.41 6.9 0 0 0
+Sh "4" R 10.41 6.9 0 0 0
 Dr 0 0 0
 At SMD N 00888000
 Ne 0 ""
