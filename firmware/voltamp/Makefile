@@ -86,11 +86,12 @@ CSRC = $(PORTSRC) \
        $(CHIBIOS)/os/various/syscalls.c \
        $(CHIBIOS)/os/various/shell.c \
        $(CHIBIOS)/os/various/chprintf.c \
-       ./src/main.c \
-       ./src/base64.c \
        ./src/dac.c \
        ./src/iwdg/iwdg.c \
-       ./src/iwdg/iwdg_lld.c
+       ./src/iwdg/iwdg_lld.c \
+       ./src/main.c \
+       ./src/serial_pipe.c \
+       ./src/cpu_io.c
        
        #./src/cpal_usercallback.c \
        #./cpal_i2c/cpal_hal.c \
