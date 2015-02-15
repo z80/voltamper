@@ -3,14 +3,14 @@
 #include "hal.h"
 
 #include "iwdg.h"
-#include "i2c_ctrl.h"
+#include "led_ctrl.h"
 
 int main(void)
 {
     halInit();
     chSysInit();
 
-
+    initLed();
 
     while (TRUE)
     {

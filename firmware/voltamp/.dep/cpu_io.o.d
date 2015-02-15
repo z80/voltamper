@@ -1,4 +1,4 @@
-build/obj/serial_pipe.o: src/serial_pipe.c src/serial_pipe.h \
+build/obj/cpu_io.o: src/cpu_io.c src/cpu_io.h \
  ../chibios_2.4.x/os/kernel/include/ch.h chconf.h \
  ../chibios_2.4.x/os/ports/GCC/ARMCMx/chtypes.h \
  /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/include/stddef.h \
@@ -30,9 +30,41 @@ build/obj/serial_pipe.o: src/serial_pipe.c src/serial_pipe.h \
  ../chibios_2.4.x/os/kernel/include/chstreams.h \
  ../chibios_2.4.x/os/kernel/include/chioch.h \
  ../chibios_2.4.x/os/kernel/include/chfiles.h \
- ../chibios_2.4.x/os/kernel/include/chdebug.h
+ ../chibios_2.4.x/os/kernel/include/chdebug.h src/serial_pipe.h \
+ ../chibios_2.4.x/os/hal/include/hal.h board/board.h halconf.h mcuconf.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32F1xx/hal_lld.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32/stm32.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32F1xx/stm32f10x.h \
+ ../chibios_2.4.x/os/ports/common/ARMCMx/CMSIS/include/core_cm3.h \
+ ../chibios_2.4.x/os/ports/common/ARMCMx/CMSIS/include/core_cmInstr.h \
+ ../chibios_2.4.x/os/ports/common/ARMCMx/CMSIS/include/core_cmFunc.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32F1xx/hal_lld_f103.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32F1xx/stm32_dma.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32F1xx/stm32_rcc.h \
+ ../chibios_2.4.x/os/hal/include/tm.h \
+ ../chibios_2.4.x/os/hal/include/pal.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32/GPIOv1/pal_lld.h \
+ ../chibios_2.4.x/os/hal/include/adc.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32F1xx/adc_lld.h \
+ ../chibios_2.4.x/os/hal/include/can.h \
+ ../chibios_2.4.x/os/hal/include/ext.h \
+ ../chibios_2.4.x/os/hal/include/gpt.h \
+ ../chibios_2.4.x/os/hal/include/i2c.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32/i2c_lld.h \
+ ../chibios_2.4.x/os/hal/include/icu.h \
+ ../chibios_2.4.x/os/hal/include/mac.h \
+ ../chibios_2.4.x/os/hal/include/pwm.h \
+ ../chibios_2.4.x/os/hal/include/rtc.h \
+ ../chibios_2.4.x/os/hal/include/serial.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32/serial_lld.h \
+ ../chibios_2.4.x/os/hal/include/sdc.h \
+ ../chibios_2.4.x/os/hal/include/spi.h \
+ ../chibios_2.4.x/os/hal/include/uart.h \
+ ../chibios_2.4.x/os/hal/include/usb.h \
+ ../chibios_2.4.x/os/hal/include/mmc_spi.h \
+ ../chibios_2.4.x/os/hal/include/serial_usb.h
 
-src/serial_pipe.h:
+src/cpu_io.h:
 
 ../chibios_2.4.x/os/kernel/include/ch.h:
 
@@ -99,3 +131,75 @@ chconf.h:
 ../chibios_2.4.x/os/kernel/include/chfiles.h:
 
 ../chibios_2.4.x/os/kernel/include/chdebug.h:
+
+src/serial_pipe.h:
+
+../chibios_2.4.x/os/hal/include/hal.h:
+
+board/board.h:
+
+halconf.h:
+
+mcuconf.h:
+
+../chibios_2.4.x/os/hal/platforms/STM32F1xx/hal_lld.h:
+
+../chibios_2.4.x/os/hal/platforms/STM32/stm32.h:
+
+../chibios_2.4.x/os/hal/platforms/STM32F1xx/stm32f10x.h:
+
+../chibios_2.4.x/os/ports/common/ARMCMx/CMSIS/include/core_cm3.h:
+
+../chibios_2.4.x/os/ports/common/ARMCMx/CMSIS/include/core_cmInstr.h:
+
+../chibios_2.4.x/os/ports/common/ARMCMx/CMSIS/include/core_cmFunc.h:
+
+../chibios_2.4.x/os/hal/platforms/STM32F1xx/hal_lld_f103.h:
+
+../chibios_2.4.x/os/hal/platforms/STM32F1xx/stm32_dma.h:
+
+../chibios_2.4.x/os/hal/platforms/STM32F1xx/stm32_rcc.h:
+
+../chibios_2.4.x/os/hal/include/tm.h:
+
+../chibios_2.4.x/os/hal/include/pal.h:
+
+../chibios_2.4.x/os/hal/platforms/STM32/GPIOv1/pal_lld.h:
+
+../chibios_2.4.x/os/hal/include/adc.h:
+
+../chibios_2.4.x/os/hal/platforms/STM32F1xx/adc_lld.h:
+
+../chibios_2.4.x/os/hal/include/can.h:
+
+../chibios_2.4.x/os/hal/include/ext.h:
+
+../chibios_2.4.x/os/hal/include/gpt.h:
+
+../chibios_2.4.x/os/hal/include/i2c.h:
+
+../chibios_2.4.x/os/hal/platforms/STM32/i2c_lld.h:
+
+../chibios_2.4.x/os/hal/include/icu.h:
+
+../chibios_2.4.x/os/hal/include/mac.h:
+
+../chibios_2.4.x/os/hal/include/pwm.h:
+
+../chibios_2.4.x/os/hal/include/rtc.h:
+
+../chibios_2.4.x/os/hal/include/serial.h:
+
+../chibios_2.4.x/os/hal/platforms/STM32/serial_lld.h:
+
+../chibios_2.4.x/os/hal/include/sdc.h:
+
+../chibios_2.4.x/os/hal/include/spi.h:
+
+../chibios_2.4.x/os/hal/include/uart.h:
+
+../chibios_2.4.x/os/hal/include/usb.h:
+
+../chibios_2.4.x/os/hal/include/mmc_spi.h:
+
+../chibios_2.4.x/os/hal/include/serial_usb.h:

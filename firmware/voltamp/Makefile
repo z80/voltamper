@@ -91,7 +91,8 @@ CSRC = $(PORTSRC) \
        ./src/iwdg/iwdg_lld.c \
        ./src/main.c \
        ./src/serial_pipe.c \
-       ./src/cpu_io.c
+       ./src/cpu_io.c \
+       .src/led_ctrl.c
        
        #./src/cpal_usercallback.c \
        #./cpal_i2c/cpal_hal.c \

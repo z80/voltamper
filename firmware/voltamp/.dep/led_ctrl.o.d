@@ -1,4 +1,4 @@
-build/obj/icu_lld.o: ../chibios_2.4.x/os/hal/platforms/STM32/icu_lld.c \
+build/obj/led_ctrl.o: src/led_ctrl.c src/led_ctrl.h \
  ../chibios_2.4.x/os/kernel/include/ch.h chconf.h \
  ../chibios_2.4.x/os/ports/GCC/ARMCMx/chtypes.h \
  /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/include/stddef.h \
@@ -62,7 +62,10 @@ build/obj/icu_lld.o: ../chibios_2.4.x/os/hal/platforms/STM32/icu_lld.c \
  ../chibios_2.4.x/os/hal/include/uart.h \
  ../chibios_2.4.x/os/hal/include/usb.h \
  ../chibios_2.4.x/os/hal/include/mmc_spi.h \
- ../chibios_2.4.x/os/hal/include/serial_usb.h
+ ../chibios_2.4.x/os/hal/include/serial_usb.h src/iwdg/iwdg.h \
+ src/iwdg/iwdg_lld.h src/hdw_config.h
+
+src/led_ctrl.h:
 
 ../chibios_2.4.x/os/kernel/include/ch.h:
 
@@ -199,3 +202,9 @@ mcuconf.h:
 ../chibios_2.4.x/os/hal/include/mmc_spi.h:
 
 ../chibios_2.4.x/os/hal/include/serial_usb.h:
+
+src/iwdg/iwdg.h:
+
+src/iwdg/iwdg_lld.h:
+
+src/hdw_config.h:

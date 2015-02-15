@@ -55,6 +55,7 @@ build/obj/board.o: board/board.c ../chibios_2.4.x/os/kernel/include/ch.h \
  ../chibios_2.4.x/os/hal/include/pwm.h \
  ../chibios_2.4.x/os/hal/include/rtc.h \
  ../chibios_2.4.x/os/hal/include/serial.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32/serial_lld.h \
  ../chibios_2.4.x/os/hal/include/sdc.h \
  ../chibios_2.4.x/os/hal/include/spi.h \
  ../chibios_2.4.x/os/hal/include/uart.h \
@@ -183,6 +184,8 @@ mcuconf.h:
 ../chibios_2.4.x/os/hal/include/rtc.h:
 
 ../chibios_2.4.x/os/hal/include/serial.h:
+
+../chibios_2.4.x/os/hal/platforms/STM32/serial_lld.h:
 
 ../chibios_2.4.x/os/hal/include/sdc.h:
 

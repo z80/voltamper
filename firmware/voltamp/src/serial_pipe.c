@@ -27,7 +27,7 @@ uint8_t serial_decode_byte( uint8_t in, uint8_t * out, uint8_t * eom )
 	}
 	else
 	{
-		if (in != '\')
+		if (in != '\\')
 		{
 			*out = in;
 			*eom = 0;

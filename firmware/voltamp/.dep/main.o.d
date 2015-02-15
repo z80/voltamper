@@ -55,13 +55,14 @@ build/obj/main.o: src/main.c ../chibios_2.4.x/os/kernel/include/ch.h \
  ../chibios_2.4.x/os/hal/include/pwm.h \
  ../chibios_2.4.x/os/hal/include/rtc.h \
  ../chibios_2.4.x/os/hal/include/serial.h \
+ ../chibios_2.4.x/os/hal/platforms/STM32/serial_lld.h \
  ../chibios_2.4.x/os/hal/include/sdc.h \
  ../chibios_2.4.x/os/hal/include/spi.h \
  ../chibios_2.4.x/os/hal/include/uart.h \
  ../chibios_2.4.x/os/hal/include/usb.h \
  ../chibios_2.4.x/os/hal/include/mmc_spi.h \
  ../chibios_2.4.x/os/hal/include/serial_usb.h src/iwdg/iwdg.h \
- src/iwdg/iwdg_lld.h src/i2c_ctrl.h ../chibios_2.4.x/os/various/shell.h
+ src/iwdg/iwdg_lld.h src/led_ctrl.h
 
 ../chibios_2.4.x/os/kernel/include/ch.h:
 
@@ -185,6 +186,8 @@ mcuconf.h:
 
 ../chibios_2.4.x/os/hal/include/serial.h:
 
+../chibios_2.4.x/os/hal/platforms/STM32/serial_lld.h:
+
 ../chibios_2.4.x/os/hal/include/sdc.h:
 
 ../chibios_2.4.x/os/hal/include/spi.h:
@@ -201,6 +204,4 @@ src/iwdg/iwdg.h:
 
 src/iwdg/iwdg_lld.h:
 
-src/i2c_ctrl.h:
-
-../chibios_2.4.x/os/various/shell.h:
+src/led_ctrl.h:

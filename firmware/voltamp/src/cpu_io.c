@@ -10,8 +10,7 @@
 #define IO_DELAY_MS 1
 #define SERIAL 		SD1
 
-#define CMD_SET_ARGS  0
-#define CMD_GET_ARGS  1
+#define CMD_SET_ARGS  1
 #define CMD_EXEC_FUNC 2
 
 static uint8_t buffer_raw[ BUFFER_SZ ];
@@ -25,7 +24,7 @@ void cpu_io_init( void )
 {
 	serial_pipe_init();
 	// Initialize serial driver.
-	sdStart( &SERIAL );
+	sdStart( &SERIAL, 0 );
 }
 
 void cpu_io_process( void )
@@ -41,9 +40,9 @@ void cpu_io_process( void )
 		{
 			uint8_t eom;
 			uint8_t shift;
-			int     out_index;
+			int     out_index, i;
 			out_index = 0;
-			for ( int i=0; i<in_sz; i++ )
+			for ( i=0; i<in_sz; i++ )
 			{
 				shift = serial_decode_byte( buffer_raw[i], &(buffer[out_index]), &eom );
 				out_index += shift;
@@ -69,18 +68,15 @@ static void process_command( uint8_t * buf, int sz )
 	uint8_t cmd;
 	cmd = buf[0];
 	uint8_t * data = &(buf[1]);
-	switch cmd
+	switch ( cmd )
 	{
 	case CMD_SET_ARGS:
 		for ( i=0; i<(sz-1); i++ )
 			args[i] = data[i];
 		break;
-	case CMD_GET_ARGS:
-		// Write args to serial.
-		write_args();
-		break;
 	case CMD_EXEC_FUNC:
 		// Execute function by it's index.
+		exec_func();
 		break;
 	}
 }
@@ -118,8 +114,9 @@ static void exec_func( void )
 {
 	int func_index = (int)buffer[1] + ((int)buffer[2]) * 256;
 	// Just to avoid troubles.
-	func_index = (func_index < (sizeof(funcs)/sizeof(TFunc))) ? func_index : 0;
-	func[func_index]( args );
+	int funcs_sz = (int)(sizeof(funcs)/sizeof(TFunc));
+    func_index = (func_index < funcs_sz) ? func_index : 0;
+	funcs[func_index]( args );
 }
 
 static void set_leds( uint8_t * args )

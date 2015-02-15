@@ -7,10 +7,12 @@
 
 
 // LEDs
-#define LED_PORT   GPIOB
-#define LED_0_PIN  14
-#define LED_1_PIN  13
-#define LED_2_PIN  12
+#define LED_0_PORT   GPIOC
+#define LED_0_PIN    5
+#define LED_1_PORT   GPIOB
+#define LED_1_PIN    0
+#define LED_2_PORT   GPIOB
+#define LED_2_PIN    1
 
 // ADDRs - pins for identifying board index. It is defined by external physical switches.
 #define ADDR_PORT  GPIOC
