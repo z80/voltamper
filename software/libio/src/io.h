@@ -1,14 +1,14 @@
 
-#ifndef __LIB_IO_H_
-#define __LIB_IO_H_
+#ifndef __IO_H_
+#define __IO_H_
 
 #include <QtCore>
 
-class LibIo
+class Io
 {
 public:
-  LibIo();
-  ~LibIo();
+  Io();
+  virtual ~Io();
 
   int enumDevices();
   bool open( int index=0 );

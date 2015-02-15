@@ -1,15 +1,17 @@
 
-project( remote_ctrl )
+project( voltamper )
 cmake_minimum_required(VERSION 2.8)
+
+set( CMAKE_INSTALL_PREFIX ./app )
+set( ROOT ${CMAKE_CURRENT_SOURCE_DIR} )
+set( _3DPARTY ${CMAKE_CURRENT_SOURCE_DIR}/3dparty )
+
 if ( WIN32 )
     include( "./settings.win32.cmake" )
 elseif ( UNIX )
     include( "./settings.unix.cmake" )
 endif ( WIN32 )
 
-set( CMAKE_INSTALL_PREFIX ./app )
-set( ROOT ${CMAKE_CURRENT_SOURCE_DIR} )
-set( _3DPARTY ${CMAKE_CURRENT_SOURCE_DIR}/3dparty )
 
 find_library( icee   NAMES icee_static.lib
                            libIceE.a PATHS ${ICE_LIB_PATH} $ENV{PATH} )
@@ -26,12 +28,7 @@ if ( WIN32 )
 elseif ( UNIX )
     #find_library( pthread NAMES libpthread.a PATHS ${ICE_LIB_PATH} $ENV{PATH} )
     #find_library( rt      NAMES librt.a PATHS ${ICE_LIB_PATH} $ENV{PATH} )
-    if ( CROSS )
-        find_library( iceeEmb   NAMES libIceE.a    PATHS ${ICE_LIB_PATH_EMB} $ENV{PATH} )
-        find_library( iceecEmb  NAMES libIceEC.a   PATHS ${ICE_LIB_PATH_EMB} $ENV{PATH} )
-        find_library( iceedEmb  NAMES libIceE.a    PATHS ${ICE_LIB_PATH_EMB} $ENV{PATH} )
-        find_library( iceecdEmb NAMES libIceEC.a   PATHS ${ICE_LIB_PATH_EMB} $ENV{PATH} )
-    endif ( CROSS )
 endif ( WIN32 )
 
 add_subdirectory( "./3dparty" )
+add_subdirectory( "./libio" )
