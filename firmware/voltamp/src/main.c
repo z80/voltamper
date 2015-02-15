@@ -4,6 +4,7 @@
 
 #include "iwdg.h"
 #include "led_ctrl.h"
+#include "dac.h"
 
 int main(void)
 {
@@ -11,6 +12,7 @@ int main(void)
     chSysInit();
 
     initLed();
+    dacInit();
 
     while (TRUE)
     {

@@ -5,6 +5,9 @@
 #include "ch.h"
 #include "hal.h"
 
+#include "led_ctrl.h"
+#include "dac.h"
+
 #define BUFFER_SZ   32
 #define ARGS_SZ     32
 #define IO_DELAY_MS 1
@@ -121,7 +124,7 @@ static void exec_func( void )
 
 static void set_leds( uint8_t * args )
 {
-
+	setLeds( args[0] );
 }
 
 static void leds( uint8_t * args )
@@ -131,7 +134,10 @@ static void leds( uint8_t * args )
 
 static void set_dac( uint8_t * args )
 {
-
+	DacCfg dacs;
+	dacs.dac1 = 0;
+	dacs.dac2 = 0;
+	dacSet( &dacs );
 }
 
 static void dac( uint8_t * args )

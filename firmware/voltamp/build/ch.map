@@ -880,7 +880,6 @@ Discarded input sections
  .text          0x00000000        0x0 build/obj/dac.o
  .data          0x00000000        0x0 build/obj/dac.o
  .bss           0x00000000        0x0 build/obj/dac.o
- .text.dacInit  0x00000000       0x40 build/obj/dac.o
  .text.dacSet   0x00000000       0x10 build/obj/dac.o
  .text          0x00000000        0x0 build/obj/iwdg.o
  .data          0x00000000        0x0 build/obj/iwdg.o
@@ -1072,7 +1071,7 @@ destructors     0x080000ec        0x0
  *(SORT(.fini_array.*))
                 0x080000ec                PROVIDE (__fini_array_end, .)
 
-.text           0x080000f0     0x2454
+.text           0x080000f0     0x2494
  *(.text.startup.*)
  *(.text)
  *(.text.*)
@@ -1399,81 +1398,83 @@ destructors     0x080000ec        0x0
  .text.boardInit
                 0x08001ff0       0x10 build/obj/board.o
                 0x08001ff0                boardInit
- .text.main     0x08002000       0x20 build/obj/main.o
-                0x08002000                main
+ .text.dacInit  0x08002000       0x40 build/obj/dac.o
+                0x08002000                dacInit
+ .text.main     0x08002040       0x20 build/obj/main.o
+                0x08002040                main
  .text.ledsThread
-                0x08002020       0x80 build/obj/led_ctrl.o
- .text.initLed  0x080020a0       0x70 build/obj/led_ctrl.o
-                0x080020a0                initLed
+                0x08002060       0x80 build/obj/led_ctrl.o
+ .text.initLed  0x080020e0       0x70 build/obj/led_ctrl.o
+                0x080020e0                initLed
  *(.rodata)
  *(.rodata.*)
  .rodata.str1.4
-                0x08002110        0xd build/obj/chsys.o
+                0x08002150        0xd build/obj/chsys.o
                                  0x10 (size before relaxing)
- *fill*         0x0800211d        0x3 00
+ *fill*         0x0800215d        0x3 00
  .rodata.str1.4
-                0x08002120       0x56 build/obj/chdebug.o
+                0x08002160       0x56 build/obj/chdebug.o
                                  0x58 (size before relaxing)
- *fill*         0x08002176        0xa 00
+ *fill*         0x080021b6        0xa 00
  .rodata.str1.4
-                0x08002180       0x31 build/obj/chvt.o
+                0x080021c0       0x31 build/obj/chvt.o
                                  0x34 (size before relaxing)
- *fill*         0x080021b1        0xf 00
+ *fill*         0x080021f1        0xf 00
  .rodata.str1.4
-                0x080021c0       0x23 build/obj/chschd.o
+                0x08002200       0x23 build/obj/chschd.o
                                  0x24 (size before relaxing)
- *fill*         0x080021e3        0xd 00
+ *fill*         0x08002223        0xd 00
  .rodata.str1.4
-                0x080021f0       0x84 build/obj/chthreads.o
- *fill*         0x08002274        0xc 00
+                0x08002230       0x84 build/obj/chthreads.o
+ *fill*         0x080022b4        0xc 00
  .rodata.str1.4
-                0x08002280       0xab build/obj/chmtx.o
+                0x080022c0       0xab build/obj/chmtx.o
                                  0xac (size before relaxing)
- *fill*         0x0800232b        0x5 00
+ *fill*         0x0800236b        0x5 00
  .rodata.str1.4
-                0x08002330       0x90 build/obj/chevents.o
+                0x08002370       0x90 build/obj/chevents.o
  .rodata.str1.4
-                0x080023c0       0x29 build/obj/chqueues.o
+                0x08002400       0x29 build/obj/chqueues.o
                                  0x2c (size before relaxing)
- *fill*         0x080023e9        0x7 00
+ *fill*         0x08002429        0x7 00
  .rodata.str1.4
-                0x080023f0       0x5f build/obj/serial.o
+                0x08002430       0x5f build/obj/serial.o
                                  0x60 (size before relaxing)
- *fill*         0x0800244f        0x1 00
- .rodata.vmt    0x08002450       0x24 build/obj/serial.o
- *fill*         0x08002474        0xc 00
+ *fill*         0x0800248f        0x1 00
+ .rodata.vmt    0x08002490       0x24 build/obj/serial.o
+ *fill*         0x080024b4        0xc 00
  .rodata._stm32_dma_streams
-                0x08002480       0x54 build/obj/stm32_dma.o
-                0x08002480                _stm32_dma_streams
- *fill*         0x080024d4        0xc 00
+                0x080024c0       0x54 build/obj/stm32_dma.o
+                0x080024c0                _stm32_dma_streams
+ *fill*         0x08002514        0xc 00
  .rodata.cfgtab.5967
-                0x080024e0       0x14 build/obj/pal_lld.o
- *fill*         0x080024f4        0xc 00
+                0x08002520       0x14 build/obj/pal_lld.o
+ *fill*         0x08002534        0xc 00
  .rodata.pal_default_config
-                0x08002500       0x3c build/obj/board.o
-                0x08002500                pal_default_config
- *fill*         0x0800253c        0x4 00
+                0x08002540       0x3c build/obj/board.o
+                0x08002540                pal_default_config
+ *fill*         0x0800257c        0x4 00
  .rodata.str1.4
-                0x08002540        0x4 build/obj/led_ctrl.o
+                0x08002580        0x4 build/obj/led_ctrl.o
  *(.glue_7t)
  .glue_7t       0x00000000        0x0 linker stubs
  *(.glue_7)
  .glue_7        0x00000000        0x0 linker stubs
  *(.gcc*)
 
-.vfp11_veneer   0x08002544        0x0
+.vfp11_veneer   0x08002584        0x0
  .vfp11_veneer  0x00000000        0x0 linker stubs
 
-.v4_bx          0x08002544        0x0
+.v4_bx          0x08002584        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM.exidx      0x08002544        0x0
-                0x08002544                PROVIDE (__exidx_start, .)
+.ARM.exidx      0x08002584        0x0
+                0x08002584                PROVIDE (__exidx_start, .)
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x08002544                PROVIDE (__exidx_end, .)
+                0x08002584                PROVIDE (__exidx_end, .)
 
 .eh_frame_hdr
  *(.eh_frame_hdr)
@@ -1481,12 +1482,12 @@ destructors     0x080000ec        0x0
 .eh_frame
  *(.eh_frame)
 
-.textalign      0x08002544        0x4
-                0x08002548                . = ALIGN (0x8)
- *fill*         0x08002544        0x4 00
-                0x08002548                . = ALIGN (0x4)
-                0x08002548                _etext = .
-                0x08002548                _textdata = _etext
+.textalign      0x08002584        0x4
+                0x08002588                . = ALIGN (0x8)
+ *fill*         0x08002584        0x4 00
+                0x08002588                . = ALIGN (0x4)
+                0x08002588                _etext = .
+                0x08002588                _textdata = _etext
 
 .stacks         0x20000000      0x800
                 0x20000000                . = ALIGN (0x8)
@@ -1503,7 +1504,7 @@ destructors     0x080000ec        0x0
                 0x20000800                __process_stack_end__ = .
                 0x20000800                __main_thread_stack_end__ = .
 
-.data           0x20000800        0x0 load address 0x08002548
+.data           0x20000800        0x0 load address 0x08002588
                 0x20000800                . = ALIGN (0x4)
                 0x20000800                PROVIDE (_data, .)
  *(.data)
@@ -1514,7 +1515,7 @@ destructors     0x080000ec        0x0
                 0x20000800                . = ALIGN (0x4)
                 0x20000800                PROVIDE (_edata, .)
 
-.bss            0x20000800      0x8d0 load address 0x08002548
+.bss            0x20000800      0x8d0 load address 0x08002588
                 0x20000800                . = ALIGN (0x4)
                 0x20000800                PROVIDE (_bss_start, .)
  *(.bss)
@@ -1741,7 +1742,7 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_info    0x0001906d      0x99c build/obj/cpu_io.o
  .debug_info    0x00019a09      0x634 build/obj/led_ctrl.o
 
-.debug_line     0x00000000     0xa491
+.debug_line     0x00000000     0xa494
  .debug_line    0x00000000      0x173 build/obj/crt0.o
  .debug_line    0x00000173       0x69 build/obj/vectors.o
  .debug_line    0x000001dc       0x5e build/obj/chcore.o
@@ -1821,10 +1822,10 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_line    0x0000981c      0x197 build/obj/dac.o
  .debug_line    0x000099b3      0x198 build/obj/iwdg.o
  .debug_line    0x00009b4b      0x18d build/obj/iwdg_lld.o
- .debug_line    0x00009cd8      0x135 build/obj/main.o
- .debug_line    0x00009e0d       0xe9 build/obj/serial_pipe.o
- .debug_line    0x00009ef6      0x2f0 build/obj/cpu_io.o
- .debug_line    0x0000a1e6      0x2ab build/obj/led_ctrl.o
+ .debug_line    0x00009cd8      0x138 build/obj/main.o
+ .debug_line    0x00009e10       0xe9 build/obj/serial_pipe.o
+ .debug_line    0x00009ef9      0x2f0 build/obj/cpu_io.o
+ .debug_line    0x0000a1e9      0x2ab build/obj/led_ctrl.o
 
 .debug_loc      0x00000000     0xa302
  .debug_loc     0x00000000       0x72 build/obj/crt0.o
@@ -3323,6 +3324,7 @@ chprintf                                          build/obj/chprintf.o
 cpu_io_init                                       build/obj/cpu_io.o
 cpu_io_process                                    build/obj/cpu_io.o
 dacInit                                           build/obj/dac.o
+                                                  build/obj/main.o
 dacSet                                            build/obj/dac.o
 dbg_check_disable                                 build/obj/chdebug.o
 dbg_check_enable                                  build/obj/chdebug.o
