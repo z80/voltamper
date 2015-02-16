@@ -8,8 +8,10 @@
 #include "led_ctrl.h"
 #include "dac.h"
 
-#define BUFFER_SZ   32
-#define ARGS_SZ     32
+#define BUFFER_SZ    32
+#define ARGS_SZ      32
+#define OUT_QUEUE_SZ 32
+
 #define IO_DELAY_MS 1
 #define SERIAL 		SD1
 
@@ -21,13 +23,17 @@ static uint8_t buffer[ BUFFER_SZ ];
 static uint8_t args[ ARGS_SZ ];
 static int     args_cnt; // This is for easy output to CPU.
 
+
 static void process_command( uint8_t * buf, int sz );
+static void initOutput( void );
 
 void cpu_io_init( void )
 {
 	serial_pipe_init();
 	// Initialize serial driver.
 	sdStart( &SERIAL, 0 );
+
+	initOutput();
 }
 
 void cpu_io_process( void )
@@ -53,7 +59,10 @@ void cpu_io_process( void )
 				out_index = ( out_index < BUFFER_SZ ) ? out_index : BUFFER_SZ;
 				if ( eom )
 				{
-					// if EOM process command.
+					// If EOM process command.
+					process_command( buffer, out_index );
+					// Start writing from the beginning.
+					out_index = 0;
 				}
 			}
 
@@ -62,7 +71,6 @@ void cpu_io_process( void )
 	}
 }
 
-static void write_args( void );
 static void exec_func( void );
 
 static void process_command( uint8_t * buf, int sz )
@@ -84,33 +92,13 @@ static void process_command( uint8_t * buf, int sz )
 	}
 }
 
-static void write_args( void )
-{
-	int i;
-	for ( i=0; i<args_cnt; i++ )
-	{
-			sdPut( &SERIAL, args[i] );
-			if ( args[i] == '\\' )
-				sdPut( &SERIAL, args[i] );
-			// To give USB ability to read.
-			// chThdSleepMilliseconds( IO_DELAY_MS );
-	}
-	// End of message.
-	sdPut( &SERIAL, '\\' );
-	sdPut( &SERIAL, '\0' );
-}
-
 static void set_leds( uint8_t * args );
-static void leds( uint8_t * args );
 static void set_dac( uint8_t * args );
-static void dac( uint8_t * args );
 
 static TFunc funcs[] =
 {
 	set_leds,
-	leds,
 	set_dac,
-	dac
 };
 
 static void exec_func( void )
@@ -127,22 +115,69 @@ static void set_leds( uint8_t * args )
 	setLeds( args[0] );
 }
 
-static void leds( uint8_t * args )
-{
-
-}
-
 static void set_dac( uint8_t * args )
 {
 	DacCfg dacs;
-	dacs.dac1 = 0;
-	dacs.dac2 = 0;
+	dacs.dac1 = (uint16_t)args[0] + ((uint16_t)args[1] << 8);
+	dacs.dac2 = (uint16_t)args[2] + ((uint16_t)args[3] << 8);
 	dacSet( &dacs );
 }
 
-static void dac( uint8_t * args )
-{
 
+
+
+
+// Output queue for writing out of MCU.
+static InputQueue queue;
+static uint8_t    queueBuffer[ OUT_QUEUE_SZ ];
+
+uint8_t writeResult( uint8_t v )
+{
+	chIQPutI( &queue, v );
+	if ( v == '\\' )
+		chIQPutI( &queue, v );
+
+	// If too little space left write "End Of Message" and return 1.
+	size_t space = chIQGetEmptyI( &queue );
+	if (space < 4)
+	{
+		writeEom();
+		return 1;
+	}
+	// If space left is fine return 0.
+	return 0;
+}
+
+void writeEom( void )
+{
+	chQPutI( &queue, '\\' );
+	chQPutI( &queue, '\0' );
+}
+
+static WORKING_AREA( waOutput, 256 );
+static msg_t outputThread( void *arg )
+{
+    (void)arg;
+    chRegSetThreadName( "o" );
+    // Continuous writing out of MCU.
+    while ( 1 )
+    {
+    	uint8_t data_byte;
+    	size_t cnt;
+    	cnt = chIQReadTimeout( &queue, &data_byte, 1, TIME_INFINITE );
+    	if ( cnt )
+    		sdPut( &SERIAL, data_byte );
+    }
+
+    return 0;
+}
+
+static void initOutput( void )
+{
+	// Initializing input queue.
+	chIQInit( &queue, queueBuffer, OUT_QUEUE_SZ, 0 );
+	// Creating thread.
+	chThdCreateStatic( waOutput, sizeof(waOutput), NORMALPRIO, outputThread, NULL );
 }
 
 
