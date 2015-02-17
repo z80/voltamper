@@ -5,6 +5,8 @@
 #include "iwdg.h"
 #include "led_ctrl.h"
 #include "dac.h"
+#include "adc_ctrl.h"
+#include "cpu_io.h"
 
 int main(void)
 {
@@ -13,10 +15,12 @@ int main(void)
 
     initLed();
     dacInit();
+    initAdc();
+    cpu_io_init();
 
     while (TRUE)
     {
-        chThdSleepMilliseconds( 250 );
+    	cpu_io_process();
     }
     return 0;
 }

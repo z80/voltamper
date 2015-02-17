@@ -62,7 +62,8 @@ build/obj/cpu_io.o: src/cpu_io.c src/cpu_io.h \
  ../chibios_2.4.x/os/hal/include/uart.h \
  ../chibios_2.4.x/os/hal/include/usb.h \
  ../chibios_2.4.x/os/hal/include/mmc_spi.h \
- ../chibios_2.4.x/os/hal/include/serial_usb.h src/led_ctrl.h src/dac.h
+ ../chibios_2.4.x/os/hal/include/serial_usb.h src/led_ctrl.h \
+ src/adc_ctrl.h src/dac.h
 
 src/cpu_io.h:
 
@@ -205,5 +206,7 @@ mcuconf.h:
 ../chibios_2.4.x/os/hal/include/serial_usb.h:
 
 src/led_ctrl.h:
+
+src/adc_ctrl.h:
 
 src/dac.h:

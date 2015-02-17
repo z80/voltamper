@@ -6,6 +6,7 @@
 #include "hal.h"
 
 #include "led_ctrl.h"
+#include "adc_ctrl.h"
 #include "dac.h"
 
 #define BUFFER_SZ    32
@@ -18,57 +19,66 @@
 #define CMD_SET_ARGS  1
 #define CMD_EXEC_FUNC 2
 
-static uint8_t buffer_raw[ BUFFER_SZ ];
 static uint8_t buffer[ BUFFER_SZ ];
 static uint8_t args[ ARGS_SZ ];
-static int     args_cnt; // This is for easy output to CPU.
 
 
 static void process_command( uint8_t * buf, int sz );
-static void initOutput( void );
+static void writeResult( uint8_t v );
+static void writeEom( void );
+
 
 void cpu_io_init( void )
 {
-	serial_pipe_init();
 	// Initialize serial driver.
 	sdStart( &SERIAL, 0 );
-
-	initOutput();
 }
 
 void cpu_io_process( void )
 {
 	while ( 1 )
 	{
+		uint8_t slash;
+		int     out_index;
+		out_index = 0;
+		slash     = 0;
+
 		// Try reading serial.
-		int in_sz;
-		in_sz = sdAsynchronousRead( &SERIAL, buffer_raw, BUFFER_SZ );
-		if ( in_sz < 1 )
-			chThdSleepMilliseconds( IO_DELAY_MS );
-		else
+		msg_t msg;
+		msg = sdGetTimeout( &SERIAL, TIME_IMMEDIATE );
+		uint8_t noData = ( ( msg == Q_TIMEOUT ) || ( msg == Q_RESET ) ) ? 1 : 0;
+		if ( !noData )
 		{
-			uint8_t eom;
-			uint8_t shift;
-			int     out_index, i;
-			out_index = 0;
-			for ( i=0; i<in_sz; i++ )
+			uint8_t v = (uint8_t)msg;
+			//shift = serial_decode_byte( msg, &(buffer[out_index]), &eom );
+			if ( !slash )
 			{
-				shift = serial_decode_byte( buffer_raw[i], &(buffer[out_index]), &eom );
-				out_index += shift;
-				// Just in case of crazy command
-				out_index = ( out_index < BUFFER_SZ ) ? out_index : BUFFER_SZ;
-				if ( eom )
+				if ( v != '\\' )
+					buffer[ out_index++ ] = v;
+				else
+					slash = 1;
+			}
+			else
+			{
+				slash = 0;
+				if ( v == '\0' )
 				{
-					// If EOM process command.
+					// Execute command
 					process_command( buffer, out_index );
-					// Start writing from the beginning.
 					out_index = 0;
 				}
+				else
+					buffer[ out_index++ ] = v;
 			}
-
-
+			// Just in case of crazy command
+			out_index = ( out_index < BUFFER_SZ ) ? out_index : BUFFER_SZ;
 		}
 	}
+}
+
+uint8_t * funcArgs( void )
+{
+	return args;
 }
 
 static void exec_func( void );
@@ -92,22 +102,68 @@ static void process_command( uint8_t * buf, int sz )
 	}
 }
 
+static void osc_eaux( uint8_t * args );
+static void osc_eref( uint8_t * args );
+static void osc_iaux( uint8_t * args );
 static void set_leds( uint8_t * args );
 static void set_dac( uint8_t * args );
 
 static TFunc funcs[] =
 {
+	osc_eaux,
+	osc_eref,
+	osc_iaux,
 	set_leds,
-	set_dac,
+	set_dac
 };
 
 static void exec_func( void )
 {
-	int func_index = (int)buffer[1] + ((int)buffer[2]) * 256;
+	int func_index = (int)buffer[1];// + ((int)buffer[2]) * 256;
 	// Just to avoid troubles.
 	int funcs_sz = (int)(sizeof(funcs)/sizeof(TFunc));
     func_index = (func_index < funcs_sz) ? func_index : 0;
 	funcs[func_index]( args );
+}
+
+static void writeOscQueue( InputQueue * q )
+{
+	msg_t msg;
+	uint8_t noData;
+	size_t cnt, i;
+	chSysLock();
+		cnt = (chQSpaceI( q ) / 2) * 2;
+	chSysUnlock();
+	for ( i=0; i<cnt; i++ )
+	{
+		msg = chIQGetTimeout( q, TIME_IMMEDIATE );
+		noData = ( ( msg == Q_TIMEOUT ) || ( msg == Q_RESET ) ) ? 1 : 0;
+		uint8_t v;
+		v = ( noData ) ? 0 : (uint8_t)msg;
+		writeResult( v );
+	}
+	writeEom();
+}
+
+static void osc_eaux( uint8_t * args )
+{
+	(void)args;
+	InputQueue * q = eauxQueue();
+	writeOscQueue( q );
+}
+
+static void osc_eref( uint8_t * args )
+{
+	(void)args;
+	InputQueue * q = erefQueue();
+	writeOscQueue( q );
+}
+
+static void osc_iaux( uint8_t * args )
+{
+	(void)args;
+	InputQueue * q = iauxQueue();
+	writeOscQueue( q );
 }
 
 static void set_leds( uint8_t * args )
@@ -127,58 +183,20 @@ static void set_dac( uint8_t * args )
 
 
 
-// Output queue for writing out of MCU.
-static InputQueue queue;
-static uint8_t    queueBuffer[ OUT_QUEUE_SZ ];
 
-uint8_t writeResult( uint8_t v )
+static void writeResult( uint8_t v )
 {
-	chIQPutI( &queue, v );
+	sdPut( &SERIAL, v );
 	if ( v == '\\' )
-		chIQPutI( &queue, v );
-
-	// If too little space left write "End Of Message" and return 1.
-	size_t space = chIQGetEmptyI( &queue );
-	if (space < 4)
-	{
-		writeEom();
-		return 1;
-	}
-	// If space left is fine return 0.
-	return 0;
+		sdPut( &SERIAL, v );
 }
 
-void writeEom( void )
+static void writeEom( void )
 {
-	chQPutI( &queue, '\\' );
-	chQPutI( &queue, '\0' );
+	sdPut( &SERIAL, '\\' );
+	sdPut( &SERIAL, '\0' );
 }
 
-static WORKING_AREA( waOutput, 256 );
-static msg_t outputThread( void *arg )
-{
-    (void)arg;
-    chRegSetThreadName( "o" );
-    // Continuous writing out of MCU.
-    while ( 1 )
-    {
-    	uint8_t data_byte;
-    	size_t cnt;
-    	cnt = chIQReadTimeout( &queue, &data_byte, 1, TIME_INFINITE );
-    	if ( cnt )
-    		sdPut( &SERIAL, data_byte );
-    }
-
-    return 0;
-}
-
-static void initOutput( void )
-{
-	// Initializing input queue.
-	chIQInit( &queue, queueBuffer, OUT_QUEUE_SZ, 0 );
-	// Creating thread.
-	chThdCreateStatic( waOutput, sizeof(waOutput), NORMALPRIO, outputThread, NULL );
-}
 
 
 
