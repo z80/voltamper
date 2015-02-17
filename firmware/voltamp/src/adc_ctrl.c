@@ -3,73 +3,48 @@
 #include "ch.h"
 #include "hal.h"
 
+#include "dac.h"
+
+#define OSC_QUEUE_SZ 	256
+
 #define EAUX_IND 0
 #define EREF_IND 1
 #define IAUX_IND 2
 
+int fbEn = 0;
+int fbEnPrev = 0;
+int fbGainNum = 1;
+int fbGainDen = 1;
+int fbInIndex = 2;
+int fbSetpoint = 2047;
+int dacHigh = 2047;
+int dacLow  = 2047;
+
+InputQueue eaux_queue, eref_queue, iaux_queue;
+uint8_t     eaux_queue_buffer[OSC_QUEUE_SZ],
+			eref_queue_buffer[OSC_QUEUE_SZ],
+			iaux_queue_buffer[OSC_QUEUE_SZ];
+int oscPeriod = 10000;
+int oscTime   = 0;
+
+typedef TMode enum { TDAC, TONEPULSE, TMEANDR, TSWEEP, TFEEDBACK };
+
+static void processDac( void );
+static void processOnePulse( void );
+static void processMeandr( void );
+static void processSaw( void );
+static void processFb( int value );
+
+static void writeDac( void );
+static void processOsc( adcSample_t * buffer );
+
 static void convAdcReadyCb( ADCDriver * adcp, adcsample_t * buffer, size_t n )
 {
-    (void)adcp;
-    //(void)buffer;
-    (void)n;
-    // Buck
-    if ( buffer[ BUCK_CURR_IND ] > buckCurr )
-    {
-        buckPwm -= buckGain;
-	if ( buckPwm < 0 )
-	    buckPwm = 0;
-	pwmEnableChannelI(&CONV_PWM, PWM_BUCK_CHAN, PWM_PERCENTAGE_TO_WIDTH( &CONV_PWM, buckPwm ) );
-    }
-    else
-    {
-        if ( buffer[ BUCK_VOLT_IND ] < buckVolt )
-        {
-    	    buckPwm += buckGain;
-	    if ( buckPwm > 10000 )
-    	        buckPwm = 10000;
-            pwmEnableChannelI(&CONV_PWM, PWM_BUCK_CHAN, PWM_PERCENTAGE_TO_WIDTH( &CONV_PWM, buckPwm ) );
-        }
-        else if ( buffer[ BUCK_VOLT_IND ] > buckVolt )
-        {
-    	    buckPwm -= buckGain;
-	    if ( buckPwm < 0 )
-	        buckPwm = 0;
-    	    pwmEnableChannelI(&CONV_PWM, PWM_BUCK_CHAN, PWM_PERCENTAGE_TO_WIDTH( &CONV_PWM, buckPwm ) );
-        }
-    }
-    // Boost
-    if ( buffer[ BOOST_CURR_IND ] > boostCurr )
-    {
-        boostPwm -= boostGain;
-        if ( boostPwm < 0 )
-	    boostPwm = 0;
-        pwmEnableChannelI(&CONV_PWM, PWM_BOOST_CHAN, PWM_PERCENTAGE_TO_WIDTH( &CONV_PWM, boostPwm ) );
-    }
-    else
-    {
-        if ( buffer[ SOLAR_VOLT_IND ] >= solarVolt )
-        {
-            if ( buffer[ BOOST_VOLT_IND ] < boostVolt )
-            {
-                boostPwm += boostGain;
-                if ( boostPwm > boostMaxPwm )
-                    boostPwm = boostMaxPwm;
-                pwmEnableChannelI(&CONV_PWM, PWM_BOOST_CHAN, PWM_PERCENTAGE_TO_WIDTH( &CONV_PWM, boostPwm ) );
-            }
-            else if ( buffer[ BOOST_VOLT_IND ] > boostVolt )
-            {
-                boostPwm -= boostGain;
-                if ( boostPwm < 0 )
-                    boostPwm = 0;
-                pwmEnableChannelI(&CONV_PWM, PWM_BOOST_CHAN, PWM_PERCENTAGE_TO_WIDTH( &CONV_PWM, boostPwm ) );
-            }
-        }
-        else
-        {
-            boostPwm = 0;
-    	    pwmEnableChannelI(&CONV_PWM, PWM_BOOST_CHAN, PWM_PERCENTAGE_TO_WIDTH( &CONV_PWM, 0 ) );
-        }
-    }
+	if ( fbEn )
+		processFb( buffer[fbInIndex] );
+	else
+		processDac();
+	processOsc( buffer );
 }
 
 #define ADC_NUM_CHANNELS 3
@@ -112,6 +87,10 @@ static const ADCConversionGroup adcGroup =
 
 void initAdc( void )
 {
+	// Oscilloscope queues initialization.
+	chIQInit( &eaux_queue, eaux_queue_buffer, OSC_QUEUE_SZ, 0 );
+	chIQInit( &eref_queue, eref_queue_buffer, OSC_QUEUE_SZ, 0 );
+	chIQInit( &iaux_queue, iaux_queue_buffer, OSC_QUEUE_SZ, 0 );
     // Init ADC pins.
     palSetGroupMode( CONV_ADC_PORT, PAL_PORT_BIT( CONV_ADC_BUCK_VOLT_PIN )  |
     	                            PAL_PORT_BIT( CONV_ADC_BOOST_VOLT_PIN ) |
@@ -124,6 +103,99 @@ void initAdc( void )
     adcStart( &ADCD1, NULL );
     adcStartConversion( &ADCD1, &adcGroup, adcSamples, ADC_BUF_DEPTH );
 }
+
+
+void setOscPeriod( uint32_t t )
+{
+
+}
+
+void setFbSetpoint( int sp )
+{
+
+}
+
+void setFbInput( int ind )
+{
+
+}
+
+void setFbGain( int num, int den )
+{
+
+}
+
+void setFbEn( int en )
+{
+
+}
+
+InputQueue * eauxQueue( void )
+{
+	return &eaux_queue;
+}
+
+InputQueue * erefQueue( void )
+{
+	return &eref_queue;
+}
+
+InputQueue * iauxQueue( void )
+{
+	return &iaux_queue;
+}
+
+static void processFb( int value )
+{
+
+}
+
+static void processDac( void )
+{
+
+}
+
+static void writeDac( void )
+{
+	// Write DAc values.
+	DacCfg dacs;
+	dacs.dac1 = dacHigh;
+	dacs.dac2 = dacLow;
+	dacSet( &dacs );
+}
+
+static void processOsc( adcSample_t * buffer )
+{
+	oscTime += 1;
+	if ( oscTime >= oscPeriod )
+	{
+		oscTime -= oscPeriod;
+		chSysLock();
+			uint16_t v16;
+			uint8_t vLow, vHigh;
+
+			v16 = buffer[0];
+			vLow = (uint8_t)(v16 & 0x00FF);
+			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
+			chIQPutI( &eaux_queue, vLow );
+			chIQPutI( &eaux_queue, vHigh );
+
+			v16 = buffer[1];
+			vLow = (uint8_t)(v16 & 0x00FF);
+			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
+			chIQPutI( &eref_queue, vLow );
+			chIQPutI( &eref_queue, vHigh );
+
+			v16 = buffer[2];
+			vLow = (uint8_t)(v16 & 0x00FF);
+			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
+			chIQPutI( &iaux_queue, vLow );
+			chIQPutI( &iaux_queue, vHigh );
+
+		chSysUnlock();
+	}
+}
+
 
 
 
