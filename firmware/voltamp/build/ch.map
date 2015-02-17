@@ -850,9 +850,6 @@ Discarded input sections
                 0x00000000      0x3b0 build/obj/chprintf.o
  .rodata.str1.4
                 0x00000000        0x8 build/obj/chprintf.o
- .text          0x00000000        0x0 build/obj/dac.o
- .data          0x00000000        0x0 build/obj/dac.o
- .bss           0x00000000        0x0 build/obj/dac.o
  .text          0x00000000        0x0 build/obj/iwdg.o
  .data          0x00000000        0x0 build/obj/iwdg.o
  .bss           0x00000000        0x0 build/obj/iwdg.o
@@ -877,14 +874,9 @@ Discarded input sections
  .text          0x00000000        0x0 build/obj/main.o
  .data          0x00000000        0x0 build/obj/main.o
  .bss           0x00000000        0x0 build/obj/main.o
- .text          0x00000000        0x0 build/obj/serial_pipe.o
- .data          0x00000000        0x0 build/obj/serial_pipe.o
- .bss           0x00000000        0x0 build/obj/serial_pipe.o
- .text.serial_pipe_init
-                0x00000000       0x10 build/obj/serial_pipe.o
- .text.serial_decode_byte
-                0x00000000       0x40 build/obj/serial_pipe.o
- .bss.slash     0x00000000        0x1 build/obj/serial_pipe.o
+ .text          0x00000000        0x0 build/obj/dac.o
+ .data          0x00000000        0x0 build/obj/dac.o
+ .bss           0x00000000        0x0 build/obj/dac.o
  .text          0x00000000        0x0 build/obj/cpu_io.o
  .data          0x00000000        0x0 build/obj/cpu_io.o
  .bss           0x00000000        0x0 build/obj/cpu_io.o
@@ -1037,11 +1029,10 @@ LOAD build/obj/evtimer.o
 LOAD build/obj/syscalls.o
 LOAD build/obj/shell.o
 LOAD build/obj/chprintf.o
-LOAD build/obj/dac.o
 LOAD build/obj/iwdg.o
 LOAD build/obj/iwdg_lld.o
 LOAD build/obj/main.o
-LOAD build/obj/serial_pipe.o
+LOAD build/obj/dac.o
 LOAD build/obj/cpu_io.o
 LOAD build/obj/led_ctrl.o
 LOAD build/obj/adc_ctrl.o
@@ -1429,12 +1420,12 @@ destructors     0x080000ec        0x0
  .text.boardInit
                 0x080024b0       0x10 build/obj/board.o
                 0x080024b0                boardInit
- .text.dacInit  0x080024c0       0x40 build/obj/dac.o
-                0x080024c0                dacInit
- .text.dacSet   0x08002500       0x10 build/obj/dac.o
-                0x08002500                dacSet
- .text.main     0x08002510       0x30 build/obj/main.o
-                0x08002510                main
+ .text.main     0x080024c0       0x30 build/obj/main.o
+                0x080024c0                main
+ .text.dacInit  0x080024f0       0x40 build/obj/dac.o
+                0x080024f0                dacInit
+ .text.dacSet   0x08002530       0x10 build/obj/dac.o
+                0x08002530                dacSet
  .text.cpu_io_init
                 0x08002540       0x10 build/obj/cpu_io.o
                 0x08002540                cpu_io_init
@@ -1723,7 +1714,7 @@ destructors     0x080000ec        0x0
                 0x20002000                __heap_end__ = __ram_end__
 OUTPUT(build/ch.elf elf32-littlearm)
 
-.debug_abbrev   0x00000000     0x670f
+.debug_abbrev   0x00000000     0x665f
  .debug_abbrev  0x00000000       0xd9 build/obj/crt0.o
  .debug_abbrev  0x000000d9       0x74 build/obj/vectors.o
  .debug_abbrev  0x0000014d       0x41 build/obj/chcore.o
@@ -1800,16 +1791,15 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_abbrev  0x000054fe      0x1b5 build/obj/syscalls.o
  .debug_abbrev  0x000056b3      0x2f5 build/obj/shell.o
  .debug_abbrev  0x000059a8      0x153 build/obj/chprintf.o
- .debug_abbrev  0x00005afb       0xe9 build/obj/dac.o
- .debug_abbrev  0x00005be4      0x138 build/obj/iwdg.o
- .debug_abbrev  0x00005d1c      0x164 build/obj/iwdg_lld.o
- .debug_abbrev  0x00005e80       0x68 build/obj/main.o
- .debug_abbrev  0x00005ee8       0xb0 build/obj/serial_pipe.o
- .debug_abbrev  0x00005f98      0x2bf build/obj/cpu_io.o
- .debug_abbrev  0x00006257      0x1b2 build/obj/led_ctrl.o
- .debug_abbrev  0x00006409      0x306 build/obj/adc_ctrl.o
+ .debug_abbrev  0x00005afb      0x138 build/obj/iwdg.o
+ .debug_abbrev  0x00005c33      0x164 build/obj/iwdg_lld.o
+ .debug_abbrev  0x00005d97       0x68 build/obj/main.o
+ .debug_abbrev  0x00005dff       0xe9 build/obj/dac.o
+ .debug_abbrev  0x00005ee8      0x2bf build/obj/cpu_io.o
+ .debug_abbrev  0x000061a7      0x1b2 build/obj/led_ctrl.o
+ .debug_abbrev  0x00006359      0x306 build/obj/adc_ctrl.o
 
-.debug_info     0x00000000    0x1b41c
+.debug_info     0x00000000    0x1b319
  .debug_info    0x00000000      0x345 build/obj/crt0.o
  .debug_info    0x00000345       0xb5 build/obj/vectors.o
  .debug_info    0x000003fa       0x8b build/obj/chcore.o
@@ -1886,16 +1876,15 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_info    0x000169d2      0xc31 build/obj/syscalls.o
  .debug_info    0x00017603      0xc6d build/obj/shell.o
  .debug_info    0x00018270      0x3fc build/obj/chprintf.o
- .debug_info    0x0001866c      0x33c build/obj/dac.o
- .debug_info    0x000189a8      0x29a build/obj/iwdg.o
- .debug_info    0x00018c42      0x256 build/obj/iwdg_lld.o
- .debug_info    0x00018e98       0xbc build/obj/main.o
- .debug_info    0x00018f54      0x103 build/obj/serial_pipe.o
- .debug_info    0x00019057      0xc1e build/obj/cpu_io.o
- .debug_info    0x00019c75      0x634 build/obj/led_ctrl.o
- .debug_info    0x0001a2a9     0x1173 build/obj/adc_ctrl.o
+ .debug_info    0x0001866c      0x29a build/obj/iwdg.o
+ .debug_info    0x00018906      0x256 build/obj/iwdg_lld.o
+ .debug_info    0x00018b5c       0xbc build/obj/main.o
+ .debug_info    0x00018c18      0x33c build/obj/dac.o
+ .debug_info    0x00018f54      0xc1e build/obj/cpu_io.o
+ .debug_info    0x00019b72      0x634 build/obj/led_ctrl.o
+ .debug_info    0x0001a1a6     0x1173 build/obj/adc_ctrl.o
 
-.debug_line     0x00000000     0xaa08
+.debug_line     0x00000000     0xa91f
  .debug_line    0x00000000      0x173 build/obj/crt0.o
  .debug_line    0x00000173       0x69 build/obj/vectors.o
  .debug_line    0x000001dc       0x5e build/obj/chcore.o
@@ -1972,16 +1961,15 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_line    0x00008f4c      0x1f0 build/obj/syscalls.o
  .debug_line    0x0000913c      0x3a3 build/obj/shell.o
  .debug_line    0x000094df      0x33d build/obj/chprintf.o
- .debug_line    0x0000981c      0x197 build/obj/dac.o
- .debug_line    0x000099b3      0x198 build/obj/iwdg.o
- .debug_line    0x00009b4b      0x18d build/obj/iwdg_lld.o
- .debug_line    0x00009cd8      0x108 build/obj/main.o
- .debug_line    0x00009de0       0xe9 build/obj/serial_pipe.o
- .debug_line    0x00009ec9      0x3f1 build/obj/cpu_io.o
- .debug_line    0x0000a2ba      0x2a5 build/obj/led_ctrl.o
- .debug_line    0x0000a55f      0x4a9 build/obj/adc_ctrl.o
+ .debug_line    0x0000981c      0x198 build/obj/iwdg.o
+ .debug_line    0x000099b4      0x18d build/obj/iwdg_lld.o
+ .debug_line    0x00009b41      0x108 build/obj/main.o
+ .debug_line    0x00009c49      0x197 build/obj/dac.o
+ .debug_line    0x00009de0      0x3f1 build/obj/cpu_io.o
+ .debug_line    0x0000a1d1      0x2a5 build/obj/led_ctrl.o
+ .debug_line    0x0000a476      0x4a9 build/obj/adc_ctrl.o
 
-.debug_loc      0x00000000     0xa88f
+.debug_loc      0x00000000     0xa833
  .debug_loc     0x00000000       0x72 build/obj/crt0.o
  .debug_loc     0x00000072      0x11b build/obj/chcore_v7m.o
  .debug_loc     0x0000018d      0x10a build/obj/nvic.o
@@ -2024,17 +2012,16 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_loc     0x00009062      0x15b build/obj/syscalls.o
  .debug_loc     0x000091bd      0x674 build/obj/shell.o
  .debug_loc     0x00009831      0x779 build/obj/chprintf.o
- .debug_loc     0x00009faa       0x20 build/obj/dac.o
- .debug_loc     0x00009fca       0xe6 build/obj/iwdg.o
- .debug_loc     0x0000a0b0       0x45 build/obj/iwdg_lld.o
- .debug_loc     0x0000a0f5       0x20 build/obj/main.o
- .debug_loc     0x0000a115       0x5c build/obj/serial_pipe.o
- .debug_loc     0x0000a171      0x399 build/obj/cpu_io.o
- .debug_loc     0x0000a50a      0x101 build/obj/led_ctrl.o
- .debug_loc     0x0000a60b      0x284 build/obj/adc_ctrl.o
+ .debug_loc     0x00009faa       0xe6 build/obj/iwdg.o
+ .debug_loc     0x0000a090       0x45 build/obj/iwdg_lld.o
+ .debug_loc     0x0000a0d5       0x20 build/obj/main.o
+ .debug_loc     0x0000a0f5       0x20 build/obj/dac.o
+ .debug_loc     0x0000a115      0x399 build/obj/cpu_io.o
+ .debug_loc     0x0000a4ae      0x101 build/obj/led_ctrl.o
+ .debug_loc     0x0000a5af      0x284 build/obj/adc_ctrl.o
 
 .debug_pubnames
-                0x00000000     0x1af4
+                0x00000000     0x1aac
  .debug_pubnames
                 0x00000000       0x56 build/obj/crt0.o
  .debug_pubnames
@@ -2132,24 +2119,22 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_pubnames
                 0x000016ce       0x1f build/obj/chprintf.o
  .debug_pubnames
-                0x000016ed       0x29 build/obj/dac.o
+                0x000016ed       0x3b build/obj/iwdg.o
  .debug_pubnames
-                0x00001716       0x3b build/obj/iwdg.o
+                0x00001728       0x54 build/obj/iwdg_lld.o
  .debug_pubnames
-                0x00001751       0x54 build/obj/iwdg_lld.o
+                0x0000177c       0x1b build/obj/main.o
  .debug_pubnames
-                0x000017a5       0x1b build/obj/main.o
+                0x00001797       0x29 build/obj/dac.o
  .debug_pubnames
-                0x000017c0       0x48 build/obj/serial_pipe.o
+                0x000017c0       0x42 build/obj/cpu_io.o
  .debug_pubnames
-                0x00001808       0x42 build/obj/cpu_io.o
+                0x00001802       0x61 build/obj/led_ctrl.o
  .debug_pubnames
-                0x0000184a       0x61 build/obj/led_ctrl.o
- .debug_pubnames
-                0x000018ab      0x249 build/obj/adc_ctrl.o
+                0x00001863      0x249 build/obj/adc_ctrl.o
 
 .debug_pubtypes
-                0x00000000     0x4435
+                0x00000000     0x4417
  .debug_pubtypes
                 0x00000000       0x44 build/obj/crt0.o
  .debug_pubtypes
@@ -2303,23 +2288,21 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_pubtypes
                 0x00003b33       0xb5 build/obj/chprintf.o
  .debug_pubtypes
-                0x00003be8       0x85 build/obj/dac.o
+                0x00003be8       0x92 build/obj/iwdg.o
  .debug_pubtypes
-                0x00003c6d       0x92 build/obj/iwdg.o
+                0x00003c7a       0x92 build/obj/iwdg_lld.o
  .debug_pubtypes
-                0x00003cff       0x92 build/obj/iwdg_lld.o
+                0x00003d0c       0x1e build/obj/main.o
  .debug_pubtypes
-                0x00003d91       0x1e build/obj/main.o
+                0x00003d2a       0x85 build/obj/dac.o
  .debug_pubtypes
-                0x00003daf       0x1e build/obj/serial_pipe.o
+                0x00003daf      0x250 build/obj/cpu_io.o
  .debug_pubtypes
-                0x00003dcd      0x250 build/obj/cpu_io.o
+                0x00003fff      0x149 build/obj/led_ctrl.o
  .debug_pubtypes
-                0x0000401d      0x149 build/obj/led_ctrl.o
- .debug_pubtypes
-                0x00004166      0x2cf build/obj/adc_ctrl.o
+                0x00004148      0x2cf build/obj/adc_ctrl.o
 
-.debug_aranges  0x00000000     0x1148
+.debug_aranges  0x00000000     0x1120
  .debug_aranges
                 0x00000000       0x38 build/obj/crt0.o
  .debug_aranges
@@ -2411,23 +2394,21 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_aranges
                 0x00000ef0       0x28 build/obj/chprintf.o
  .debug_aranges
-                0x00000f18       0x28 build/obj/dac.o
+                0x00000f18       0x30 build/obj/iwdg.o
  .debug_aranges
-                0x00000f40       0x30 build/obj/iwdg.o
+                0x00000f48       0x30 build/obj/iwdg_lld.o
  .debug_aranges
-                0x00000f70       0x30 build/obj/iwdg_lld.o
+                0x00000f78       0x20 build/obj/main.o
  .debug_aranges
-                0x00000fa0       0x20 build/obj/main.o
+                0x00000f98       0x28 build/obj/dac.o
  .debug_aranges
-                0x00000fc0       0x28 build/obj/serial_pipe.o
+                0x00000fc0       0x60 build/obj/cpu_io.o
  .debug_aranges
-                0x00000fe8       0x60 build/obj/cpu_io.o
+                0x00001020       0x48 build/obj/led_ctrl.o
  .debug_aranges
-                0x00001048       0x48 build/obj/led_ctrl.o
- .debug_aranges
-                0x00001090       0xb8 build/obj/adc_ctrl.o
+                0x00001068       0xb8 build/obj/adc_ctrl.o
 
-.debug_ranges   0x00000000     0x1df8
+.debug_ranges   0x00000000     0x1de0
  .debug_ranges  0x00000000       0x58 build/obj/crt0.o
  .debug_ranges  0x00000058       0x10 build/obj/vectors.o
  .debug_ranges  0x00000068       0x10 build/obj/chcore.o
@@ -2473,16 +2454,15 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_ranges  0x00001a48       0x40 build/obj/syscalls.o
  .debug_ranges  0x00001a88       0xa0 build/obj/shell.o
  .debug_ranges  0x00001b28       0x18 build/obj/chprintf.o
- .debug_ranges  0x00001b40       0x18 build/obj/dac.o
- .debug_ranges  0x00001b58       0x20 build/obj/iwdg.o
- .debug_ranges  0x00001b78       0x20 build/obj/iwdg_lld.o
- .debug_ranges  0x00001b98       0x10 build/obj/main.o
- .debug_ranges  0x00001ba8       0x18 build/obj/serial_pipe.o
- .debug_ranges  0x00001bc0      0x128 build/obj/cpu_io.o
- .debug_ranges  0x00001ce8       0x50 build/obj/led_ctrl.o
- .debug_ranges  0x00001d38       0xc0 build/obj/adc_ctrl.o
+ .debug_ranges  0x00001b40       0x20 build/obj/iwdg.o
+ .debug_ranges  0x00001b60       0x20 build/obj/iwdg_lld.o
+ .debug_ranges  0x00001b80       0x10 build/obj/main.o
+ .debug_ranges  0x00001b90       0x18 build/obj/dac.o
+ .debug_ranges  0x00001ba8      0x128 build/obj/cpu_io.o
+ .debug_ranges  0x00001cd0       0x50 build/obj/led_ctrl.o
+ .debug_ranges  0x00001d20       0xc0 build/obj/adc_ctrl.o
 
-.debug_str      0x00000000     0x3c84
+.debug_str      0x00000000     0x3c4c
  .debug_str     0x00000000      0x1d7 build/obj/crt0.o
                                 0x210 (size before relaxing)
  .debug_str     0x000001d7       0x57 build/obj/vectors.o
@@ -2635,21 +2615,19 @@ OUTPUT(build/ch.elf elf32-littlearm)
                                 0x4b6 (size before relaxing)
  .debug_str     0x00003689       0x9a build/obj/chprintf.o
                                 0x1ef (size before relaxing)
- .debug_str     0x00003723       0x8f build/obj/dac.o
-                                0x1e0 (size before relaxing)
- .debug_str     0x000037b2       0x8a build/obj/iwdg.o
+ .debug_str     0x00003723       0x8a build/obj/iwdg.o
                                 0x195 (size before relaxing)
- .debug_str     0x0000383c       0x48 build/obj/iwdg_lld.o
+ .debug_str     0x000037ad       0x48 build/obj/iwdg_lld.o
                                 0x1a7 (size before relaxing)
- .debug_str     0x00003884       0x12 build/obj/main.o
+ .debug_str     0x000037f5       0x12 build/obj/main.o
                                  0xee (size before relaxing)
- .debug_str     0x00003896       0x3e build/obj/serial_pipe.o
-                                0x10d (size before relaxing)
- .debug_str     0x000038d4       0xd2 build/obj/cpu_io.o
+ .debug_str     0x00003807       0x8f build/obj/dac.o
+                                0x1e0 (size before relaxing)
+ .debug_str     0x00003896       0xd8 build/obj/cpu_io.o
                                 0x507 (size before relaxing)
- .debug_str     0x000039a6       0x5e build/obj/led_ctrl.o
+ .debug_str     0x0000396e       0x5e build/obj/led_ctrl.o
                                 0x315 (size before relaxing)
- .debug_str     0x00003a04      0x280 build/obj/adc_ctrl.o
+ .debug_str     0x000039cc      0x280 build/obj/adc_ctrl.o
                                 0x7a3 (size before relaxing)
 
 .comment        0x00000000       0x2a
@@ -2730,11 +2708,10 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .comment       0x00000000       0x2b build/obj/syscalls.o
  .comment       0x00000000       0x2b build/obj/shell.o
  .comment       0x00000000       0x2b build/obj/chprintf.o
- .comment       0x00000000       0x2b build/obj/dac.o
  .comment       0x00000000       0x2b build/obj/iwdg.o
  .comment       0x00000000       0x2b build/obj/iwdg_lld.o
  .comment       0x00000000       0x2b build/obj/main.o
- .comment       0x00000000       0x2b build/obj/serial_pipe.o
+ .comment       0x00000000       0x2b build/obj/dac.o
  .comment       0x00000000       0x2b build/obj/cpu_io.o
  .comment       0x00000000       0x2b build/obj/led_ctrl.o
  .comment       0x00000000       0x2b build/obj/adc_ctrl.o
@@ -2894,33 +2871,31 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .ARM.attributes
                 0x00000e5b       0x31 build/obj/chprintf.o
  .ARM.attributes
-                0x00000e8c       0x31 build/obj/dac.o
+                0x00000e8c       0x31 build/obj/iwdg.o
  .ARM.attributes
-                0x00000ebd       0x31 build/obj/iwdg.o
+                0x00000ebd       0x31 build/obj/iwdg_lld.o
  .ARM.attributes
-                0x00000eee       0x31 build/obj/iwdg_lld.o
+                0x00000eee       0x31 build/obj/main.o
  .ARM.attributes
-                0x00000f1f       0x31 build/obj/main.o
+                0x00000f1f       0x31 build/obj/dac.o
  .ARM.attributes
-                0x00000f50       0x31 build/obj/serial_pipe.o
+                0x00000f50       0x31 build/obj/cpu_io.o
  .ARM.attributes
-                0x00000f81       0x31 build/obj/cpu_io.o
+                0x00000f81       0x31 build/obj/led_ctrl.o
  .ARM.attributes
-                0x00000fb2       0x31 build/obj/led_ctrl.o
+                0x00000fb2       0x31 build/obj/adc_ctrl.o
  .ARM.attributes
-                0x00000fe3       0x31 build/obj/adc_ctrl.o
+                0x00000fe3       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
  .ARM.attributes
-                0x00001014       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
+                0x0000100c       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcasecmp.o)
  .ARM.attributes
-                0x0000103d       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcasecmp.o)
+                0x00001035       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strchr.o)
  .ARM.attributes
-                0x00001066       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strchr.o)
+                0x0000105e       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strspn.o)
  .ARM.attributes
-                0x0000108f       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strspn.o)
- .ARM.attributes
-                0x000010b8       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-ctype_.o)
+                0x00001087       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-ctype_.o)
 
-.debug_frame    0x00000000     0x2eec
+.debug_frame    0x00000000     0x2eb4
  .debug_frame   0x00000000       0x50 build/obj/crt0.o
  .debug_frame   0x00000050       0x20 build/obj/vectors.o
  .debug_frame   0x00000070       0x20 build/obj/chcore.o
@@ -2966,18 +2941,17 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_frame   0x00002758       0x9c build/obj/syscalls.o
  .debug_frame   0x000027f4      0x128 build/obj/shell.o
  .debug_frame   0x0000291c       0x6c build/obj/chprintf.o
- .debug_frame   0x00002988       0x3c build/obj/dac.o
- .debug_frame   0x000029c4       0x5c build/obj/iwdg.o
- .debug_frame   0x00002a20       0x40 build/obj/iwdg_lld.o
- .debug_frame   0x00002a60       0x2c build/obj/main.o
- .debug_frame   0x00002a8c       0x38 build/obj/serial_pipe.o
- .debug_frame   0x00002ac4       0xf8 build/obj/cpu_io.o
- .debug_frame   0x00002bbc       0xb8 build/obj/led_ctrl.o
- .debug_frame   0x00002c74      0x1c8 build/obj/adc_ctrl.o
- .debug_frame   0x00002e3c       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
- .debug_frame   0x00002e68       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcasecmp.o)
- .debug_frame   0x00002e94       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strchr.o)
- .debug_frame   0x00002ec0       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strspn.o)
+ .debug_frame   0x00002988       0x5c build/obj/iwdg.o
+ .debug_frame   0x000029e4       0x40 build/obj/iwdg_lld.o
+ .debug_frame   0x00002a24       0x2c build/obj/main.o
+ .debug_frame   0x00002a50       0x3c build/obj/dac.o
+ .debug_frame   0x00002a8c       0xf8 build/obj/cpu_io.o
+ .debug_frame   0x00002b84       0xb8 build/obj/led_ctrl.o
+ .debug_frame   0x00002c3c      0x1c8 build/obj/adc_ctrl.o
+ .debug_frame   0x00002e04       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
+ .debug_frame   0x00002e30       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcasecmp.o)
+ .debug_frame   0x00002e5c       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strchr.o)
+ .debug_frame   0x00002e88       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strspn.o)
 
 Cross Reference Table
 
@@ -3763,8 +3737,6 @@ sd_lld_start                                      build/obj/serial_lld.o
                                                   build/obj/serial.o
 sd_lld_stop                                       build/obj/serial_lld.o
                                                   build/obj/serial.o
-serial_decode_byte                                build/obj/serial_pipe.o
-serial_pipe_init                                  build/obj/serial_pipe.o
 setFbEn                                           build/obj/adc_ctrl.o
 setFbGain                                         build/obj/adc_ctrl.o
 setFbInput                                        build/obj/adc_ctrl.o
@@ -3776,7 +3748,6 @@ shellCreateStatic                                 build/obj/shell.o
 shellGetLine                                      build/obj/shell.o
 shellInit                                         build/obj/shell.o
 shell_terminated                                  build/obj/shell.o
-slash                                             build/obj/serial_pipe.o
 stm32_clock_init                                  build/obj/hal_lld.o
                                                   build/obj/board.o
 strcasecmp                                        /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcasecmp.o)

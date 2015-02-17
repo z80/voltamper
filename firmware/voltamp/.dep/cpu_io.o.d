@@ -30,7 +30,7 @@ build/obj/cpu_io.o: src/cpu_io.c src/cpu_io.h \
  ../chibios_2.4.x/os/kernel/include/chstreams.h \
  ../chibios_2.4.x/os/kernel/include/chioch.h \
  ../chibios_2.4.x/os/kernel/include/chfiles.h \
- ../chibios_2.4.x/os/kernel/include/chdebug.h src/serial_pipe.h \
+ ../chibios_2.4.x/os/kernel/include/chdebug.h \
  ../chibios_2.4.x/os/hal/include/hal.h board/board.h halconf.h mcuconf.h \
  ../chibios_2.4.x/os/hal/platforms/STM32F1xx/hal_lld.h \
  ../chibios_2.4.x/os/hal/platforms/STM32/stm32.h \
@@ -132,8 +132,6 @@ chconf.h:
 ../chibios_2.4.x/os/kernel/include/chfiles.h:
 
 ../chibios_2.4.x/os/kernel/include/chdebug.h:
-
-src/serial_pipe.h:
 
 ../chibios_2.4.x/os/hal/include/hal.h:
 

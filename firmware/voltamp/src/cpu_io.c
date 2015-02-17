@@ -1,6 +1,5 @@
 
 #include "cpu_io.h"
-#include "serial_pipe.h"
 
 #include "ch.h"
 #include "hal.h"
