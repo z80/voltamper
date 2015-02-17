@@ -4,9 +4,14 @@
 
 #include "ch.h"
 
+// Modes of operation.
+#define TDAC      0
+#define TONEPULSE 1
+#define TMEANDR   2
+#define TSWEEP    3
+#define TFEEDBACK 4
+
 void initAdc( void );
-
-
 
 void setOscPeriod( uint32_t t );
 
@@ -15,6 +20,7 @@ void setFbInput( int ind );
 void setFbGain( int num, int den );
 void setFbEn( int en );
 
+OutputQueue * commandQueue( void );
 InputQueue * eauxQueue( void );
 InputQueue * erefQueue( void );
 InputQueue * iauxQueue( void );

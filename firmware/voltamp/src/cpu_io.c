@@ -6,7 +6,7 @@
 
 #include "led_ctrl.h"
 #include "adc_ctrl.h"
-#include "dac.h"
+#include "relay_ctrl.h"
 
 #define BUFFER_SZ    32
 #define ARGS_SZ      32
@@ -105,7 +105,11 @@ static void osc_eaux( uint8_t * args );
 static void osc_eref( uint8_t * args );
 static void osc_iaux( uint8_t * args );
 static void set_leds( uint8_t * args );
+static void set_out_relay( uint8_t * args );
+static void set_sc_relay( uint8_t * args );
 static void set_dac( uint8_t * args );
+static void set_one_pulse( uint8_t * args );
+static void set_meandr( uint8_t * args );
 
 static TFunc funcs[] =
 {
@@ -170,14 +174,32 @@ static void set_leds( uint8_t * args )
 	setLeds( args[0] );
 }
 
-static void set_dac( uint8_t * args )
+static void set_out_relay( uint8_t * args )
 {
-	DacCfg dacs;
-	dacs.dac1 = (uint16_t)args[0] + ((uint16_t)args[1] << 8);
-	dacs.dac2 = (uint16_t)args[2] + ((uint16_t)args[3] << 8);
-	dacSet( &dacs );
+    setOutRelay( args[0] );
 }
 
+static void set_sc_relay( uint8_t * args )
+{
+    setScRelay( args[0] );
+}
+
+static void set_dac( uint8_t * args )
+{
+    (void)args;
+	OutputQueue * q = commandQueue();
+	chOQPut( q, TDAC );
+}
+
+static void set_one_pulse( uint8_t * args )
+{
+
+}
+
+static void set_meandr( uint8_t * args );
+{
+
+}
 
 
 

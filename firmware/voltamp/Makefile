@@ -92,7 +92,8 @@ CSRC = $(PORTSRC) \
        ./src/dac.c \
        ./src/cpu_io.c \
        ./src/led_ctrl.c \
-       ./src/adc_ctrl.c
+       ./src/adc_ctrl.c \
+       ./src/relay_ctrl.c
        
        #./src/cpal_usercallback.c \
        #./cpal_i2c/cpal_hal.c \

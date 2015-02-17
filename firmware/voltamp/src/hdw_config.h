@@ -14,11 +14,18 @@
 #define LED_2_PORT   GPIOB
 #define LED_2_PIN    1
 
+// ADC inputs
 #define PORT_ADC	GPIOC
 #define PIN_EAUX	10
 #define PIN_EREF	11
 #define PIN_IAUX	12
 
+// Relays.
+#define OUT_RELAY_PORT  GPIOB
+#define OUT_RELAY_PIN   9
+
+#define SC_RELAY_PORT   GPIOB
+#define SC_RELAY_PIN    8
 
 #endif
 

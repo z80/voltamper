@@ -44,9 +44,9 @@ static msg_t ledsThread( void *arg )
 
 void initLed( void )
 {
-	palSetPad( LED_0_PORT,     LED_0_PIN );
-	palSetPad( LED_1_PORT,     LED_1_PIN );
-	palSetPad( LED_2_PORT,     LED_2_PIN );
+	palClearPad( LED_0_PORT,   LED_0_PIN );
+	palClearPad( LED_1_PORT,   LED_1_PIN );
+	palClearPad( LED_2_PORT,   LED_2_PIN );
 	palSetPadMode( LED_0_PORT, LED_0_PIN, PAL_MODE_OUTPUT_PUSHPULL );
 	palSetPadMode( LED_1_PORT, LED_1_PIN, PAL_MODE_OUTPUT_PUSHPULL );
 	palSetPadMode( LED_2_PORT, LED_2_PIN, PAL_MODE_OUTPUT_PUSHPULL );

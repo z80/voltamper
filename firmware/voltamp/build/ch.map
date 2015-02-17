@@ -927,6 +927,15 @@ Discarded input sections
  .bss.fbEn      0x00000000        0x4 build/obj/adc_ctrl.o
  .data.fbSetpoint
                 0x00000000        0x4 build/obj/adc_ctrl.o
+ .text          0x00000000        0x0 build/obj/relay_ctrl.o
+ .data          0x00000000        0x0 build/obj/relay_ctrl.o
+ .bss           0x00000000        0x0 build/obj/relay_ctrl.o
+ .text.initRelay
+                0x00000000       0x30 build/obj/relay_ctrl.o
+ .text.setOutRelay
+                0x00000000       0x20 build/obj/relay_ctrl.o
+ .text.setScRelay
+                0x00000000       0x20 build/obj/relay_ctrl.o
  .text          0x00000000       0xb4 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
  .data          0x00000000        0x0 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
  .bss           0x00000000        0x0 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
@@ -1036,6 +1045,7 @@ LOAD build/obj/dac.o
 LOAD build/obj/cpu_io.o
 LOAD build/obj/led_ctrl.o
 LOAD build/obj/adc_ctrl.o
+LOAD build/obj/relay_ctrl.o
 START GROUP
 LOAD /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/thumb2/libgcc.a
 LOAD /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a
@@ -1714,7 +1724,7 @@ destructors     0x080000ec        0x0
                 0x20002000                __heap_end__ = __ram_end__
 OUTPUT(build/ch.elf elf32-littlearm)
 
-.debug_abbrev   0x00000000     0x665f
+.debug_abbrev   0x00000000     0x6723
  .debug_abbrev  0x00000000       0xd9 build/obj/crt0.o
  .debug_abbrev  0x000000d9       0x74 build/obj/vectors.o
  .debug_abbrev  0x0000014d       0x41 build/obj/chcore.o
@@ -1798,8 +1808,9 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_abbrev  0x00005ee8      0x2bf build/obj/cpu_io.o
  .debug_abbrev  0x000061a7      0x1b2 build/obj/led_ctrl.o
  .debug_abbrev  0x00006359      0x306 build/obj/adc_ctrl.o
+ .debug_abbrev  0x0000665f       0xc4 build/obj/relay_ctrl.o
 
-.debug_info     0x00000000    0x1b319
+.debug_info     0x00000000    0x1b4c4
  .debug_info    0x00000000      0x345 build/obj/crt0.o
  .debug_info    0x00000345       0xb5 build/obj/vectors.o
  .debug_info    0x000003fa       0x8b build/obj/chcore.o
@@ -1883,8 +1894,9 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_info    0x00018f54      0xc1e build/obj/cpu_io.o
  .debug_info    0x00019b72      0x634 build/obj/led_ctrl.o
  .debug_info    0x0001a1a6     0x1173 build/obj/adc_ctrl.o
+ .debug_info    0x0001b319      0x1ab build/obj/relay_ctrl.o
 
-.debug_line     0x00000000     0xa91f
+.debug_line     0x00000000     0xaac6
  .debug_line    0x00000000      0x173 build/obj/crt0.o
  .debug_line    0x00000173       0x69 build/obj/vectors.o
  .debug_line    0x000001dc       0x5e build/obj/chcore.o
@@ -1968,8 +1980,9 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_line    0x00009de0      0x3f1 build/obj/cpu_io.o
  .debug_line    0x0000a1d1      0x2a5 build/obj/led_ctrl.o
  .debug_line    0x0000a476      0x4a9 build/obj/adc_ctrl.o
+ .debug_line    0x0000a91f      0x1a7 build/obj/relay_ctrl.o
 
-.debug_loc      0x00000000     0xa833
+.debug_loc      0x00000000     0xa88f
  .debug_loc     0x00000000       0x72 build/obj/crt0.o
  .debug_loc     0x00000072      0x11b build/obj/chcore_v7m.o
  .debug_loc     0x0000018d      0x10a build/obj/nvic.o
@@ -2019,9 +2032,10 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_loc     0x0000a115      0x399 build/obj/cpu_io.o
  .debug_loc     0x0000a4ae      0x101 build/obj/led_ctrl.o
  .debug_loc     0x0000a5af      0x284 build/obj/adc_ctrl.o
+ .debug_loc     0x0000a833       0x5c build/obj/relay_ctrl.o
 
 .debug_pubnames
-                0x00000000     0x1aac
+                0x00000000     0x1aeb
  .debug_pubnames
                 0x00000000       0x56 build/obj/crt0.o
  .debug_pubnames
@@ -2132,9 +2146,11 @@ OUTPUT(build/ch.elf elf32-littlearm)
                 0x00001802       0x61 build/obj/led_ctrl.o
  .debug_pubnames
                 0x00001863      0x249 build/obj/adc_ctrl.o
+ .debug_pubnames
+                0x00001aac       0x3f build/obj/relay_ctrl.o
 
 .debug_pubtypes
-                0x00000000     0x4417
+                0x00000000     0x4470
  .debug_pubtypes
                 0x00000000       0x44 build/obj/crt0.o
  .debug_pubtypes
@@ -2301,8 +2317,10 @@ OUTPUT(build/ch.elf elf32-littlearm)
                 0x00003fff      0x149 build/obj/led_ctrl.o
  .debug_pubtypes
                 0x00004148      0x2cf build/obj/adc_ctrl.o
+ .debug_pubtypes
+                0x00004417       0x59 build/obj/relay_ctrl.o
 
-.debug_aranges  0x00000000     0x1120
+.debug_aranges  0x00000000     0x1150
  .debug_aranges
                 0x00000000       0x38 build/obj/crt0.o
  .debug_aranges
@@ -2407,8 +2425,10 @@ OUTPUT(build/ch.elf elf32-littlearm)
                 0x00001020       0x48 build/obj/led_ctrl.o
  .debug_aranges
                 0x00001068       0xb8 build/obj/adc_ctrl.o
+ .debug_aranges
+                0x00001120       0x30 build/obj/relay_ctrl.o
 
-.debug_ranges   0x00000000     0x1de0
+.debug_ranges   0x00000000     0x1e00
  .debug_ranges  0x00000000       0x58 build/obj/crt0.o
  .debug_ranges  0x00000058       0x10 build/obj/vectors.o
  .debug_ranges  0x00000068       0x10 build/obj/chcore.o
@@ -2461,8 +2481,9 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_ranges  0x00001ba8      0x128 build/obj/cpu_io.o
  .debug_ranges  0x00001cd0       0x50 build/obj/led_ctrl.o
  .debug_ranges  0x00001d20       0xc0 build/obj/adc_ctrl.o
+ .debug_ranges  0x00001de0       0x20 build/obj/relay_ctrl.o
 
-.debug_str      0x00000000     0x3c4c
+.debug_str      0x00000000     0x3c80
  .debug_str     0x00000000      0x1d7 build/obj/crt0.o
                                 0x210 (size before relaxing)
  .debug_str     0x000001d7       0x57 build/obj/vectors.o
@@ -2629,6 +2650,8 @@ OUTPUT(build/ch.elf elf32-littlearm)
                                 0x315 (size before relaxing)
  .debug_str     0x000039cc      0x280 build/obj/adc_ctrl.o
                                 0x7a3 (size before relaxing)
+ .debug_str     0x00003c4c       0x34 build/obj/relay_ctrl.o
+                                0x145 (size before relaxing)
 
 .comment        0x00000000       0x2a
  .comment       0x00000000       0x2a build/obj/crt0.o
@@ -2715,6 +2738,7 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .comment       0x00000000       0x2b build/obj/cpu_io.o
  .comment       0x00000000       0x2b build/obj/led_ctrl.o
  .comment       0x00000000       0x2b build/obj/adc_ctrl.o
+ .comment       0x00000000       0x2b build/obj/relay_ctrl.o
 
 .ARM.attributes
                 0x00000000       0x31
@@ -2885,17 +2909,19 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .ARM.attributes
                 0x00000fb2       0x31 build/obj/adc_ctrl.o
  .ARM.attributes
-                0x00000fe3       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
+                0x00000fe3       0x31 build/obj/relay_ctrl.o
  .ARM.attributes
-                0x0000100c       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcasecmp.o)
+                0x00001014       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
  .ARM.attributes
-                0x00001035       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strchr.o)
+                0x0000103d       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcasecmp.o)
  .ARM.attributes
-                0x0000105e       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strspn.o)
+                0x00001066       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strchr.o)
  .ARM.attributes
-                0x00001087       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-ctype_.o)
+                0x0000108f       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strspn.o)
+ .ARM.attributes
+                0x000010b8       0x29 /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-ctype_.o)
 
-.debug_frame    0x00000000     0x2eb4
+.debug_frame    0x00000000     0x2f04
  .debug_frame   0x00000000       0x50 build/obj/crt0.o
  .debug_frame   0x00000050       0x20 build/obj/vectors.o
  .debug_frame   0x00000070       0x20 build/obj/chcore.o
@@ -2948,10 +2974,11 @@ OUTPUT(build/ch.elf elf32-littlearm)
  .debug_frame   0x00002a8c       0xf8 build/obj/cpu_io.o
  .debug_frame   0x00002b84       0xb8 build/obj/led_ctrl.o
  .debug_frame   0x00002c3c      0x1c8 build/obj/adc_ctrl.o
- .debug_frame   0x00002e04       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
- .debug_frame   0x00002e30       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcasecmp.o)
- .debug_frame   0x00002e5c       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strchr.o)
- .debug_frame   0x00002e88       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strspn.o)
+ .debug_frame   0x00002e04       0x50 build/obj/relay_ctrl.o
+ .debug_frame   0x00002e54       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-memset.o)
+ .debug_frame   0x00002e80       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strcasecmp.o)
+ .debug_frame   0x00002eac       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strchr.o)
+ .debug_frame   0x00002ed8       0x2c /home/z80/programs/code-sourcery/2011.03-42/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2/libc.a(lib_a-strspn.o)
 
 Cross Reference Table
 
@@ -3070,6 +3097,7 @@ _lseek_r                                          build/obj/syscalls.o
 _pal_lld_init                                     build/obj/pal_lld.o
                                                   build/obj/hal.o
 _pal_lld_setgroupmode                             build/obj/pal_lld.o
+                                                  build/obj/relay_ctrl.o
                                                   build/obj/adc_ctrl.o
                                                   build/obj/led_ctrl.o
                                                   build/obj/dac.o
@@ -3632,6 +3660,7 @@ initAdc                                           build/obj/adc_ctrl.o
                                                   build/obj/main.o
 initLed                                           build/obj/led_ctrl.o
                                                   build/obj/main.o
+initRelay                                         build/obj/relay_ctrl.o
 iwdgInit                                          build/obj/iwdg.o
 iwdgReset                                         build/obj/iwdg.o
 iwdgStart                                         build/obj/iwdg.o
@@ -3744,6 +3773,8 @@ setFbSetpoint                                     build/obj/adc_ctrl.o
 setLeds                                           build/obj/led_ctrl.o
                                                   build/obj/cpu_io.o
 setOscPeriod                                      build/obj/adc_ctrl.o
+setOutRelay                                       build/obj/relay_ctrl.o
+setScRelay                                        build/obj/relay_ctrl.o
 shellCreateStatic                                 build/obj/shell.o
 shellGetLine                                      build/obj/shell.o
 shellInit                                         build/obj/shell.o

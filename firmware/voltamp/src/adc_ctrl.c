@@ -36,13 +36,6 @@ uint8_t     command_queue_buffer[4];
 int oscPeriod = 10000;
 int oscTime   = 0;
 
-// Modes of operation.
-#define TDAC      0
-#define TONEPULSE 1
-#define TMEANDR   2
-#define TSWEEP    3
-#define TFEEDBACK 4
-
 typedef void (*TInitMode)( void );
 typedef void (*TProcessMode)( void );
 typedef struct TMode
@@ -190,6 +183,11 @@ void setFbGain( int num, int den )
 void setFbEn( int en )
 {
 	(void)en;
+}
+
+OutputQueue * commandQueue( void )
+{
+    return &command_queue;
 }
 
 InputQueue * eauxQueue( void )
