@@ -29,10 +29,12 @@ static msg_t ledsThread( void *arg )
             else
             	palClearPad( LED_1_PORT, LED_1_PIN );
 
+            /*
             if ( arg & 4 )
                 palTogglePad( LED_2_PORT, LED_2_PIN );
             else
             	palClearPad( LED_2_PORT, LED_2_PIN );
+            */
         chMtxUnlock();
         chThdSleepMilliseconds( 250 );
     }

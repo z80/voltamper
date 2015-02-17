@@ -6,6 +6,7 @@
 #include "hdw_config.h"
 #include "dac.h"
 #include "cpu_io.h"
+#include "led_ctrl.h"
 
 #define OSC_QUEUE_SZ 	256
 
@@ -83,9 +84,15 @@ static void convAdcReadyCb( ADCDriver * adcp, adcsample_t * buffer, size_t n )
 {
 	(void)adcp;
 	(void)n;
+	// For debugging purposes toggling LED3.
+	toggleLedsI( 4 );
+
+	// Process mode.
+	modes[mode].process();
+
 	// Process oscilloscope regardless of all other conditions.
 	processOsc( buffer );
-	// Process current mode.
+
 	// Query for command.
 	chSysLockFromIsr();
 		msg_t msg;
@@ -95,11 +102,10 @@ static void convAdcReadyCb( ADCDriver * adcp, adcsample_t * buffer, size_t n )
 			// New mode if mode has arrived.
 			mode = (uint8_t)msg;
 	chSysUnlockFromIsr();
+
 	// Init new mode.
 	if ( newMode )
 		modes[mode].init();
-	// Process mode.
-	modes[mode].process();
 }
 
 #define ADC_NUM_CHANNELS 3
@@ -320,7 +326,7 @@ static void processOsc( adcsample_t * buffer )
 	if ( oscTime >= oscPeriod )
 	{
 		oscTime -= oscPeriod;
-		chSysLock();
+		chSysLockFromIsr();
 			uint16_t v16;
 			uint8_t vLow, vHigh;
 
@@ -342,7 +348,7 @@ static void processOsc( adcsample_t * buffer )
 			chIQPutI( &iaux_queue, vLow );
 			chIQPutI( &iaux_queue, vHigh );
 
-		chSysUnlock();
+		chSysUnlockFromIsr();
 	}
 }
 

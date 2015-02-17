@@ -63,7 +63,7 @@ build/obj/adc_ctrl.o: src/adc_ctrl.c src/adc_ctrl.h \
  ../chibios_2.4.x/os/hal/include/usb.h \
  ../chibios_2.4.x/os/hal/include/mmc_spi.h \
  ../chibios_2.4.x/os/hal/include/serial_usb.h src/hdw_config.h src/dac.h \
- src/cpu_io.h
+ src/cpu_io.h src/led_ctrl.h
 
 src/adc_ctrl.h:
 
@@ -208,3 +208,5 @@ src/hdw_config.h:
 src/dac.h:
 
 src/cpu_io.h:
+
+src/led_ctrl.h:
