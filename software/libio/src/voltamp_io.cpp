@@ -22,12 +22,14 @@ public:
     static const int CMD_EXEC_FUNC;
 
     static const int TIMEOUT;
+    static const int IN_BUFFER_SZ;
 };
 
 const int VoltampIo::PD::CMD_SET_ARGS  = 1;
 const int VoltampIo::PD::CMD_EXEC_FUNC = 2;
 
-const int VoltampIo::PD::TIMEOUT = 3;
+const int VoltampIo::PD::TIMEOUT = 3000;
+const int VoltampIo::PD::IN_BUFFER_SZ = (2* 2024);
 
 void VoltampIo::PD::encodeData( quint8 * data, int sz )
 {
@@ -56,6 +58,130 @@ VoltampIo::~VoltampIo()
     delete pd;
 }
 
+bool VoltampIo::osc_eaux( QVector<quint16> & vals )
+{
+    quint8 funcInd = 0;
+    bool res = execFunc( funcInd );
+    if ( !res )
+        return false;
+    bool eom;
+    QByteArray & arr = pd->buffer;
+    arr.resize( PD::IN_BUFFER_SZ );
+    int cnt = read( reinterpret_cast<quint8 *>( arr.data() ), arr.size(), eom );
+    if ( !eom )
+        return false;
+    cnt /= 2;
+    vals.resize( cnt );
+    quint8 * b = reinterpret_cast<quint8 *>( arr.data() );
+    for ( int i=0; i<cnt; i++ )
+        vals[i] = static_cast<quint16>( (b[2*i]) ) + ( static_cast<quint16>( (b[2*i+1]) ) << 8 );
+    return true;
+}
+
+bool VoltampIo::osc_eref( QVector<quint16> & vals )
+{
+    quint8 funcInd = 1;
+    bool res = execFunc( funcInd );
+    if ( !res )
+        return false;
+    bool eom;
+    QByteArray & arr = pd->buffer;
+    arr.resize( PD::IN_BUFFER_SZ );
+    int cnt = read( reinterpret_cast<quint8 *>( arr.data() ), arr.size(), eom );
+    if ( !eom )
+        return false;
+    cnt /= 2;
+    vals.resize( cnt );
+    quint8 * b = reinterpret_cast<quint8 *>( arr.data() );
+    for ( int i=0; i<cnt; i++ )
+        vals[i] = static_cast<quint16>( (b[2*i]) ) + ( static_cast<quint16>( (b[2*i+1]) ) << 8 );
+    return true;
+}
+
+bool VoltampIo::osc_iaux( QVector<quint16> & vals )
+{
+    quint8 funcInd = 2;
+    bool res = execFunc( funcInd );
+    if ( !res )
+        return false;
+    bool eom;
+    QByteArray & arr = pd->buffer;
+    arr.resize( PD::IN_BUFFER_SZ );
+    int cnt = read( reinterpret_cast<quint8 *>( arr.data() ), arr.size(), eom );
+    if ( !eom )
+        return false;
+    cnt /= 2;
+    vals.resize( cnt );
+    quint8 * b = reinterpret_cast<quint8 *>( arr.data() );
+    for ( int i=0; i<cnt; i++ )
+        vals[i] = static_cast<quint16>( (b[2*i]) ) + ( static_cast<quint16>( (b[2*i+1]) ) << 8 );
+    return true;
+}
+
+bool VoltampIo::osc_set_period( qreal secs, int per_pts )
+{
+    QByteArray & b = pd->buffer_raw;
+    b.clear();
+    b.reserve( 4 );
+
+    quint32 ticks = static_cast<quint32>( secs * 24000000.0 / (3*28.5) / static_cast<qreal>( per_pts ) );
+
+    quint8 v;
+    v = static_cast<quint8>( ticks & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (ticks >> 8) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (ticks >> 16) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (ticks >> 24) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+
+    bool res;
+    res = setArgs( reinterpret_cast<quint8 *>( b.data() ), b.size() );
+    if ( !res )
+        return false;
+
+    quint8 funcInd = 3;
+    res = execFunc( funcInd );
+    if ( !res )
+        return false;
+
+    return true;
+}
+
+bool VoltampIo::set_leds( int leds )
+{
+
+}
+
+bool VoltampIo::set_out_relay( bool en )
+{
+
+}
+
+bool VoltampIo::set_sc_relay( bool en )
+{
+
+}
+
+bool VoltampIo::set_dac_raw( int dacLow, int dacHigh )
+{
+
+}
+
+bool VoltampIo::set_one_pulse_raw( int dacLow, int dacHigh, int time )
+{
+
+}
+
+bool VoltampIo::set_meandr_raw( int dacLow1, int dacHigh1, int time1, int dacLow2, int dacHigh2, int time2 )
+{
+
+}
+
+
+
+
 bool VoltampIo::setArgs( quint8 * data, int dataSz )
 {
     QByteArray & arr = pd->buffer_raw;
@@ -69,7 +195,7 @@ bool VoltampIo::setArgs( quint8 * data, int dataSz )
     return ( cnt == pd->buffer.size() );
 }
 
-bool VoltampIo::execFunc( quint16 funcId )
+bool VoltampIo::execFunc( quint8 funcId )
 {
     QByteArray & arr = pd->buffer_raw;
     arr.reserve( 2 + 1 );
