@@ -16,7 +16,7 @@ public:
   void close();
 
   int write( quint8 * data, int dataSz );
-  int read( quint8 * data, int dataSz );
+  int read( quint8 * data, int dataSz, bool tillTimeout = false );
 
 private:
   class PD;

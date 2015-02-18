@@ -15,7 +15,11 @@ public:
     }
 
     QextSerialPort * ftdi;
+
+    static const int TIMEOUT;
 };
+
+const int Io::PD::TIMEOUT = 3000;
 
 Io::Io()
 {
@@ -81,9 +85,36 @@ int Io::write( quint8 * data, int dataSz )
     return cnt;
 }
 
-int Io::read( quint8 * data, int dataSz )
+class Sleep: public QThread
 {
-    int cnt = pd->ftdi->read( reinterpret_cast<char *>( data ), dataSz );
+public:
+    Sleep()
+        : QThread()
+    {
+    }
+
+    ~Sleep()
+    {
+    }
+
+    static void msleep( int ms )
+    {
+        QThread::msleep( ms );
+    }
+};
+
+int Io::read( quint8 * data, int dataSz, bool tillTimeout )
+{
+    QTime t0 = QTime::currentTime();
+    t0.start();
+    int cnt;
+    int totalCnt = 0;
+    do {
+        cnt = pd->ftdi->read( reinterpret_cast<char *>( &(data[totalCnt]) ), 1 );
+        totalCnt += cnt;
+        if ( ( tillTimeout ) && (cnt < 1) )
+            Sleep::msleep( 1 );
+    } while ( (cnt > 0) || ( (tillTimeout) && (t0.elapsed() < PD::TIMEOUT) ) );
     return cnt;
 }
 
