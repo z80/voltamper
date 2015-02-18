@@ -104,6 +104,7 @@ static void process_command( uint8_t * buf, int sz )
 static void osc_eaux( uint8_t * args );
 static void osc_eref( uint8_t * args );
 static void osc_iaux( uint8_t * args );
+static void osc_set_period( uint8_t * args );
 static void set_leds( uint8_t * args );
 static void set_out_relay( uint8_t * args );
 static void set_sc_relay( uint8_t * args );
@@ -116,8 +117,13 @@ static TFunc funcs[] =
 	osc_eaux,
 	osc_eref,
 	osc_iaux,
-	set_leds,
-	set_dac
+	osc_set_period,
+    set_leds,
+	set_out_relay,
+	set_sc_relay,
+	set_dac,
+	set_one_pulse,
+	set_meandr
 };
 
 static void exec_func( void )
@@ -169,6 +175,17 @@ static void osc_iaux( uint8_t * args )
 	writeOscQueue( q );
 }
 
+static void osc_set_period( uint8_t * args )
+{
+    (void)args;
+    uint32_t period;
+    period = (uint32_t)args[0] +
+             (((uint32_t)args[1]) << 8) +
+             (((uint32_t)args[2]) << 16) +
+             (((uint32_t)args[3]) << 24);
+    setOscPeriod( period );
+}
+
 static void set_leds( uint8_t * args )
 {
 	setLeds( args[0] );
@@ -193,12 +210,16 @@ static void set_dac( uint8_t * args )
 
 static void set_one_pulse( uint8_t * args )
 {
-
+    (void)args;
+    OutputQueue * q = commandQueue();
+    chOQPut( q, TONEPULSE );
 }
 
-static void set_meandr( uint8_t * args );
+static void set_meandr( uint8_t * args )
 {
-
+    (void)args;
+    OutputQueue * q = commandQueue();
+    chOQPut( q, TMEANDR );
 }
 
 
