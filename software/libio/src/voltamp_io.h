@@ -11,11 +11,11 @@ public:
     ~VoltampIo();
 
     bool setArgs( quint8 * data, int dataSz );
-    int  readData( quint8 * data, int dataSz );
     bool execFunc( quint16 funcId );
+    int  readData( quint8 * data, int dataSz );
 protected:
     int write( quint8 * data, int dataSz );
-    int read( quint8 * data, int dataSz );
+    int read( quint8 * data, int dataSz, bool & eom );
 
 private:
     class PD;

@@ -20,11 +20,14 @@ public:
 
     static const int CMD_SET_ARGS;
     static const int CMD_EXEC_FUNC;
+
+    static const int TIMEOUT;
 };
 
 const int VoltampIo::PD::CMD_SET_ARGS  = 1;
 const int VoltampIo::PD::CMD_EXEC_FUNC = 2;
 
+const int VoltampIo::PD::TIMEOUT = 3;
 
 void VoltampIo::PD::encodeData( quint8 * data, int sz )
 {
@@ -66,12 +69,6 @@ bool VoltampIo::setArgs( quint8 * data, int dataSz )
     return ( cnt == pd->buffer.size() );
 }
 
-int VoltampIo::readData( quint8 * data, int dataSz )
-{
-    int cnt = read( data, dataSz );
-    return cnt;
-}
-
 bool VoltampIo::execFunc( quint16 funcId )
 {
     QByteArray & arr = pd->buffer_raw;
@@ -88,6 +85,15 @@ bool VoltampIo::execFunc( quint16 funcId )
     return ( cnt == pd->buffer.size() );
 }
 
+int VoltampIo::readData( quint8 * data, int dataSz )
+{
+    bool eom;
+    int cnt = read( data, dataSz, eom );
+    if ( !eom )
+        return -1;
+    return cnt;
+}
+
 int VoltampIo::write( quint8 * data, int dataSz )
 {
     pd->encodeData( data, dataSz );
@@ -95,17 +101,38 @@ int VoltampIo::write( quint8 * data, int dataSz )
     return cnt;
 }
 
-int VoltampIo::read( quint8 * data, int dataSz )
+class Sleep: public QThread
 {
-    // Here will need to implement readint until end of message is met or timeout is met.
+public:
+    Sleep()
+        : QThread()
+    {
+    }
+
+    ~Sleep()
+    {
+    }
+
+    static void msleep( int ms )
+    {
+        QThread::msleep( ms );
+    }
+};
+
+int VoltampIo::read( quint8 * data, int dataSz, bool & eom )
+{
     quint8 one;
+    QTime t0 = QTime::currentTime();
+    t0.start();
     bool slash = false;
     int ind = 0;
-    while ( ind < dataSz )
+    while ( ( ind < dataSz ) && ( t0.elapsed() < PD::TIMEOUT ) )
     {
         int cnt = pd->io->read( &one, 1 );
         if ( cnt < 1 )
-            break;
+        {
+            Sleep::msleep( 1 );
+        }
         if ( !slash )
         {
             if ( one == '\\' )
@@ -116,7 +143,10 @@ int VoltampIo::read( quint8 * data, int dataSz )
         else
         {
             if ( one == '\0' )
+            {
+                eom = true;
                 return ind;
+            }
             else
             {
                 data[ind++] = one;
@@ -124,6 +154,7 @@ int VoltampIo::read( quint8 * data, int dataSz )
             }
         }
     }
+    eom = false;
     return ind;
 }
 
