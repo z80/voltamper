@@ -1,7 +1,11 @@
 
-OscilloscopeWnd::OscilloscopeWnd( VoltampIo * io, QWidget * parent )
-{
+#include "oscilloscope_wnd.h"
 
+OscilloscopeWnd::OscilloscopeWnd( VoltampIo * io, QWidget * parent )
+    : QMainWindow( parent )
+{
+    ui.setupUi( this );
+    this->io = io;
 }
 
 OscilloscopeWnd::~OscilloscopeWnd()

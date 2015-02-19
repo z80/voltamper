@@ -10,10 +10,15 @@ include_directories( "./src"
 
 file( GLOB src     "./src/*.cpp" )
 file( GLOB headers "./src/*.h" )
+file( GLOB ui      "./src/*.ui" )
 message( STATUS "SRC = ${src}" )
 message( STATUS "HEADERS = ${headers}" )
+message( STATUS "ui = ${ui}" )
 
 qt4_wrap_cpp( moc_src ${headers} )
+set( src ${src} ${moc_src} )
+
+qt4_wrap_ui( moc_src ${ui} )
 set( src ${src} ${moc_src} )
 
 add_executable( voltamp ${src} )

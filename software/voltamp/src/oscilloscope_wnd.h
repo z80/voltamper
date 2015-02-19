@@ -4,6 +4,7 @@
 
 #include <QtGui>
 #include "voltamp_io.h"
+#include "ui_oscilloscope_wnd.h"
 
 class OscilloscopeWnd: public QMainWindow
 {
@@ -22,6 +23,7 @@ private slots:
     void slotI_v();
     void slotNewData();
 private:
+    Ui_OscilloscopeWnd ui;
     VoltampIo * io;
 };
 
