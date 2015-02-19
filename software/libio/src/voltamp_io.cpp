@@ -59,6 +59,29 @@ VoltampIo::~VoltampIo()
     delete pd;
 }
 
+bool VoltampIo::open()
+{
+    QMutexLocker lock( &pd->mutex );
+
+    bool res = pd->io->open();
+    return res;
+}
+
+bool VoltampIo::isOpen() const
+{
+    QMutexLocker lock( &pd->mutex );
+
+    bool res = pd->io->isOpen();
+    return res;
+}
+
+void VoltampIo::close()
+{
+    QMutexLocker lock( &pd->mutex );
+
+    pd->io->close();
+}
+
 bool VoltampIo::osc_eaux( QVector<quint16> & vals )
 {
     QMutexLocker lock( &pd->mutex );

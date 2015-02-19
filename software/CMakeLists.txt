@@ -32,3 +32,4 @@ endif ( WIN32 )
 
 add_subdirectory( "./3dparty" )
 add_subdirectory( "./libio" )
+add_subdirectory( "./test" )

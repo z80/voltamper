@@ -10,6 +10,10 @@ public:
     VoltampIo();
     ~VoltampIo();
 
+    bool open();
+    bool isOpen() const;
+    void close();
+
     bool osc_eaux( QVector<quint16> & vals );
     bool osc_eref( QVector<quint16> & vals );
     bool osc_iaux( QVector<quint16> & vals );
