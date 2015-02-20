@@ -10,10 +10,11 @@ class OscilloscopeWnd: public QMainWindow
 {
     Q_OBJECT
 public:
-    OscilloscopeWnd( VoltampIo * io, QWidget * parent = 0 );
+    OscilloscopeWnd( QWidget * parent = 0 );
     ~OscilloscopeWnd();
 
     bool isRunning() const;
+    void setIo( VoltampIo * io );
 
 signals:
     void sigNewData();

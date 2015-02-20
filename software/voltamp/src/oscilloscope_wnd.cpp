@@ -1,10 +1,11 @@
 
 #include "oscilloscope_wnd.h"
 
-OscilloscopeWnd::OscilloscopeWnd( VoltampIo * io, QWidget * parent )
+OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     : QMainWindow( parent )
 {
     ui.setupUi( this );
+    ui.plot->show();
     this->io = io;
 }
 
@@ -16,6 +17,11 @@ OscilloscopeWnd::~OscilloscopeWnd()
 bool OscilloscopeWnd::isRunning() const
 {
 
+}
+
+void OscilloscopeWnd::setIo( VoltampIo * io )
+{
+    this->io = io;
 }
 
 void OscilloscopeWnd::slotRun()

@@ -6,6 +6,7 @@ include( ${QT_USE_FILE} )
 
 include_directories( "./src"
                      ${ROOT}/libio/src
+                     ${_3DPARTY}/qwt-6.0.1/src
                      ${CMAKE_CURRENT_BINARY_DIR} )
 
 file( GLOB src     "./src/*.cpp" )
@@ -22,7 +23,7 @@ qt4_wrap_ui( moc_src ${ui} )
 set( src ${src} ${moc_src} )
 
 add_executable( voltamp ${src} )
-target_link_libraries( voltamp libio ${QT_LIBRARIES} )
+target_link_libraries( voltamp libio qwt-6.0.1 ${QT_LIBRARIES} )
 
 
 
