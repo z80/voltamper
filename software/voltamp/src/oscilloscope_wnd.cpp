@@ -13,6 +13,7 @@
 #include <boost/bind/placeholders.hpp>
 
 const int OscilloscopeWnd::CURVES_CNT = 10;
+const int OscilloscopeWnd::PTS_CNT = 1024;
 
 OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     : QMainWindow( parent )
@@ -56,6 +57,8 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     timer = new QTimer( this );
     timer->setInterval( 10 );
     connect( timer, SIGNAL(timeout()), this, SLOT(slotTimeout()) );
+
+    curvesCntChanged();
 }
 
 OscilloscopeWnd::~OscilloscopeWnd()
@@ -65,7 +68,7 @@ OscilloscopeWnd::~OscilloscopeWnd()
 
 bool OscilloscopeWnd::isRunning() const
 {
-
+    return false;
 }
 
 void OscilloscopeWnd::setIo( VoltampIo * io )
@@ -90,8 +93,31 @@ void OscilloscopeWnd::slotI_v()
 
 }
 
-void OscilloscopeWnd::slotNewData()
+void OscilloscopeWnd::slotReplot()
 {
+    for ( int i=0; i<paintSz; i++ )
+    {
+        c.y[c.cnt++] = m_paintData[i];
+        if ( c.cnt >= PTS_CNT )
+        {
+            for ( int j=(m_curves.size()-1); j>0; j-- )
+                m_curves[j] = m_curves[j-1];
+
+            c.cnt = 0;
+            m_mutex.lock();
+            for ( int j=i+1; j<paintSz; j++ )
+                    m_data << m_paintData[j];
+            m_mutex.unlock();
+            break;
+        }
+    }
+
+
+
+    for ( int i=0; i<m_curves.size(); i++ )
+        m_curves[i].prepare();
+    // Update plot.
+    ui.plot->replot();
 
 }
 
@@ -103,26 +129,32 @@ void OscilloscopeWnd::measure()
         return;
     }
     bool res;
-    res = io->osc_eaux( data );
+    res = io->osc_eaux( eaux_m );
     if ( !res )
     {
         reopen();
         return;
     }
 
-    res = io->osc_eref( data );
+    res = io->osc_eref( eref_m );
     if ( !res )
     {
         reopen();
         return;
     }
 
-    res = io->osc_iaux( data );
+    res = io->osc_iaux( iaux_m );
     if ( !res )
     {
         reopen();
         return;
     }
+
+    QMutexLocker lock( &mutex );
+        eaux = eaux_m;
+        eref = eref_m;
+        iaux = iaux_m;
+    emit sigReplot();
 }
 
 void OscilloscopeWnd::reopen()
@@ -130,5 +162,55 @@ void OscilloscopeWnd::reopen()
     io->close();
     io->open();
 }
+
+void OscilloscopeWnd::curvesCntChanged()
+{
+    const QColor front( Qt::darkGreen );
+    QColor back( 50, 50, 50 );
+    int r1 = front.red();
+    int g1 = front.green();
+    int b1 = front.blue();
+    int r2 = back.red();
+    int g2 = back.green();
+    int b2 = back.blue();
+    int cnt = CURVES_CNT;
+    m_curves.resize( cnt );
+
+    for ( int i=0; i<cnt; i++ )
+    {
+        m_curves[i].attach( ui.plot );
+        int r, g, b;
+        if ( cnt > 1 )
+        {
+            r = ((cnt-i-1) * r1 + i * r2)/(cnt-1);
+            g = ((cnt-i-1) * g1 + i * g2)/(cnt-1);
+            b = ((cnt-i-1) * b1 + i * b2)/(cnt-1);
+        }
+        else
+        {
+            r = r1;
+            g = g1;
+            b = b1;
+        }
+        QPen pen;
+        QColor color( r, g, b );
+        pen.setColor( color );
+        if ( i == 0 )
+        {
+            pen.setWidth( 3 );
+            m_curves[i].curve->setZ( 100.0 );
+        }
+        else
+        {
+            pen.setWidth( 1 );
+            m_curves[i].curve->setZ( 90.0 );
+        }
+        m_curves[i].curve->setPen( pen );
+    }
+    ui.plot->replot();
+}
+
+
+
 
 

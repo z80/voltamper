@@ -19,19 +19,22 @@ public:
     void setIo( VoltampIo * io );
 
 signals:
-    void sigNewData();
+    void sigReplot();
 private slots:
     void slotTimeout();
     void slotF_t();
     void slotI_v();
-    void slotNewData();
+    void slotReplot();
 private:
 
     void measure();
     void reopen();
+    void curvesCntChanged();
+
     Ui_OscilloscopeWnd ui;
     VoltampIo * io;
     QTimer    * timer;
+    QMutex      mutex;
     QFuture     future;
 
     QVector<quint16>  data;
@@ -40,6 +43,7 @@ private:
 
     QVector<Curve> m_curves;
     static const int CURVES_CNT;
+    static const int PTS_CNT;
 };
 
 #endif
