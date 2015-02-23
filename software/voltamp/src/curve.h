@@ -2,6 +2,7 @@
 #ifndef __CURVE_H_
 #define __CURVE_H_
 
+#include <QtCore>
 class QwtPlot;
 class QwtPlotCurve;
 

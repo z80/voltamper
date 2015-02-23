@@ -6,7 +6,12 @@ MainWnd::MainWnd( QWidget * parent )
     : QMainWindow( parent )
 {
     ui.setupUi( this );
-    ui.osc->show();
+    //ui.osc->show();
+
+    statusLabel = new QLabel( ui.statusbar );
+    ui.statusbar->addWidget( statusLabel );
+
+
     io = new VoltampIo();
 
     QVBoxLayout * bl = new QVBoxLayout( ui.osc );
@@ -15,8 +20,17 @@ MainWnd::MainWnd( QWidget * parent )
     osc->setIo( io );
 
     dcWnd = new DcVoltageWnd( 0 );
+    dcWnd->setIo( io );
+
     spWnd = new SinglePulseWnd( 0 );
+    spWnd->setIo( io );
+
     mrWnd = new MeandrWnd( 0 );
+    mrWnd->setIo( io );
+
+    connect( ui.action_Quit,  SIGNAL(triggered()), this, SLOT(slotQuit()) );
+    connect( ui.actionOpen,   SIGNAL(triggered()), this, SLOT(slotReopen()) );
+    connect( ui.action_About, SIGNAL(triggered()), this, SLOT(slotAbout()) );
 
     connect( ui.actionDC_Volt,      SIGNAL(triggered()), this, SLOT(slotDc()) );
     connect( ui.actionSingle_pulse, SIGNAL(triggered()), this, SLOT(slotSinglePulse()) );
@@ -27,6 +41,29 @@ MainWnd::~MainWnd()
 {
     delete io;
 }
+
+qreal MainWnd::v( quint16 adc )
+{
+    return 0.0;
+}
+
+qreal MainWnd::i( quint16 adc )
+{
+    return 0.0;
+}
+
+void  MainWnd::dac( qreal v, int & dacLow, int & dacHigh )
+{
+    dacLow  = 2047;
+    dacHigh = 2047;
+}
+
+void MainWnd::setStatus( quint16 eaux, quint16 eref, quint16 iaux )
+{
+    QString stri = QString( "EAUX %1, EREF %2, IAUX %3" ).arg( eaux, eref, iaux );
+    statusLabel->setText( stri );
+}
+
 
 void MainWnd::slotQuit()
 {

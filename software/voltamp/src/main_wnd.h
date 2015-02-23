@@ -17,6 +17,12 @@ public:
     MainWnd( QWidget * parent = 0 );
     ~MainWnd();
 
+    qreal v( quint16 adc );
+    qreal i( quint16 adc );
+    void  dac( qreal v, int & dacLow, int & dacHigh );
+
+    void setStatus( quint16 eaux, quint16 eref, quint16 iaux );
+
 private slots:
     void slotQuit();
     void slotReopen();
@@ -34,6 +40,8 @@ private:
     DcVoltageWnd * dcWnd;
     SinglePulseWnd * spWnd;
     MeandrWnd * mrWnd;
+
+    QLabel * statusLabel;
 };
 
 #endif
