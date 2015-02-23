@@ -31,6 +31,9 @@ private slots:
     void slotDc();
     void slotSinglePulse();
     void slotMeandr();
+
+    void slotShortRelay();
+    void slotOutRelay();
 private:
     void setTitle( const QString & stri );
 

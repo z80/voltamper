@@ -6,6 +6,8 @@ MeandrWnd::MeandrWnd( QWidget * parent )
 {
     ui.setupUi( this );
     io = 0;
+
+    connect( ui.apply, SIGNAL(clicked()), this, SLOT(slotApply()) );
 }
 
 MeandrWnd::~MeandrWnd()

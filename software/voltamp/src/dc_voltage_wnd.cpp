@@ -6,6 +6,9 @@ DcVoltageWnd::DcVoltageWnd( QWidget * parent )
 {
     ui.setupUi( this );
     io = 0;
+
+    connect( ui.value, SIGNAL(valueChanged(qreal)), this, SLOT(slotChange()) );
+    connect( ui.value, SIGNAL(editingFinished()),   this, SLOT(slotApply()) );
 }
 
 DcVoltageWnd::~DcVoltageWnd()

@@ -100,6 +100,18 @@ void MainWnd::slotMeandr()
     mrWnd->show();
 }
 
+void MainWnd::slotShortRelay()
+{
+    bool en = ui.actionShort_relay->isChecked();
+    io->set_sc_relay( en );
+}
+
+void MainWnd::slotOutRelay()
+{
+    bool en = ui.actionOut_relay->isChecked();
+    io->set_out_relay( en );
+}
+
 void MainWnd::setTitle( const QString & stri )
 {
     setWindowTitle( QString( "Potentiostat: %1" ).arg( stri ) );
