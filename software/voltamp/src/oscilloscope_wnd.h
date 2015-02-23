@@ -29,19 +29,25 @@ private:
 
     void measure();
     void reopen();
+    void curveSizeChanged();
     void curvesCntChanged();
+    void copyData( const QVector<quint16> & src, QVector<qreal> & dest );
+
+    enum CurveType { EAUX_T, EREF_T, IAUX_T, I_EAUX, I_EREF };
 
     Ui_OscilloscopeWnd ui;
     VoltampIo * io;
     QTimer    * timer;
     QMutex      mutex;
-    QFuture     future;
+    QFuture<void> future;
 
+    CurveType curveType;
     QVector<quint16>  data;
     QVector<quint16>  eaux,   eref,   iaux;
     QVector<quint16>  eaux_m, eref_m, iaux_m;
+    QVector<qreal>    paintData;
 
-    QVector<Curve> m_curves;
+    QVector<Curve>   curves;
     static const int CURVES_CNT;
     static const int PTS_CNT;
 };

@@ -59,6 +59,7 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     connect( timer, SIGNAL(timeout()), this, SLOT(slotTimeout()) );
 
     curvesCntChanged();
+    curveSizeChanged();
 }
 
 OscilloscopeWnd::~OscilloscopeWnd()
@@ -95,30 +96,42 @@ void OscilloscopeWnd::slotI_v()
 
 void OscilloscopeWnd::slotReplot()
 {
+    // Choose what data to paint.
+    mutex.lock();
+        if ( curveType == EAUX_T )
+            copyData( eaux, paintData );
+        else if ( curveType == EREF_T )
+            copyData( eref, paintData );
+        else if ( curveType == IAUX_T )
+            copyData( iaux, paintData );
+        else if ( curveType == I_EAUX )
+            copyData( iaux, paintData );
+        else if ( curveType == I_EREF )
+            copyData( iaux, paintData );
+        int paintSz = paintData.size();
+    mutex.unlock();
+
+
+    Curve & c = curves[0];
+
     for ( int i=0; i<paintSz; i++ )
     {
-        c.y[c.cnt++] = m_paintData[i];
+        c.y[c.cnt++] = paintData[i];
         if ( c.cnt >= PTS_CNT )
         {
-            for ( int j=(m_curves.size()-1); j>0; j-- )
-                m_curves[j] = m_curves[j-1];
+            for ( int j=(curves.size()-1); j>0; j-- )
+                curves[j] = curves[j-1];
 
             c.cnt = 0;
-            m_mutex.lock();
-            for ( int j=i+1; j<paintSz; j++ )
-                    m_data << m_paintData[j];
-            m_mutex.unlock();
-            break;
         }
     }
 
 
-
-    for ( int i=0; i<m_curves.size(); i++ )
-        m_curves[i].prepare();
+    // Plot curves.
+    for ( int i=0; i<curves.size(); i++ )
+        curves[i].prepare();
     // Update plot.
     ui.plot->replot();
-
 }
 
 void OscilloscopeWnd::measure()
@@ -163,6 +176,28 @@ void OscilloscopeWnd::reopen()
     io->open();
 }
 
+void OscilloscopeWnd::curveSizeChanged()
+{
+    int curvesCnt = CURVES_CNT;
+    int cnt       = PTS_CNT;
+    int seconds   = 10;
+
+    qreal scale = static_cast<qreal>( seconds ) / static_cast<qreal>( cnt-1 );
+    for ( int i=0; i<curvesCnt; i++ )
+    {
+        Curve & c = curves[i];
+        c.resize( cnt );
+        c.cnt = 0;
+        for ( int i=0; i<cnt; i++ )
+        {
+            qreal x = static_cast<qreal>(i) * scale;
+            c.x[i] = x;
+            c.y[i] = 0.0;
+        }
+    }
+
+}
+
 void OscilloscopeWnd::curvesCntChanged()
 {
     const QColor front( Qt::darkGreen );
@@ -174,11 +209,11 @@ void OscilloscopeWnd::curvesCntChanged()
     int g2 = back.green();
     int b2 = back.blue();
     int cnt = CURVES_CNT;
-    m_curves.resize( cnt );
+    curves.resize( cnt );
 
     for ( int i=0; i<cnt; i++ )
     {
-        m_curves[i].attach( ui.plot );
+        curves[i].attach( ui.plot );
         int r, g, b;
         if ( cnt > 1 )
         {
@@ -198,16 +233,24 @@ void OscilloscopeWnd::curvesCntChanged()
         if ( i == 0 )
         {
             pen.setWidth( 3 );
-            m_curves[i].curve->setZ( 100.0 );
+            curves[i].curve->setZ( 100.0 );
         }
         else
         {
             pen.setWidth( 1 );
-            m_curves[i].curve->setZ( 90.0 );
+            curves[i].curve->setZ( 90.0 );
         }
-        m_curves[i].curve->setPen( pen );
+        curves[i].curve->setPen( pen );
     }
     ui.plot->replot();
+}
+
+void OscilloscopeWnd::copyData( const QVector<quint16> & src, QVector<qreal> & dest )
+{
+    int sz = src.size();
+    dest.resize( sz );
+    for ( int i=0; i<sz; i++ )
+        dest[i] = static_cast<qreal>( src[i] );
 }
 
 
