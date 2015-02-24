@@ -18,6 +18,9 @@ const int OscilloscopeWnd::PTS_CNT = 1024;
 OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     : QMainWindow( parent )
 {
+    curveType = EREF_T;
+    period    = T_10s;
+
     ui.setupUi( this );
     //ui.plot->show();
 
@@ -58,18 +61,30 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     timer->setInterval( 10 );
     connect( timer, SIGNAL(timeout()), this, SLOT(slotTimeout()) );
 
+    connect( ui.actionE_AUX, SIGNAL(triggered()), this, SLOT(slotCurveType()) );
+    connect( ui.actionE_REF, SIGNAL(triggered()), this, SLOT(slotCurveType()) );
+    connect( ui.actionI_AUX, SIGNAL(triggered()), this, SLOT(slotCurveType()) );
+    connect( ui.actionI_EREF, SIGNAL(triggered()), this, SLOT(slotCurveType()) );
+    connect( ui.actionI_EAUX, SIGNAL(triggered()), this, SLOT(slotCurveType()) );
+
+    connect( ui.actionT_1s,  SIGNAL(triggered()), this, SLOT(slotPeriod()) );
+    connect( ui.actionT_10s, SIGNAL(triggered()), this, SLOT(slotPeriod()) );
+    connect( ui.actionT_1m,  SIGNAL(triggered()), this, SLOT(slotPeriod()) );
+    connect( ui.actionT_10m, SIGNAL(triggered()), this, SLOT(slotPeriod()) );
+
     curvesCntChanged();
     curveSizeChanged();
 }
 
 OscilloscopeWnd::~OscilloscopeWnd()
 {
-
+    while ( future.isRunning() )
+        qApp->processEvents();
 }
 
 bool OscilloscopeWnd::isRunning() const
 {
-    return false;
+    return true;
 }
 
 void OscilloscopeWnd::setIo( VoltampIo * io )
@@ -84,39 +99,101 @@ void OscilloscopeWnd::slotTimeout()
     future = QtConcurrent::run( boost::bind( &OscilloscopeWnd::measure, this ) );
 }
 
-void OscilloscopeWnd::slotF_t()
+void OscilloscopeWnd::slotCurveType()
 {
+    QAction * a = qobject_cast<QAction *>( this->sender() );
+    if ( a == ui.actionE_AUX )
+        curveType = EAUX_T;
+    else if ( a == ui.actionE_REF )
+        curveType = EREF_T;
+    else if ( a == ui.actionI_AUX )
+        curveType = IAUX_T;
+    else if ( a == ui.actionI_EAUX )
+        curveType = I_EAUX;
+    else if ( a == ui.actionI_EREF )
+        curveType = I_EREF;
+    QList<QAction *> l;
+    l.append( ui.actionE_AUX );
+    l.append( ui.actionE_REF );
+    l.append( ui.actionI_AUX );
+    l.append( ui.actionI_EREF );
+    l.append( ui.actionI_EAUX );
+    for ( QList<QAction *>::iterator i=l.begin(); i!=l.end(); i++ )
+    {
+        QAction * aa = *i;
+        if ( aa != a )
+            aa->setChecked( false );
 
+    }
+
+    void curveSizeChanged();
+    void curvesCntChanged();
 }
 
-void OscilloscopeWnd::slotI_v()
+void OscilloscopeWnd::slotPeriod()
 {
+    QAction * a = qobject_cast<QAction *>( this->sender() );
+    if ( a == ui.actionT_1s )
+        period = T_1s;
+    else if ( a == ui.actionT_10s )
+        period = T_10s;
+    else if ( a == ui.actionT_1m )
+        period = T_1m;
+    else if ( a == ui.actionT_10m )
+        period = T_10m;
+    QList<QAction *> l;
+    l.append( ui.actionT_1s );
+    l.append( ui.actionT_10s );
+    l.append( ui.actionT_1m );
+    l.append( ui.actionT_10m );
+    for ( QList<QAction *>::iterator i=l.begin(); i!=l.end(); i++ )
+    {
+        QAction * aa = *i;
+        if ( aa != a )
+            aa->setChecked( false );
 
+    }
+
+    void curveSizeChanged();
+    void curvesCntChanged();
 }
 
 void OscilloscopeWnd::slotReplot()
 {
     // Choose what data to paint.
     mutex.lock();
+        int sz = eaux.size();
+        sz = (sz <= eref.size() ) ? sz : eref.size();
+        sz = (sz <= iaux.size() ) ? sz : iaux.size();
         if ( curveType == EAUX_T )
-            copyData( eaux, paintData );
+            copyData( eaux, paintDataY, sz );
         else if ( curveType == EREF_T )
-            copyData( eref, paintData );
+            copyData( eref, paintDataY, sz );
         else if ( curveType == IAUX_T )
-            copyData( iaux, paintData );
+            copyData( iaux, paintDataY, sz );
         else if ( curveType == I_EAUX )
-            copyData( iaux, paintData );
+        {
+            copyData( iaux, paintDataY, sz );
+            copyData( eaux, paintDataX, sz );
+        }
         else if ( curveType == I_EREF )
-            copyData( iaux, paintData );
-        int paintSz = paintData.size();
+        {
+            copyData( iaux, paintDataY, sz );
+            copyData( eref, paintDataX, sz );
+        }
     mutex.unlock();
 
 
     Curve & c = curves[0];
 
-    for ( int i=0; i<paintSz; i++ )
+    for ( int i=0; i<sz; i++ )
     {
-        c.y[c.cnt++] = paintData[i];
+        c.y[c.cnt] = paintDataY.dequeue();
+        if ( curveType < I_EAUX )
+            c.x[c.cnt] = timeScale * static_cast<qreal>( c.cnt );
+        else
+            c.x[c.cnt] = paintDataX.dequeue();
+        c.cnt++;
         if ( c.cnt >= PTS_CNT )
         {
             for ( int j=(curves.size()-1); j>0; j-- )
@@ -164,9 +241,12 @@ void OscilloscopeWnd::measure()
     }
 
     QMutexLocker lock( &mutex );
-        eaux = eaux_m;
-        eref = eref_m;
-        iaux = iaux_m;
+        for ( int i=0; i<eaux_m.size(); i++ )
+            eaux.enqueue( eaux_m[i] );
+        for ( int i=0; i<eref_m.size(); i++ )
+            eref.enqueue( eref_m[i] );
+        for ( int i=0; i<iaux_m.size(); i++ )
+            iaux.enqueue( iaux_m[i] );
     emit sigReplot();
 }
 
@@ -180,22 +260,28 @@ void OscilloscopeWnd::curveSizeChanged()
 {
     int curvesCnt = CURVES_CNT;
     int cnt       = PTS_CNT;
-    int seconds   = 10;
-
-    qreal scale = static_cast<qreal>( seconds ) / static_cast<qreal>( cnt-1 );
-    for ( int i=0; i<curvesCnt; i++ )
+    qreal seconds;
+    switch ( period )
     {
-        Curve & c = curves[i];
-        c.resize( cnt );
-        c.cnt = 0;
-        for ( int i=0; i<cnt; i++ )
-        {
-            qreal x = static_cast<qreal>(i) * scale;
-            c.x[i] = x;
-            c.y[i] = 0.0;
-        }
+    case T_1s:
+        seconds = 1.0;
+        break;
+    case T_10s:
+        seconds = 10.0;
+        break;
+    case T_1m:
+        seconds = 60.0;
+        break;
+    case T_10m:
+        seconds = 600.0;
+        break;
+    default:
+        seconds = 10.0;
+        break;
     }
 
+    qreal scale = static_cast<qreal>( seconds ) / static_cast<qreal>( cnt-1 );
+    timeScale = scale;
 }
 
 void OscilloscopeWnd::curvesCntChanged()
@@ -245,12 +331,10 @@ void OscilloscopeWnd::curvesCntChanged()
     ui.plot->replot();
 }
 
-void OscilloscopeWnd::copyData( const QVector<quint16> & src, QVector<qreal> & dest )
+void OscilloscopeWnd::copyData( QQueue<quint16> & src, QQueue<qreal> & dest, int cnt )
 {
-    int sz = src.size();
-    dest.resize( sz );
-    for ( int i=0; i<sz; i++ )
-        dest[i] = static_cast<qreal>( src[i] );
+    for ( int i=0; i<cnt; i++ )
+        dest.enqueue( src.dequeue() );
 }
 
 

@@ -22,8 +22,8 @@ signals:
     void sigReplot();
 private slots:
     void slotTimeout();
-    void slotF_t();
-    void slotI_v();
+    void slotCurveType();
+    void slotPeriod();
     void slotReplot();
 private:
 
@@ -31,9 +31,10 @@ private:
     void reopen();
     void curveSizeChanged();
     void curvesCntChanged();
-    void copyData( const QVector<quint16> & src, QVector<qreal> & dest );
+    void copyData( QQueue<quint16> & src, QQueue<qreal> & dest, int cnt );
 
-    enum CurveType { EAUX_T, EREF_T, IAUX_T, I_EAUX, I_EREF };
+    enum CurveType { EAUX_T=0, EREF_T, IAUX_T, I_EAUX, I_EREF };
+    enum Period    { T_1s=0, T_10s, T_1m, T_10m };
 
     Ui_OscilloscopeWnd ui;
     VoltampIo * io;
@@ -42,10 +43,12 @@ private:
     QFuture<void> future;
 
     CurveType curveType;
+    Period    period;
+    qreal     timeScale;
     QVector<quint16>  data;
-    QVector<quint16>  eaux,   eref,   iaux;
     QVector<quint16>  eaux_m, eref_m, iaux_m;
-    QVector<qreal>    paintData;
+    QQueue<quint16>   eaux,   eref,   iaux;
+    QQueue<qreal>     paintDataX, paintDataY;
 
     QVector<Curve>   curves;
     static const int CURVES_CNT;
