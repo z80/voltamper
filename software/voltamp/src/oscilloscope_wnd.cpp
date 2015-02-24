@@ -1,5 +1,6 @@
 
 #include "oscilloscope_wnd.h"
+#include "main_wnd.h"
 
 #include "osc_scaler.h"
 #include "qwt_plot.h"
@@ -87,9 +88,10 @@ bool OscilloscopeWnd::isRunning() const
     return true;
 }
 
-void OscilloscopeWnd::setIo( VoltampIo * io )
+void OscilloscopeWnd::setIo( VoltampIo * io, MainWnd * mainWnd )
 {
-    this->io = io;
+    this->io      = io;
+    this->mainWnd = mainWnd;
 }
 
 void OscilloscopeWnd::slotTimeout()
@@ -242,11 +244,11 @@ void OscilloscopeWnd::measure()
 
     QMutexLocker lock( &mutex );
         for ( int i=0; i<eaux_m.size(); i++ )
-            eaux.enqueue( eaux_m[i] );
+            eaux.enqueue( mainWnd->vAux( eaux_m[i] ) );
         for ( int i=0; i<eref_m.size(); i++ )
-            eref.enqueue( eref_m[i] );
+            eref.enqueue( mainWnd->vRef( eref_m[i] ) );
         for ( int i=0; i<iaux_m.size(); i++ )
-            iaux.enqueue( iaux_m[i] );
+            iaux.enqueue( mainWnd->iAux( iaux_m[i] ) );
     emit sigReplot();
 }
 
@@ -331,7 +333,7 @@ void OscilloscopeWnd::curvesCntChanged()
     ui.plot->replot();
 }
 
-void OscilloscopeWnd::copyData( QQueue<quint16> & src, QQueue<qreal> & dest, int cnt )
+void OscilloscopeWnd::copyData( QQueue<qreal> & src, QQueue<qreal> & dest, int cnt )
 {
     for ( int i=0; i<cnt; i++ )
         dest.enqueue( src.dequeue() );

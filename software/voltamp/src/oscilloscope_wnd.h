@@ -7,6 +7,7 @@
 #include "ui_oscilloscope_wnd.h"
 #include "curve.h"
 
+class MainWnd;
 
 class OscilloscopeWnd: public QMainWindow
 {
@@ -16,7 +17,7 @@ public:
     ~OscilloscopeWnd();
 
     bool isRunning() const;
-    void setIo( VoltampIo * io );
+    void setIo( VoltampIo * io, MainWnd * mainWnd );
 
 signals:
     void sigReplot();
@@ -31,13 +32,14 @@ private:
     void reopen();
     void curveSizeChanged();
     void curvesCntChanged();
-    void copyData( QQueue<quint16> & src, QQueue<qreal> & dest, int cnt );
+    void copyData( QQueue<qreal> & src, QQueue<qreal> & dest, int cnt );
 
     enum CurveType { EAUX_T=0, EREF_T, IAUX_T, I_EAUX, I_EREF };
     enum Period    { T_1s=0, T_10s, T_1m, T_10m };
 
     Ui_OscilloscopeWnd ui;
     VoltampIo * io;
+    MainWnd   * mainWnd;
     QTimer    * timer;
     QMutex      mutex;
     QFuture<void> future;
@@ -47,7 +49,7 @@ private:
     qreal     timeScale;
     QVector<quint16>  data;
     QVector<quint16>  eaux_m, eref_m, iaux_m;
-    QQueue<quint16>   eaux,   eref,   iaux;
+    QQueue<qreal>     eaux,   eref,   iaux;
     QQueue<qreal>     paintDataX, paintDataY;
 
     QVector<Curve>   curves;

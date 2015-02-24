@@ -1,5 +1,6 @@
 
 #include "meandr_wnd.h"
+#include "main_wnd.h"
 
 MeandrWnd::MeandrWnd( QWidget * parent )
     : QWidget( parent )
@@ -15,9 +16,10 @@ MeandrWnd::~MeandrWnd()
 
 }
 
-void MeandrWnd::setIo( VoltampIo * io )
+void MeandrWnd::setIo( VoltampIo * io, MainWnd * mainWnd )
 {
     this->io = io;
+    this->mainWnd = mainWnd;
 }
 
 void MeandrWnd::slotApply()

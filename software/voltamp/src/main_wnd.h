@@ -17,9 +17,11 @@ public:
     MainWnd( QWidget * parent = 0 );
     ~MainWnd();
 
-    qreal v( quint16 adc );
-    qreal i( quint16 adc );
+    qreal vAux( quint16 adc );
+    qreal vRef( quint16 adc );
+    qreal iAux( quint16 adc );
     void  dac( qreal v, int & dacLow, int & dacHigh );
+    int   timeToTicks( qreal time );
 
     void setStatus( quint16 eaux, quint16 eref, quint16 iaux );
 

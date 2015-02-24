@@ -1,5 +1,6 @@
 
 #include "dc_voltage_wnd.h"
+#include "main_wnd.h"
 
 DcVoltageWnd::DcVoltageWnd( QWidget * parent )
     : QWidget( parent )
@@ -16,9 +17,10 @@ DcVoltageWnd::~DcVoltageWnd()
 
 }
 
-void DcVoltageWnd::setIo( VoltampIo * io )
+void DcVoltageWnd::setIo( VoltampIo * io, MainWnd * mainWnd )
 {
     this->io = io;
+    this->mainWnd = mainWnd;
 }
 
 void DcVoltageWnd::slotChange()
@@ -31,11 +33,10 @@ void DcVoltageWnd::slotApply()
 {
     qreal volt = ui.value->value();
     int dacLow, dacHigh;
-    dacLow = 2047;
-    dacHigh = static_cast<int>( volt );
+    mainWnd->dac( volt, dacLow, dacHigh );
     bool res = io->set_dac_raw( dacLow, dacHigh );
 
-    QString ss = "background-color: rgb(185, 10, 10);\nborder-color: rgb(185, 10, 10);";
+    QString ss = "background-color: rgb(10, 185, 10);\nborder-color: rgb(10, 185, 10);";
     setStyleSheet( ss );
 }
 

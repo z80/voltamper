@@ -17,16 +17,16 @@ MainWnd::MainWnd( QWidget * parent )
     QVBoxLayout * bl = new QVBoxLayout( ui.osc );
     osc = new OscilloscopeWnd( this );
     bl->addWidget( osc );
-    osc->setIo( io );
+    osc->setIo( io, this );
 
     dcWnd = new DcVoltageWnd( 0 );
-    dcWnd->setIo( io );
+    dcWnd->setIo( io, this );
 
     spWnd = new SinglePulseWnd( 0 );
-    spWnd->setIo( io );
+    spWnd->setIo( io, this );
 
     mrWnd = new MeandrWnd( 0 );
-    mrWnd->setIo( io );
+    mrWnd->setIo( io, this );
 
     connect( ui.action_Quit,  SIGNAL(triggered()), this, SLOT(slotQuit()) );
     connect( ui.actionOpen,   SIGNAL(triggered()), this, SLOT(slotReopen()) );
@@ -42,20 +42,31 @@ MainWnd::~MainWnd()
     delete io;
 }
 
-qreal MainWnd::v( quint16 adc )
+qreal MainWnd::vAux( quint16 adc )
 {
-    return 0.0;
+    return static_cast<qreal>( adc );
 }
 
-qreal MainWnd::i( quint16 adc )
+qreal MainWnd::vRef( quint16 adc )
 {
-    return 0.0;
+    return static_cast<qreal>( adc );
+}
+
+qreal MainWnd::iAux( quint16 adc )
+{
+    return static_cast<qreal>( adc );
 }
 
 void  MainWnd::dac( qreal v, int & dacLow, int & dacHigh )
 {
-    dacLow  = 2047;
-    dacHigh = 2047;
+    dacLow  = static_cast<int>( v );
+    dacHigh = static_cast<int>( v );
+}
+
+int MainWnd::timeToTicks( qreal time )
+{
+    int res = static_cast<int>( time );
+    return res;
 }
 
 void MainWnd::setStatus( quint16 eaux, quint16 eref, quint16 iaux )

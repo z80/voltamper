@@ -6,6 +6,8 @@
 #include "ui_dc_voltage_wnd.h"
 #include "voltamp_io.h"
 
+class MainWnd;
+
 class DcVoltageWnd: public QWidget
 {
     Q_OBJECT
@@ -13,7 +15,7 @@ public:
     DcVoltageWnd( QWidget * parent = 0 );
     ~DcVoltageWnd();
 
-    void setIo( VoltampIo * io );
+    void setIo( VoltampIo * io, MainWnd * mainWnd );
 
 private slots:
     void slotChange();
@@ -22,6 +24,7 @@ private slots:
 private:
     Ui_DcVoltageWnd ui;
     VoltampIo * io;
+    MainWnd * mainWnd;
 };
 
 
