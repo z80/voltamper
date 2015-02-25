@@ -22,6 +22,10 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     curveType = EREF_T;
     period    = T_10s;
 
+    lastEaux = 2047;
+    lastEref = 2047;
+    lastIaux = 2047;
+
     ui.setupUi( this );
     //ui.plot->show();
 
@@ -61,6 +65,7 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     timer = new QTimer( this );
     timer->setInterval( 10 );
     connect( timer, SIGNAL(timeout()), this, SLOT(slotTimeout()) );
+    timer->start();
 
     connect( ui.actionE_AUX, SIGNAL(triggered()), this, SLOT(slotCurveType()) );
     connect( ui.actionE_REF, SIGNAL(triggered()), this, SLOT(slotCurveType()) );
@@ -79,6 +84,7 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
 
 OscilloscopeWnd::~OscilloscopeWnd()
 {
+    timer->stop();
     while ( future.isRunning() )
         qApp->processEvents();
 }
@@ -92,6 +98,13 @@ void OscilloscopeWnd::setIo( VoltampIo * io, MainWnd * mainWnd )
 {
     this->io      = io;
     this->mainWnd = mainWnd;
+}
+
+void OscilloscopeWnd::mostRecentVals( int & eaux, int & eref, int & iaux )
+{
+    eaux = lastEaux;
+    eref = lastEref;
+    iaux = lastIaux;
 }
 
 void OscilloscopeWnd::slotTimeout()
@@ -128,8 +141,8 @@ void OscilloscopeWnd::slotCurveType()
 
     }
 
-    void curveSizeChanged();
-    void curvesCntChanged();
+    curveSizeChanged();
+    curvesCntChanged();
 }
 
 void OscilloscopeWnd::slotPeriod()
@@ -156,8 +169,8 @@ void OscilloscopeWnd::slotPeriod()
 
     }
 
-    void curveSizeChanged();
-    void curvesCntChanged();
+    curveSizeChanged();
+    curvesCntChanged();
 }
 
 void OscilloscopeWnd::slotReplot()
@@ -167,6 +180,14 @@ void OscilloscopeWnd::slotReplot()
         int sz = eaux.size();
         sz = (sz <= eref.size() ) ? sz : eref.size();
         sz = (sz <= iaux.size() ) ? sz : iaux.size();
+
+        if ( sz > 0 )
+        {
+            lastEaux = eaux.head();
+            lastEref = eref.head();
+            lastIaux = iaux.head();
+        }
+
         if ( curveType == EAUX_T )
             copyData( eaux, paintDataY, sz );
         else if ( curveType == EREF_T )

@@ -18,6 +18,7 @@ public:
 
     bool isRunning() const;
     void setIo( VoltampIo * io, MainWnd * mainWnd );
+    void mostRecentVals( int & eaux, int & eref, int & iaux );
 
 signals:
     void sigReplot();
@@ -53,6 +54,9 @@ private:
     QQueue<qreal>     paintDataX, paintDataY;
 
     QVector<Curve>   curves;
+
+    int lastEaux, lastEref, lastIaux;
+
     static const int CURVES_CNT;
     static const int PTS_CNT;
 };

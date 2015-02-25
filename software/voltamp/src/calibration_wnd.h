@@ -7,7 +7,7 @@
 #include "voltamp_io.h"
 
 class MainWnd;
-
+class OscilloscopeWnd;
 
 class CalibrationWnd: public QWidget
 {
@@ -16,7 +16,7 @@ public:
     CalibrationWnd( QWidget * parent = 0 );
     ~CalibrationWnd();
 
-    void setIo( VoltampIo * io, MainWnd * mainWnd );
+    void setIo( VoltampIo * io, MainWnd * mainWnd, OscilloscopeWnd * osc );
 
 private slots:
     void slotEnable();
@@ -24,17 +24,27 @@ private slots:
     void slotAddCurr();
 private:
     void setRandomVolt();
-    void calc();
+    void calcVolt();
+    void calcCurr();
 
     Ui_CalibrationWnd ui;
     MainWnd * mainWnd;
+    OscilloscopeWnd * osc;
     VoltampIo * io;
 
-    QVector<qreal> x;
-    QVecror<qreal> y;
+    QList<int> dacLow,
+               dacHigh,
+               adcAux,
+               adcRef,
+               adcI;
+    QVector<qreal> volt,
+                   curr;
 };
 
 
 #endif
+
+
+
 
 
