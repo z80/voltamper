@@ -27,10 +27,12 @@ void CalibrationWnd::slotEnable()
     ui.panel->setEnabled( en );
     if ( en )
     {
-        dacLow.clear();
-        dacHigh.clear();
+        dacLowV.clear();
+        dacHighV.clear();
         adcAux.clear();
         adcRef.clear();
+        dacLowI.clear();
+        dacHighI.clear();
         adcI.clear();
         volt.clear();
         curr.clear();
@@ -46,9 +48,12 @@ void CalibrationWnd::slotAddVolt()
 
     int eaux, eref, iaux;
     osc->mostRecentVals( eaux, eref, iaux );
+
     adcAux.append( eaux );
     adcRef.append( eref );
-    adcI.append( iaux );
+
+    dacLowV.append( dacLow );
+    dacHighV.append( dacHigh );
 }
 
 void CalibrationWnd::slotAddCurr()
@@ -58,9 +63,10 @@ void CalibrationWnd::slotAddCurr()
 
     int eaux, eref, iaux;
     osc->mostRecentVals( eaux, eref, iaux );
-    adcAux.append( eaux );
-    adcRef.append( eref );
     adcI.append( iaux );
+
+    dacLowI.append( dacLow );
+    dacHighI.append( dacHigh );
 }
 
 void CalibrationWnd::setRandomVolt()
@@ -74,9 +80,13 @@ void CalibrationWnd::setRandomVolt()
 
     bool res = io->set_dac_raw( dacLow, dacHigh );
     if ( !res )
+    {
         QMessageBox::critical( this, "Error", "Failed to set voltage!" );
-    this->dacLow.append( dacLow );
-    this->dacHigh.append( dacHigh );
+        return;
+    }
+
+    this->dacLow  = dacLow;
+    this->dacHigh = dacHigh;
 }
 
 void CalibrationWnd::calcVolt()

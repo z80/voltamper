@@ -32,11 +32,18 @@ private:
     OscilloscopeWnd * osc;
     VoltampIo * io;
 
-    QList<int> dacLow,
-               dacHigh,
+    int dacLow,
+        dacHigh;
+
+    QList<int> dacLowV,
+               dacHighV,
                adcAux,
                adcRef,
+
+               dacLowI,
+               dacHighI,
                adcI;
+
     QVector<qreal> volt,
                    curr;
 };
