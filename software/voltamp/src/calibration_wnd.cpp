@@ -3,6 +3,8 @@
 #include "main_wnd.h"
 #include "oscilloscope_wnd.h"
 
+#include "matrix2.hpp"
+
 CalibrationWnd::CalibrationWnd( QWidget * parent )
 : QWidget( parent )
 {
@@ -89,9 +91,118 @@ void CalibrationWnd::setRandomVolt()
     this->dacHigh = dacHigh;
 }
 
-void CalibrationWnd::calcVolt()
+void CalibrationWnd::calcDac2Volt()
 {
+    // Make linear assumption, e.i.
+    //V = a*dacLow + b*dacHigh + c*1;
+    Math::Matrix<> XtX;
+    Math::Vector<> XtY;
+    int sz = dacLowV.size();
+    for ( int i=0; i<3; i++ )
+    {
+        QVector<int> * a;
+        if ( i==0 )
+            a = &dacLowV;
+        else if ( i==1 )
+            a = &dacHighV;
+        else
+            a = 0;
+        for ( int j=0; j<3; j++ )
+        {
+            QVector<int> * b;
+            if ( i==0 )
+                b = &dacLowV;
+            else if ( i==1 )
+                b = &dacHighV;
+            else
+                b = 0;
+            qreal v = 0.0;
+            for ( int k=0; k<sz; k++ )
+            {
+                qreal va = ( a ) ? a->at( k ) : 1.0;
+                qreal vb = ( b ) ? b->at( k ) : 1.0;
+                v += va * vb;
+            }
+            XtX[i][j] = v;
+        }
 
+        qreal v = 0.0;
+        for ( int k=0; k<sz; k++ )
+        {
+            qreal va = ( a ) ? a->at( k ) : 1.0;
+            qreal vy = volt.at( k );
+            v += va * vy;
+        }
+        XtY[i] = v;
+    }
+    // A = (XtX)^-1 * XtY;
+    Math::Matrix<> invXtX;
+    invXtX = XtX.inv();
+    Math::Vector<> A;
+    for ( int i=0; i<3; i++ )
+    {
+        qreal v = 0.0;
+        for ( int j=0; j<3; j++ )
+        {
+            v += invXtX[i][j] * XtY[j];
+        }
+        A[i] = v;
+    }
+}
+
+void CalibrationWnd::calcAdcAux2Volt()
+{
+    // Make linear assumption, e.i.
+    //V = a*adc + b*1;
+    Math::Matrix<2> XtX;
+    Math::Vector<2> XtY;
+    int sz = adcAux.size();
+    for ( int i=0; i<2; i++ )
+    {
+        QVector<int> * a;
+        if ( i==0 )
+            a = &adcAux;
+        else
+            a = 0;
+        for ( int j=0; j<2; j++ )
+        {
+            QVector<int> * b;
+            if ( i==0 )
+                b = &adcAux;
+            else
+                b = 0;
+            qreal v = 0.0;
+            for ( int k=0; k<sz; k++ )
+            {
+                qreal va = ( a ) ? a->at( k ) : 1.0;
+                qreal vb = ( b ) ? b->at( k ) : 1.0;
+                v += va * vb;
+            }
+            XtX[i][j] = v;
+        }
+
+        qreal v = 0.0;
+        for ( int k=0; k<sz; k++ )
+        {
+            qreal va = ( a ) ? a->at( k ) : 1.0;
+            qreal vy = volt.at( k );
+            v += va * vy;
+        }
+        XtY[i] = v;
+    }
+    // A = (XtX)^-1 * XtY;
+    Math::Matrix<2> invXtX;
+    invXtX = XtX.inv();
+    Math::Vector<2> A;
+    for ( int i=0; i<2; i++ )
+    {
+        qreal v = 0.0;
+        for ( int j=0; j<2; j++ )
+        {
+            v += invXtX[i][j] * XtY[j];
+        }
+        A[i] = v;
+    }
 }
 
 void CalibrationWnd::calcCurr()

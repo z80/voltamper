@@ -24,8 +24,10 @@ private slots:
     void slotAddCurr();
 private:
     void setRandomVolt();
-    void calcVolt();
-    void calcCurr();
+    void calcDac2Volt();
+    void calcAdcAux2Volt();
+    void calcAdcRef2Volt()
+    void calcAdcI2Curr();
 
     Ui_CalibrationWnd ui;
     MainWnd * mainWnd;
@@ -35,10 +37,10 @@ private:
     int dacLow,
         dacHigh;
 
-    QList<int> dacLowV,
-               dacHighV,
-               adcAux,
-               adcRef,
+    QVector<int> dacLowV,
+                 dacHighV,
+                 adcAux,
+                 adcRef,
 
                dacLowI,
                dacHighI,

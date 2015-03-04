@@ -35,7 +35,7 @@ template<int DIM, typename FLOAT> Vector<DIM, FLOAT>::Vector( const Vector<DIM, 
 template<int DIM, typename FLOAT> Vector<DIM, FLOAT>::Vector( const FLOAT * x)
 {
     for ( int i=0; i<DIM; i++ )
-        val[i] = r[i];
+        val[i] = x[i];
 }
 
 template<int DIM, typename FLOAT> Vector<DIM, FLOAT>::~Vector()
