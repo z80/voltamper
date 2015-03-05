@@ -1,6 +1,7 @@
 
 #include "main_wnd.h"
 
+const QString MainWnd::SETTINGS_INI = "./settings.ini";
 
 MainWnd::MainWnd( QWidget * parent )
     : QMainWindow( parent )
@@ -35,6 +36,8 @@ MainWnd::MainWnd( QWidget * parent )
     connect( ui.actionDC_Volt,      SIGNAL(triggered()), this, SLOT(slotDc()) );
     connect( ui.actionSingle_pulse, SIGNAL(triggered()), this, SLOT(slotSinglePulse()) );
     connect( ui.actionMeandr,       SIGNAL(triggered()), this, SLOT(slotMeandr()) );
+
+    loadSettings();
 }
 
 MainWnd::~MainWnd()
@@ -44,23 +47,26 @@ MainWnd::~MainWnd()
 
 qreal MainWnd::vAux( quint16 adc )
 {
-    return static_cast<qreal>( adc );
+    return static_cast<qreal>( adc ) * aAdcAux + bAdcAux;
 }
 
 qreal MainWnd::vRef( quint16 adc )
 {
-    return static_cast<qreal>( adc );
+    return static_cast<qreal>( adc ) * aAdcRef + bAdcRef;
 }
 
 qreal MainWnd::iAux( quint16 adc )
 {
-    return static_cast<qreal>( adc );
+    return static_cast<qreal>( adc ) * aAdcI + bAdcI;
 }
 
 void  MainWnd::dac( qreal v, int & dacLow, int & dacHigh )
 {
-    dacLow  = static_cast<int>( v );
-    dacHigh = static_cast<int>( v );
+    qreal fLow = 2047.0;
+    qreal fHigh = (v - bDac - fLow * aDacLow ) / aDacHigh;
+    fLow = (v - bDac - fHigh*aDacHigh)/aDacLow;
+    dacLow  = static_cast<int>( fLow );
+    dacHigh = static_cast<int>( fHigh );
 }
 
 int MainWnd::timeToTicks( qreal time )
@@ -75,6 +81,68 @@ void MainWnd::setStatus( quint16 eaux, quint16 eref, quint16 iaux )
     statusLabel->setText( stri );
 }
 
+void MainWnd::setRelays( bool shortRelay, bool outRelay )
+{
+    ui.actionShort_relay->setChecked( shortRelay );
+    ui.actionOut_relay->setChecked( outRelay );
+    slotShortRelay();
+    slotOutRelay();
+}
+
+void MainWnd::setCalibrationDac( qreal aLow, qreal aHigh, qreal b )
+{
+    aDacLow  = aLow;
+    aDacHigh = aHigh;
+    bDac     = b;
+}
+
+void MainWnd::setCalibrationAdcVolt( qreal aAux, qreal bAux, qreal aRef, qreal bRef )
+{
+    aAdcAux = aAux;
+    bAdcAux = bAux;
+    aAdcRef = aRef;
+    bAdcRef = bRef;
+
+    saveSettings();
+}
+
+void MainWnd::setCalibrationAdcCurr( qreal aI, qreal bI )
+{
+    aAdcI = aI;
+    bAdcI = bI;
+
+    saveSettings();
+}
+
+void MainWnd::loadSettings()
+{
+    QSettings s( SETTINGS_INI, QSettings::IniFormat );
+
+    aDacLow  = s.value( "aDacLow",  1.0 ).toDouble();
+    aDacHigh = s.value( "aDacHigh", 1.0 ).toDouble();
+    bDac     = s.value( "bDac",     -2047.0 ).toDouble();
+    aAdcAux  = s.value( "aAdcAux",  1.0 ).toDouble();
+    bAdcAux  = s.value( "bAdcAux",  -2047.0 ).toDouble();
+    aAdcRef  = s.value( "aAdcRef",  1.0 ).toDouble();
+    bAdcRef  = s.value( "bAdcRef",  -2047.0 ).toDouble();
+    aAdcI    = s.value( "aAdcI",    1.0 ).toDouble();
+    bAdcI    = s.value( "bAdcI",    -2047.0 ).toDouble();
+}
+
+void MainWnd::saveSettings()
+{
+    QSettings s( SETTINGS_INI, QSettings::IniFormat );
+
+    s.setValue( "aDacLow",  aDacLow );
+    s.setValue( "aDacHigh", aDacHigh );
+    s.setValue( "bDac",     bDac );
+    s.setValue( "aAdcAux",  aAdcAux );
+    s.setValue( "bAdcAux",  bAdcAux );
+    s.setValue( "aAdcRef",  aAdcRef );
+    s.setValue( "bAdcRef",  bAdcRef );
+    s.setValue( "aAdcI",    aAdcI );
+    s.setValue( "bAdcI",    bAdcI );
+}
 
 void MainWnd::slotQuit()
 {

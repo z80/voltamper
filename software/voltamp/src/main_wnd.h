@@ -25,7 +25,15 @@ public:
 
     void setStatus( quint16 eaux, quint16 eref, quint16 iaux );
 
-private slots:
+    void setRelays( bool shortRelay, bool outRelay );
+
+    void setCalibrationDac( qreal aLow, qreal aHigh, qreal b );
+    void setCalibrationAdcVolt( qreal aAux, qreal bAux, qreal aRef, qreal bRef );
+    void setCalibrationAdcCurr( qreal aI, qreal bI );
+
+    void loadSettings();
+    void saveSettings();
+public slots:
     void slotQuit();
     void slotReopen();
     void slotAbout();
@@ -47,6 +55,12 @@ private:
     MeandrWnd * mrWnd;
 
     QLabel * statusLabel;
+
+    qreal aDacLow, aDacHigh, bDac;
+    qreal aAdcAux, bAdcAux, aAdcRef, bAdcRef;
+    qreal aAdcI, bAdcI;
+
+    static const QString SETTINGS_INI;
 };
 
 #endif

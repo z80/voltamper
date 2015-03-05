@@ -26,7 +26,7 @@ private:
     void setRandomVolt();
     void calcDac2Volt();
     void calcAdcAux2Volt();
-    void calcAdcRef2Volt()
+    void calcAdcRef2Volt();
     void calcAdcI2Curr();
 
     Ui_CalibrationWnd ui;
@@ -41,13 +41,16 @@ private:
                  dacHighV,
                  adcAux,
                  adcRef,
-
-               dacLowI,
-               dacHighI,
-               adcI;
+                 adcI;
 
     QVector<qreal> volt,
                    curr;
+
+    // Calibration coefs.
+    qreal aDacLow, aDacHigh, bDac;
+    qreal aAdcAux, bAdcAux;
+    qreal aAdcRef, bAdcRef;
+    qreal aAdcI,   bAdcI;
 };
 
 
