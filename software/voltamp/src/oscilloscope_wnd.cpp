@@ -232,6 +232,8 @@ void OscilloscopeWnd::slotReplot()
         curves[i].prepare();
     // Update plot.
     ui.plot->replot();
+
+    mainWnd->setStatus( lastEaux, lastEref, lastIaux );
 }
 
 void OscilloscopeWnd::measure()

@@ -9,6 +9,7 @@ CalibrationWnd::CalibrationWnd( QWidget * parent )
 : QWidget( parent )
 {
     ui.setupUi( this );
+    ui.panel->setEnabled( false );
 }
 
 CalibrationWnd::~CalibrationWnd()
@@ -21,6 +22,26 @@ void CalibrationWnd::setIo( VoltampIo * io, MainWnd * mainWnd, OscilloscopeWnd *
     this->io      = io;
     this->mainWnd = mainWnd;
     this->osc     = osc;
+}
+
+void CalibrationWnd::closeEvent( QCloseEvent & e )
+{
+    if ( volt.size() >= 3 )
+    {
+        calcDac2Volt();
+        mainWnd->setCalibrationDac( aDacLow, aDacHigh, bDac );
+    }
+    if ( volt.size() >= 2 )
+    {
+        calcAdcAux2Volt();
+        calcAdcRef2Volt();
+        mainWnd->setCalibrationAdcVolt( aAdcAux, bAdcAux, aAdcRef, bAdcRef );
+    }
+    if ( curr.size() >= 2 )
+    {
+        calcAdcI2Curr();
+        mainWnd->setCalibrationAdcCurr( aAdcI, bAdcI );
+    }
 }
 
 void CalibrationWnd::slotEnable()
@@ -70,6 +91,8 @@ void CalibrationWnd::slotAddCurr()
     int eaux, eref, iaux;
     osc->mostRecentVals( eaux, eref, iaux );
     adcI.append( iaux );
+
+    setRandomVolt();
 }
 
 void CalibrationWnd::setRandomVolt()
