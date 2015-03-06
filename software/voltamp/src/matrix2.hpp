@@ -32,7 +32,8 @@ template<int DIM, typename FLOAT> Matrix<DIM, FLOAT>::Matrix()
     {
         for ( int j=0; j<DIM; j++ )
         {
-            val[index++] = ( i != j ) ? static_cast<FLOAT>( 0.0 ) : static_cast<FLOAT>( 1.0 );
+            val[index] = ( i != j ) ? static_cast<FLOAT>( 0.0 ) : static_cast<FLOAT>( 1.0 );
+            index += 1;
         }
     }
 }
@@ -44,7 +45,8 @@ template<int DIM, typename FLOAT> Matrix<DIM, FLOAT>::Matrix( const Matrix<DIM, 
     {
         for ( int j=0; j<DIM; j++ )
         {
-            val[index] = inst.val[index++];
+            val[index] = inst.val[index];
+            index += 1;
         }
     }
 }
@@ -62,7 +64,8 @@ template<int DIM, typename FLOAT> const Matrix<DIM, FLOAT> & Matrix<DIM, FLOAT>:
         {
             for ( int j=0; j<DIM; j++ )
             {
-                val[index] = inst.val[index++];
+                val[index] = inst.val[index];
+                index += 1;
             }
         }
     }
@@ -126,18 +129,18 @@ template<typename FLOAT> static FLOAT ffabs( FLOAT arg )
 
 template<int DIM, typename FLOAT> const Matrix<DIM, FLOAT> Matrix<DIM, FLOAT>::inv() const
 {
-    // Необходимые элементы.
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
     Matrix<DIM, FLOAT> a = *this;
     Matrix<DIM, FLOAT> ia;
 
-    // Обнуление под главной диагональю.
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
     for ( int n=0; n<DIM; n++ )
     {
-        // Если элемент нулевой, то добавить сумму остальных строк.
+        // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
         FLOAT v = a[n][n];
         if ( ffabs<FLOAT>( v ) == static_cast<FLOAT>( 0.0 ) )
         {
-            // К каждому элементу добавляем.
+            // пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
             for ( int iy=0; iy<DIM; iy++ )
             {
                 if ( iy == n )
@@ -152,19 +155,19 @@ template<int DIM, typename FLOAT> const Matrix<DIM, FLOAT> Matrix<DIM, FLOAT>::i
                     break;
             }
         }
-        // Делим строку на v.
+        // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ v.
         for ( int ix=0; ix<DIM; ix++ )
         {
             //int ind = ix + DIM * n;
             a[n][ix] /= v;
             ia[n][ix] /= v;
         }
-        // Обнуляем элементы под текущим элементом n.
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ n.
         for ( int iy=n+1; iy<DIM; iy++ )
         {
             //int indDec = n + DIM * iy;
             FLOAT coef = a[iy][n];
-            // Применяем для всех элементов строки матрицы.
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
             for ( int ix=0; ix<DIM; ix++ )
             {
                 //int indSub = ix + DIM * n;
@@ -173,12 +176,12 @@ template<int DIM, typename FLOAT> const Matrix<DIM, FLOAT> Matrix<DIM, FLOAT>::i
                 ia[iy][ix] -= coef * ia[n][ix];
             }
         }
-        // Обнуляем элементы над текущим элементом.
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         for ( int iy=0; iy<=(n-1); iy++ )
         {
             //int indDec = n + DIM * iy;
             FLOAT coef = a[iy][n];
-            // Применяем для всех элементов матриц.
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
             for ( int ix=0; ix<DIM; ix++ )
             {
                 //int indSub = ix + DIM * n;

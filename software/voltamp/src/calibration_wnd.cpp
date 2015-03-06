@@ -14,6 +14,18 @@ CalibrationWnd::CalibrationWnd( QWidget * parent )
     connect( ui.mode,    SIGNAL(clicked()), this, SLOT(slotEnable()) );
     connect( ui.addVolt, SIGNAL(clicked()), this, SLOT(slotAddVolt()) );
     connect( ui.addCurr, SIGNAL(clicked()), this, SLOT(slotAddCurr()) );
+
+    // DEBUG
+    adcAux.append( 2000 );
+    volt.append( -10.0 );
+
+    adcAux.append( 4000 );
+    volt.append( 10.0 );
+
+    adcAux.append( 3000 );
+    volt.append( 0.0 );
+
+    calcAdcAux2Volt();
 }
 
 CalibrationWnd::~CalibrationWnd()
