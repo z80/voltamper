@@ -10,6 +10,10 @@ CalibrationWnd::CalibrationWnd( QWidget * parent )
 {
     ui.setupUi( this );
     ui.panel->setEnabled( false );
+
+    connect( ui.mode,    SIGNAL(clicked()), this, SLOT(slotEnable()) );
+    connect( ui.addVolt, SIGNAL(clicked()), this, SLOT(slotAddVolt()) );
+    connect( ui.addCurr, SIGNAL(clicked()), this, SLOT(slotAddCurr()) );
 }
 
 CalibrationWnd::~CalibrationWnd()
@@ -22,6 +26,12 @@ void CalibrationWnd::setIo( VoltampIo * io, MainWnd * mainWnd, OscilloscopeWnd *
     this->io      = io;
     this->mainWnd = mainWnd;
     this->osc     = osc;
+}
+
+void CalibrationWnd::showEvent( QShowEvent & e )
+{
+    ui.panel->setEnabled( false );
+    ui.mode->setChecked( false );
 }
 
 void CalibrationWnd::closeEvent( QCloseEvent & e )
@@ -97,9 +107,11 @@ void CalibrationWnd::slotAddCurr()
 
 void CalibrationWnd::setRandomVolt()
 {
-    int range = ui.voltRange->value() * 2047 / 100;
-    int dacLow  = qrand() * range / RAND_MAX + 2047;
-    int dacHigh = qrand() * range / RAND_MAX + 2047;
+    qreal range = static_cast<qreal>( ui.voltRange->value() * 2047 / 100 );
+    qreal a = static_cast<qreal>( qrand() ) / static_cast<qreal>( RAND_MAX );
+    int dacLow  = static_cast<int>( a * range ) + 2047;
+    a = static_cast<qreal>( qrand() ) / static_cast<qreal>( RAND_MAX );
+    int dacHigh = static_cast<int>( a * range ) + 2047;
 
     bool res = io->set_dac_raw( dacLow, dacHigh );
     if ( !res )

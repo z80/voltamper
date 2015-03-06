@@ -59,11 +59,11 @@ VoltampIo::~VoltampIo()
     delete pd;
 }
 
-bool VoltampIo::open()
+bool VoltampIo::open( const QString & devName )
 {
     QMutexLocker lock( &pd->mutex );
 
-    bool res = pd->io->open();
+    bool res = pd->io->open( devName );
     return res;
 }
 

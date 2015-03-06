@@ -10,7 +10,7 @@ public:
     VoltampIo();
     ~VoltampIo();
 
-    bool open();
+    bool open( const QString & devName = "/dev/ttyUSB0" );
     bool isOpen() const;
     void close();
 

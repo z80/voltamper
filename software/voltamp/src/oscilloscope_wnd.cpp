@@ -278,7 +278,7 @@ void OscilloscopeWnd::measure()
 void OscilloscopeWnd::reopen()
 {
     io->close();
-    io->open();
+    io->open( mainWnd->deviceName() );
 }
 
 void OscilloscopeWnd::curveSizeChanged()

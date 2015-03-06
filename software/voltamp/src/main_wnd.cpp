@@ -12,6 +12,7 @@ MainWnd::MainWnd( QWidget * parent )
     statusLabel = new QLabel( ui.statusbar );
     ui.statusbar->addWidget( statusLabel );
 
+    loadSettings();
 
     io = new VoltampIo();
 
@@ -29,15 +30,18 @@ MainWnd::MainWnd( QWidget * parent )
     mrWnd = new MeandrWnd( 0 );
     mrWnd->setIo( io, this );
 
+    calibrationWnd = new CalibrationWnd( 0 );
+    calibrationWnd->setIo( io, this, osc );
+
     connect( ui.action_Quit,  SIGNAL(triggered()), this, SLOT(slotQuit()) );
-    connect( ui.actionOpen,   SIGNAL(triggered()), this, SLOT(slotReopen()) );
+    //connect( ui.actionOpen,   SIGNAL(triggered()), this, SLOT(slotReopen()) );
     connect( ui.action_About, SIGNAL(triggered()), this, SLOT(slotAbout()) );
 
     connect( ui.actionDC_Volt,      SIGNAL(triggered()), this, SLOT(slotDc()) );
     connect( ui.actionSingle_pulse, SIGNAL(triggered()), this, SLOT(slotSinglePulse()) );
     connect( ui.actionMeandr,       SIGNAL(triggered()), this, SLOT(slotMeandr()) );
 
-    loadSettings();
+    connect( ui.actionCalibration,  SIGNAL(triggered()), this, SLOT(slotCalibration()) );
 }
 
 MainWnd::~MainWnd()
@@ -118,6 +122,8 @@ void MainWnd::loadSettings()
 {
     QSettings s( SETTINGS_INI, QSettings::IniFormat );
 
+    devName  = s.value( "devName",  "/dev/ttyUSB0" ).toString();
+
     aDacLow  = s.value( "aDacLow",  1.0 ).toDouble();
     aDacHigh = s.value( "aDacHigh", 1.0 ).toDouble();
     bDac     = s.value( "bDac",     -2047.0 ).toDouble();
@@ -133,6 +139,8 @@ void MainWnd::saveSettings()
 {
     QSettings s( SETTINGS_INI, QSettings::IniFormat );
 
+    s.setValue( "devName", devName );
+
     s.setValue( "aDacLow",  aDacLow );
     s.setValue( "aDacHigh", aDacHigh );
     s.setValue( "bDac",     bDac );
@@ -144,6 +152,11 @@ void MainWnd::saveSettings()
     s.setValue( "bAdcI",    bAdcI );
 }
 
+const QString & MainWnd::deviceName() const
+{
+    return devName;
+}
+
 void MainWnd::slotQuit()
 {
     this->deleteLater();
@@ -153,7 +166,7 @@ void MainWnd::slotQuit()
 void MainWnd::slotReopen()
 {
     io->close();
-    bool res = io->open();
+    bool res = io->open( devName );
     if ( res )
         setTitle( "device connected" );
     else
@@ -189,6 +202,11 @@ void MainWnd::slotOutRelay()
 {
     bool en = ui.actionOut_relay->isChecked();
     io->set_out_relay( en );
+}
+
+void MainWnd::slotCalibration()
+{
+    calibrationWnd->show();
 }
 
 void MainWnd::setTitle( const QString & stri )

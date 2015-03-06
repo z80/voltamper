@@ -32,19 +32,21 @@ Io::~Io()
     delete pd;
 }
 
+/*
 int Io::enumDevices()
 {
     return 1;
 }
+*/
 
-bool Io::open( int index )
+bool Io::open( const QString & dev )
 {
     if ( pd->ftdi )
     {
         pd->ftdi->deleteLater();
     }
     QextSerialPort * port;
-    port = new QextSerialPort("/dev/ttyUSB0");
+    port = new QextSerialPort(dev);
     port->setBaudRate(BAUD9600);
     port->setFlowControl(FLOW_OFF);
     port->setParity(PAR_NONE);

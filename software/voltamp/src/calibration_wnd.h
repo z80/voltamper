@@ -19,6 +19,7 @@ public:
     void setIo( VoltampIo * io, MainWnd * mainWnd, OscilloscopeWnd * osc );
 
 protected:
+    void showEvent( QShowEvent & e );
     void closeEvent( QCloseEvent & e );
 
 private slots:

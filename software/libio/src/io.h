@@ -10,8 +10,8 @@ public:
   Io();
   virtual ~Io();
 
-  int enumDevices();
-  bool open( int index=0 );
+  //int enumDevices();
+  bool open( const QString & dev = "/dev/ttyUSB0" );
   bool isOpen() const;
   void close();
 

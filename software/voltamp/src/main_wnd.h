@@ -9,6 +9,7 @@
 #include "dc_voltage_wnd.h"
 #include "single_pulse_wnd.h"
 #include "meandr_wnd.h"
+#include "calibration_wnd.h"
 
 class MainWnd: public QMainWindow
 {
@@ -33,6 +34,8 @@ public:
 
     void loadSettings();
     void saveSettings();
+
+    const QString & deviceName() const;
 public slots:
     void slotQuit();
     void slotReopen();
@@ -44,8 +47,12 @@ public slots:
 
     void slotShortRelay();
     void slotOutRelay();
+
+    void slotCalibration();
 private:
     void setTitle( const QString & stri );
+
+    QString devName;
 
     Ui_MainWnd ui;
     VoltampIo  * io;
@@ -53,6 +60,7 @@ private:
     DcVoltageWnd * dcWnd;
     SinglePulseWnd * spWnd;
     MeandrWnd * mrWnd;
+    CalibrationWnd * calibrationWnd;
 
     QLabel * statusLabel;
 
