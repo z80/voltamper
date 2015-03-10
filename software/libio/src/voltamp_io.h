@@ -24,6 +24,7 @@ public:
     bool set_dac_raw( int dacLow, int dacHigh );
     bool set_one_pulse_raw( int dacLow, int dacHigh, int time );
     bool set_meandr_raw( int dacLow1, int dacHigh1, int time1, int dacLow2, int dacHigh2, int time2 );
+    bool set_sweep_raw( int dacLow1, int dacHigh1, int dacLow2, int dacHigh2, int time2 );
 
 
     bool setArgs( quint8 * data, int dataSz );

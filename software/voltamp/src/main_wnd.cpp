@@ -30,6 +30,9 @@ MainWnd::MainWnd( QWidget * parent )
     mrWnd = new MeandrWnd( 0 );
     mrWnd->setIo( io, this );
 
+    swWnd = new SweepWnd( 0 );
+    swWnd->setIo( io, this );
+
     calibrationWnd = new CalibrationWnd( 0 );
     calibrationWnd->setIo( io, this, osc );
 
@@ -40,6 +43,7 @@ MainWnd::MainWnd( QWidget * parent )
     connect( ui.actionDC_Volt,      SIGNAL(triggered()), this, SLOT(slotDc()) );
     connect( ui.actionSingle_pulse, SIGNAL(triggered()), this, SLOT(slotSinglePulse()) );
     connect( ui.actionMeandr,       SIGNAL(triggered()), this, SLOT(slotMeandr()) );
+    connect( ui.actionSweep,        SIGNAL(triggered()), this, SLOT(slotSweep()) );
 
     connect( ui.actionCalibration,  SIGNAL(triggered()), this, SLOT(slotCalibration()) );
 }
@@ -190,6 +194,11 @@ void MainWnd::slotSinglePulse()
 void MainWnd::slotMeandr()
 {
     mrWnd->show();
+}
+
+void MainWnd::slotSweep()
+{
+    swWnd->show();
 }
 
 void MainWnd::slotShortRelay()

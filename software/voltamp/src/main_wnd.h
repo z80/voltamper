@@ -9,6 +9,7 @@
 #include "dc_voltage_wnd.h"
 #include "single_pulse_wnd.h"
 #include "meandr_wnd.h"
+#include "sweep_wnd.h"
 #include "calibration_wnd.h"
 
 class MainWnd: public QMainWindow
@@ -44,6 +45,7 @@ public slots:
     void slotDc();
     void slotSinglePulse();
     void slotMeandr();
+    void slotSweep();
 
     void slotShortRelay();
     void slotOutRelay();
@@ -60,6 +62,7 @@ private:
     DcVoltageWnd * dcWnd;
     SinglePulseWnd * spWnd;
     MeandrWnd * mrWnd;
+    SweepWnd * swWnd;
     CalibrationWnd * calibrationWnd;
 
     QLabel * statusLabel;

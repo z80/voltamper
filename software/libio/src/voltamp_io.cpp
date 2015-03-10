@@ -305,7 +305,7 @@ bool VoltampIo::set_one_pulse_raw( int dacLow, int dacHigh, int time )
     if ( !res )
         return false;
 
-    quint8 funcInd = 7;
+    quint8 funcInd = 8;
     res = execFunc( funcInd );
     if ( !res )
         return false;
@@ -365,13 +365,65 @@ bool VoltampIo::set_meandr_raw( int dacLow1, int dacHigh1, int time1, int dacLow
     if ( !res )
         return false;
 
-    quint8 funcInd = 8;
+    quint8 funcInd = 9;
     res = execFunc( funcInd );
     if ( !res )
         return false;
 
     return true;
 }
+
+bool VoltampIo::set_sweep_raw( int dacLow1, int dacHigh1, int dacLow2, int dacHigh2, int period )
+{
+    QMutexLocker lock( &pd->mutex );
+
+    QByteArray & b = pd->buffer_raw;
+    b.clear();
+    b.reserve( 12 );
+
+    quint8 v;
+    v = static_cast<quint8>( dacLow1 & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (dacLow1 >> 8) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( dacHigh1 & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (dacHigh1 >> 8) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+
+    v = static_cast<quint8>( dacLow2 & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (dacLow2 >> 8) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( dacHigh2 & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (dacHigh2 >> 8) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+
+    quint32 t;
+    t = static_cast<quint32>( period );
+    v = static_cast<quint8>( t & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (t >> 8) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (t >> 16) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (t >> 24) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+
+    bool res;
+    res = setArgs( reinterpret_cast<quint8 *>( b.data() ), b.size() );
+    if ( !res )
+        return false;
+
+    quint8 funcInd = 10;
+    res = execFunc( funcInd );
+    if ( !res )
+        return false;
+
+    return true;
+}
+
 
 
 
