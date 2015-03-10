@@ -111,6 +111,7 @@ static void set_sc_relay( uint8_t * args );
 static void set_dac( uint8_t * args );
 static void set_one_pulse( uint8_t * args );
 static void set_meandr( uint8_t * args );
+static void set_sweep( uint8_t * args );
 
 static TFunc funcs[] =
 {
@@ -123,7 +124,8 @@ static TFunc funcs[] =
 	set_sc_relay,
 	set_dac,
 	set_one_pulse,
-	set_meandr
+	set_meandr,
+	set_sweep
 };
 
 static void exec_func( void )
@@ -220,6 +222,13 @@ static void set_meandr( uint8_t * args )
     (void)args;
     OutputQueue * q = commandQueue();
     chOQPut( q, TMEANDR );
+}
+
+static void set_sweep( uint8_t * args )
+{
+    (void)args;
+    OutputQueue * q = commandQueue();
+    chOQPut( q, TSWEEP );
 }
 
 

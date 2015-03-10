@@ -53,8 +53,8 @@ static void processOnePulse( void );
 static void initMeandr( void );
 static void processMeandr( void );
 
-static void initSaw( void );
-static void processSaw( void );
+static void initSweep( void );
+static void processSweep( void );
 
 static void initFb( void );
 static void processFb( void );
@@ -64,7 +64,7 @@ static TMode modes[] =
 	{ initDac,      processDac },
 	{ initOnePulse, processOnePulse },
 	{ initMeandr,   processMeandr },
-	{ initSaw,      processSaw },
+	{ initSweep,    processSweep },
 	{ initFb,       processFb }
 };
 
@@ -298,14 +298,59 @@ static void processMeandr( void )
 	}
 }
 
-static void initSaw( void )
-{
+uint32_t sweepPeriod = 1000;
+uint32_t sweepTime   = 0;
+DacCfg   sweepDac1,
+         sweepDac2;
+int8_t   sweepSpeed = 1;
 
+static void initSweep( void )
+{
+    uint8_t * args = funcArgs();
+
+    sweepDac1.dac1 = (uint16_t)args[0] + ((uint16_t)(args[1]) << 8);
+    sweepDac1.dac2 = (uint16_t)args[2] + ((uint16_t)(args[3]) << 8);
+    sweepDac2.dac1 = (uint16_t)args[4] + ((uint16_t)(args[5]) << 8);
+    sweepDac2.dac2 = (uint16_t)args[6] + ((uint16_t)(args[7]) << 8);
+    sweepPeriod    = (uint32_t)args[8] +
+                     ((uint32_t)(args[9]) << 8) +
+                     ((uint32_t)(args[10]) << 16) +
+                     ((uint32_t)(args[11]) << 24);
+    sweepTime      = 0;
+    sweepSpeed     = 1;
 }
 
-static void processSaw( void )
+static void processSweep( void )
 {
+    sweepTime += sweepSpeed;
+    uint8_t overflow, underflow;
+    overflow  = ( sweepTime >= sweepPeriod );
+    underflow = ( sweepTime <= 0 );
 
+    int time;
+    if ( overflow )
+        time = sweepPeriod;
+    else if ( underflow )
+        time = 0;
+    else
+        time = sweepTime;
+    if ( overflow || underflow )
+        sweepSpeed = -sweepSpeed;
+
+    int32_t from, to, dac;
+    DacCfg writeDac;
+
+    from = (int32_t)sweepDac1.dac1;
+    to   = (int32_t)sweepDac2.dac1;
+    dac  = from + ( (to - from) * time ) / sweepPeriod;
+    writeDac.dac1 = (uint16_t)dac;
+
+    from = (int32_t)sweepDac1.dac2;
+    to   = (int32_t)sweepDac2.dac2;
+    dac  = from + ( (to - from) * time ) / sweepPeriod;
+    writeDac.dac2 = (uint16_t)dac;
+
+    dacSet( &writeDac );
 }
 
 static void initFb( void )
