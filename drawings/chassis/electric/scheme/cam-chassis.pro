@@ -1,11 +1,6 @@
-update=Sun 05 Apr 2015 11:30:57 PM MSK
+update=Thu 16 Apr 2015 11:35:41 PM MSK
 version=1
-last_client=eeschema
-[cvpcb]
-version=1
-NetIExt=net
-[cvpcb/libraries]
-EquName1=devcms
+last_client=kicad
 [pcbnew]
 version=1
 LastNetListRead=
@@ -26,7 +21,6 @@ DrawSegmentWidth=0.200000000000
 BoardOutlineThickness=0.100000000000
 ModuleOutlineThickness=0.150000000000
 [pcbnew/libraries]
-LibDir=
 LibName1=sockets
 LibName2=connect
 LibName3=discret
@@ -43,16 +37,18 @@ LibName13=led
 LibName14=dip_sockets
 LibName15=pga_sockets
 LibName16=valves
-[general]
+LibName17=crystal-smd-5x3
+LibName18=micro-usb-b
+LibName19=my_foots
+LibDir=../libs
+[cvpcb]
 version=1
+NetIExt=net
+[cvpcb/libraries]
+EquName1=devcms
 [eeschema]
 version=1
 LibDir=../libs
-NetFmtName=
-RptD_X=0
-RptD_Y=100
-RptLab=1
-LabSize=60
 [eeschema/libraries]
 LibName1=power
 LibName2=device
@@ -93,3 +89,5 @@ LibName36=my_comps
 LibName37=tc1047a
 LibName38=crystal-4pin
 LibName39=micro-usb-b
+[general]
+version=1
