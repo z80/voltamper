@@ -459,11 +459,11 @@ F 3 "" H 9000 1050 60  0000 C CNN
 $EndComp
 Text Label 8250 900  0    60   ~ 0
 gnd
-Text Label 7350 1100 0    60   ~ 0
+Text Label 10400 1100 0    60   ~ 0
 servo1
 Text Label 9450 900  0    60   ~ 0
 gnd
-Text Label 10350 1100 0    60   ~ 0
+Text Label 7350 1100 0    60   ~ 0
 servo2
 $Comp
 L MOSFET_P Q5
