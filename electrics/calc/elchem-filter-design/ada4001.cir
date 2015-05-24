@@ -1,0 +1,133 @@
+* ADA4001 SPICE Macro-model                   
+* Version 1.0, 02/17/2012, HH/ADSJ
+*
+* This model simulates typical values at Vsy=±15V, T=25°C
+*  for CMRR, PSRR, Open Loop Gain/Phase, IVR, en, SR, Isy, Vdo vs. ILoad
+* 
+* Copyright 2012 by Analog Devices, Inc.
+*
+* Refer to "README.DOC" file for License Statement.  Use of this model
+* indicates your acceptance with the terms and provisions in the License Statement.
+*
+* Node assignments
+*                non-inverting input
+*                | inverting input
+*                | | positive supply
+*                | | |  negative supply
+*                | | |  |  output
+*                | | |  |  |
+.SUBCKT ADA4001  1 2 99 50 45
+*
+* INPUT STAGE
+*
+Dinp1 1 99  DX
+Dinp2 50 1  DX
+Dinn1 2 99  DX
+Dinn2 50 2  DX
+R3   5  50   10.0E3
+R4   6  50   10.0E3
+Rix  5  500   14.0E3
+Cix 500   6   5.75E-13
+CDM   1   2    2.6E-12
+Cin1  1   50   4.8E-12
+Cin2  2   50   4.8E-12
+IOS  1   2    8E-12
+EOS  7  1  POLY(4) (81,98) (83,98) (22,98)(73,98) -1.2E-03 1 1 1 1; 
+J1    5   2    4   JPX
+J2    6   7    4   JPX
+I1   95  50   400.0E-06
+Q5   4   95   105   QIP 1;  
+Q6   95  95   106   QIP 1
+R103 105  99   4.0E3
+R104  106  99   4.0E3
+*
+G101 98 211 POLY(1) (6,5) 0 1.0E-03 
+R101 211 98 1E3
+*
+E201 311 98 POLY(1) (211,98) 0 2.0E+0 
+R202 311 321 2.8E+3;  
+C202 311 321 5E-13
+R203 321 98  5.6E+3
+*
+E3  252 98 (321 98) 2E-0
+R31 252 253 30E2
+C31 252 253 14.1E-12
+R32 253 98  5E2
+*
+* GAIN STAGE
+*
+G2   98 251 (253,98) 10E-03
+R5  251 98 5E5
+RF  251 250 8.6E+0
+CF  245 250 7.15E-10; -11
+EF (245 98) (45,98) 1
+D3  251 451 DX
+D4  452 251 DX
+V1  451 98  0.6 ;  
+V2  452 98 -0.8
+*
+* CMRR
+*
+ECM   72 98 POLY(2) (1,98) (2,98) 0 3.705E-02 3.705E-02
+RCM1  72 73 1.326E+02
+RCM2  73 98 3.183E-03
+CCM1  72 73 1.0E-6
+*
+* PSRR
+*
+EPSY 21 98 POLY(1) (99,50) -3.525E-00 1.175E-01
+RPS1 21 22 1.326E+02
+RPS2 22 98 1.326E-02
+CPS1 21 22 1.000E-06
+*
+* VOLTAGE NOISE 
+*
+VN1 80 98 0
+RN1 80 98 34E-3
+HN  81 98 VN1 7.7
+RN2 81 98 1
+*
+* FLICKER NOISE CORNER 
+*
+DFN 82 98 DNOISE 1000
+IFN 98 82 DC 1E-03
+DFN2 182 98 DNOISE
+IFN2 98 182 DC 1E-06
+GFN 83 98 POLY(1) (182,82) 1.00E-13 1.00E-04
+RFN 83 98 1
+*
+* INTERNAL VOLTAGE REFERENCE
+*
+EREF 98  0 POLY(2) (99,0) (50,0) 0 .5 .5
+GSY  99 50 POLY(1) (99,50) 458E-6 7.4E-6   
+*
+* OUTPUT STAGE
+*
+Q33  455 41 99 POUT
+Cco1  455 411  3.8E-12; 5
+Rco1  411 41  8.0E+02; 500
+RB1  40 41 1.5E3
+EB1  99 40 POLY(1) (98,251) 7.495E-01 1; 
+Q34  455 43 50 NOUT
+Rco2  43 431  8.0E+02; 500
+Cco2 455 431  3.8E-12; 12
+RB2  42 43 2.0E3
+EB2  42 50 POLY(1) (251,98) 7.490E-01  1; 
+RO  455 456  1.4E+01
+LO  456 45  2.3E-08
+Dout1 45 99  DX
+Dout2 50 45  DX
+*
+* MODELS
+*
+.MODEL JPX PJF(BETA=1.0E-3 VTO=-0.80  IS=2E-12 RD=1m 
++ RS=0 CGD=5E-13 CGS=5E-13)
+.MODEL DC D(IS=1E-14,CJO=1E-15)
+.MODEL NOUT NPN(BF=140 VA=350 IS=0.5E-16 BR=8.4 VAR=20 RC=4.0E1)
+.MODEL POUT PNP(BF=80  VA=130 IS=0.5E-16 BR=5   VAR=20 RC=6.0E1)
+.MODEL QIP  PNP(BF=100 VA=100 IS=1.5E-16)
+.MODEL DNOISE D(IS=1E-14,RS=1E-03,KF=2.35E-10)
+.MODEL DX   D(IS=1E-15 RS=1m CJO=1E-13)
+.MODEL DIN  D(IS=1E-12, RS=19.3E-6, KF=4.28E-15, AF=1)
+.ENDS ADA4001
+*
