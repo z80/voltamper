@@ -14,13 +14,19 @@ int main(void)
     chSysInit();
 
     initLed();
-    dacInit();
-    initAdc();
-    cpu_io_init();
+    //dacInit();
+    //initAdc();
+    //cpu_io_init();
 
     while (TRUE)
     {
-    	cpu_io_process();
+    	//cpu_io_process();
+        setLeds( 1 );
+    	chThdSleepMilliseconds( 1000 );
+        setLeds( 2 );
+    	chThdSleepMilliseconds( 1000 );
+        setLeds( 4 );
+    	chThdSleepMilliseconds( 1000 );
     }
     return 0;
 }
