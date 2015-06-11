@@ -33,11 +33,11 @@
 #include "qextserialenumerator_p.h"
 #include <QtCore/QDebug>
 
-void QextSerialEnumeratorPrivate::init_sys()
+void QextSerialEnumeratorPrivate::platformSpecificInit()
 {
 }
 
-void QextSerialEnumeratorPrivate::destroy_sys()
+void QextSerialEnumeratorPrivate::platformSpecificDestruct()
 {
 }
 

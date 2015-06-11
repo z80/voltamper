@@ -36,11 +36,11 @@
 #include <CoreFoundation/CFNumber.h>
 #include <sys/param.h>
 
-void QextSerialEnumeratorPrivate::init_sys()
+void QextSerialEnumeratorPrivate::platformSpecificInit()
 {
 }
 
-void QextSerialEnumeratorPrivate::destroy_sys()
+void QextSerialEnumeratorPrivate::platformSpecificDestruct()
 {
     IONotificationPortDestroy(notificationPortRef);
 }

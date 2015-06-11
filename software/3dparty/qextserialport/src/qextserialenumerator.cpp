@@ -39,12 +39,12 @@
 QextSerialEnumeratorPrivate::QextSerialEnumeratorPrivate(QextSerialEnumerator *enumrator)
     :q_ptr(enumrator)
 {
-    init_sys();
+    platformSpecificInit();
 }
 
 QextSerialEnumeratorPrivate::~QextSerialEnumeratorPrivate()
 {
-    destroy_sys();
+    platformSpecificDestruct();
 }
 
 /*!
