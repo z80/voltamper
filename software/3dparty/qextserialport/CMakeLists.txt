@@ -20,20 +20,22 @@ list( APPEND com_src "./src/qextserialport.cpp" )
 if( WIN32 )
     list( APPEND com_src "./src/qextserialenumerator_win.cpp" )
     list( APPEND com_src "./src/qextserialport_win.cpp" )
+    set( libs setupapi.lib advapi32.lib user32.lib )
     set( defs _TTY_WIN_ Q_OS_WIN )
 else( WIN32 )
     list( APPEND com_src "./src/qextserialenumerator_linux.cpp" )
     list( APPEND com_src "./src/qextserialport_unix.cpp" )
     set( defs _TTY_POSIX_ __linux__ Q_OS_UNIX )
+    set( libs "" )
 endif( WIN32 )
 message( STATUS "SERIAL DEFS: ${defs}" )
 
 qt4_wrap_cpp( moc_src ${headers} )
-set( com_src ${com_src} ${moc_src} )
+#set( com_src ${com_src} ${moc_src} )
 
 # Статическая, поскольку хотелось бы только в одном месте использовать.
 add_library( serial STATIC ${com_src} )
-target_link_libraries( serial ${QT_LIBRARIES} )
+target_link_libraries( serial ${QT_LIBRARIES} ${libs} )
 # Символы для импорта динамических библиотек.
 set_property( TARGET serial PROPERTY DEFINE_SYMBOL ${defs} )
 

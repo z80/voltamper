@@ -8,6 +8,9 @@
 #include "adc_ctrl.h"
 #include "relay_ctrl.h"
 
+#include "hdw_config.h"
+#include <string.h>
+
 #define BUFFER_SZ    32
 #define ARGS_SZ      32
 #define OUT_QUEUE_SZ 32
@@ -35,42 +38,39 @@ void cpu_io_init( void )
 
 void cpu_io_process( void )
 {
-	while ( 1 )
-	{
-		uint8_t slash;
-		int     out_index;
-		out_index = 0;
-		slash     = 0;
+	uint8_t slash;
+	int     out_index;
+	out_index = 0;
+	slash     = 0;
 
-		// Try reading serial.
-		msg_t msg;
-		msg = sdGetTimeout( &SERIAL, TIME_IMMEDIATE );
-		uint8_t noData = ( ( msg == Q_TIMEOUT ) || ( msg == Q_RESET ) ) ? 1 : 0;
-		if ( !noData )
+	// Try reading serial.
+	msg_t msg;
+	msg = sdGetTimeout( &SERIAL, TIME_IMMEDIATE );
+	uint8_t noData = ( ( msg == Q_TIMEOUT ) || ( msg == Q_RESET ) ) ? 1 : 0;
+	if ( !noData )
+	{
+		uint8_t v = (uint8_t)msg;
+		//shift = serial_decode_byte( msg, &(buffer[out_index]), &eom );
+		if ( !slash )
 		{
-			uint8_t v = (uint8_t)msg;
-			//shift = serial_decode_byte( msg, &(buffer[out_index]), &eom );
-			if ( !slash )
+			if ( v == '\0' )
 			{
-				if ( v == '\0' )
-				{
-					// Execute command
-					process_command( buffer, out_index );
-					out_index = 0;
-				}
-				else if ( v != '\\' )
-					buffer[ out_index++ ] = v;
-				else
-					slash = 1;
+				// Execute command
+				process_command( buffer, out_index );
+				out_index = 0;
 			}
-			else
-			{
-				slash = 0;	
+			else if ( v != '\\' )
 				buffer[ out_index++ ] = v;
-			}
-			// Just in case of crazy command
-			out_index = ( out_index < BUFFER_SZ ) ? out_index : BUFFER_SZ;
+			else
+				slash = 1;
 		}
+		else
+		{
+			slash = 0;
+			buffer[ out_index++ ] = v;
+		}
+		// Just in case of crazy command
+		out_index = ( out_index < BUFFER_SZ ) ? out_index : BUFFER_SZ;
 	}
 }
 
@@ -111,6 +111,8 @@ static void set_dac( uint8_t * args );
 static void set_one_pulse( uint8_t * args );
 static void set_meandr( uint8_t * args );
 static void set_sweep( uint8_t * args );
+static void hardware_version( uint8_t * args );
+static void firmware_version( uint8_t * args );
 
 static TFunc funcs[] =
 {
@@ -124,7 +126,9 @@ static TFunc funcs[] =
 	set_dac,
 	set_one_pulse,
 	set_meandr,
-	set_sweep
+	set_sweep,
+	hardware_version,
+	firmware_version
 };
 
 static void exec_func( void )
@@ -229,6 +233,29 @@ static void set_sweep( uint8_t * args )
     OutputQueue * q = commandQueue();
     chOQPut( q, TSWEEP );
 }
+
+static void hardware_version( uint8_t * args )
+{
+	(void)args;
+	const uint8_t stri[] = HARDWARE_VERSION;
+	int l = strlen( (char *)stri );
+	int i;
+	for ( i=0; i<l; i++ )
+		writeResult( stri[i] );
+	writeEom();
+}
+
+static void firmware_version( uint8_t * args )
+{
+	(void)args;
+	const uint8_t stri[] = FIRMWARE_VERSION;
+	int l = strlen( (char *)stri );
+	int i;
+	for ( i=0; i<l; i++ )
+		writeResult( stri[i] );
+	writeEom();
+}
+
 
 
 

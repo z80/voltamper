@@ -10,7 +10,8 @@ public:
     VoltampIo();
     ~VoltampIo();
 
-    bool open( const QString & devName = "/dev/ttyUSB0" );
+    QStringList enumDevices();
+    bool open( int index = 0 );
     bool isOpen() const;
     void close();
 
@@ -26,6 +27,8 @@ public:
     bool set_meandr_raw( int dacLow1, int dacHigh1, int time1, int dacLow2, int dacHigh2, int time2 );
     bool set_sweep_raw( int dacLow1, int dacHigh1, int dacLow2, int dacHigh2, int time2 );
 
+    bool hardware_version( QString & stri );
+    bool firmware_version( QString & stri );
 
     bool setArgs( quint8 * data, int dataSz );
     bool execFunc( quint8 funcId );

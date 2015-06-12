@@ -39,10 +39,9 @@ void VoltampIo::PD::encodeData( quint8 * data, int sz )
     arr.clear();
     for ( int i=0; i<sz; i++ )
     {
-        if ( data[i] == '\\' )
+        if ( ( data[i] == '\\' ) || ( data[i] == '\0' ) )
             arr.append( '\\' );
-        else if ( data[i] == '\0' )
-            arr.append( '\\' );
+        arr.append( data[i] );
     }
     arr.append( '\0' );
 }
@@ -59,11 +58,17 @@ VoltampIo::~VoltampIo()
     delete pd;
 }
 
-bool VoltampIo::open( const QString & devName )
+QStringList VoltampIo::enumDevices()
+{
+    QStringList l = pd->io->enumDevices();
+    return l;
+}
+
+bool VoltampIo::open( int index )
 {
     QMutexLocker lock( &pd->mutex );
 
-    bool res = pd->io->open( devName );
+    bool res = pd->io->open( index );
     return res;
 }
 
@@ -423,6 +428,45 @@ bool VoltampIo::set_sweep_raw( int dacLow1, int dacHigh1, int dacLow2, int dacHi
 
     return true;
 }
+
+bool VoltampIo::hardware_version( QString & stri )
+{
+    quint8 funcInd = 11;
+    bool res = execFunc( funcInd );
+    if ( !res )
+        return false;
+
+    QByteArray & arr = pd->buffer;
+    arr.resize( PD::IN_BUFFER_SZ );
+    bool eom;
+    int cnt = read( reinterpret_cast<quint8 *>( arr.data() ), arr.size(), eom );
+    if ( !eom )
+        return false;
+    stri.clear();
+    for ( int i=0; i<cnt; i++ )
+        stri.append( QChar( arr.at( i ) ) );
+    return true;
+}
+
+bool VoltampIo::firmware_version( QString & stri )
+{
+    quint8 funcInd = 12;
+    bool res = execFunc( funcInd );
+    if ( !res )
+        return false;
+
+    QByteArray & arr = pd->buffer;
+    arr.resize( PD::IN_BUFFER_SZ );
+    bool eom;
+    int cnt = read( reinterpret_cast<quint8 *>( arr.data() ), arr.size(), eom );
+    if ( !eom )
+        return false;
+    stri.clear();
+    for ( int i=0; i<cnt; i++ )
+        stri.append( QChar( arr.at( i ) ) );
+    return true;
+}
+
 
 
 

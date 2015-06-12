@@ -12,9 +12,10 @@ MainWnd::MainWnd( QWidget * parent )
     statusLabel = new QLabel( ui.statusbar );
     ui.statusbar->addWidget( statusLabel );
 
-    loadSettings();
-
     io = new VoltampIo();
+
+    loadSettings();
+    refreshDevicesList();
 
     QVBoxLayout * bl = new QVBoxLayout( ui.osc );
     osc = new OscilloscopeWnd( this );
@@ -126,7 +127,7 @@ void MainWnd::loadSettings()
 {
     QSettings s( SETTINGS_INI, QSettings::IniFormat );
 
-    devName  = s.value( "devName",  "/dev/ttyUSB0" ).toString();
+    devName  = s.value( "devName",  "0" ).toInt();
 
     aDacLow  = s.value( "aDacLow",  1.0 ).toDouble();
     aDacHigh = s.value( "aDacHigh", 1.0 ).toDouble();
@@ -156,7 +157,7 @@ void MainWnd::saveSettings()
     s.setValue( "bAdcI",    bAdcI );
 }
 
-const QString & MainWnd::deviceName() const
+int MainWnd::deviceName() const
 {
     return devName;
 }
@@ -218,10 +219,39 @@ void MainWnd::slotCalibration()
     calibrationWnd->show();
 }
 
+void MainWnd::slotDevice()
+{
+    foreach( QAction * a, devicesList )
+        a->setChecked( false );
+    QAction * a = qobject_cast<QAction *>( sender() );
+    int index = devicesList.indexOf( a );
+    bool res = io->open( index );
+    a->setChecked( res );
+    devName = index;
+}
+
 void MainWnd::setTitle( const QString & stri )
 {
     setWindowTitle( QString( "Potentiostat: %1" ).arg( stri ) );
 }
+
+void MainWnd::refreshDevicesList()
+{
+    foreach( QAction * a, devicesList )
+        a->deleteLater();
+    devicesList.clear();
+    QStringList l = io->enumDevices();
+    foreach( QString stri, l )
+    {
+        QAction * a = new QAction( stri, ui.menuDevice );
+        ui.menuDevice->addAction( a );
+        a->setCheckable( true );
+        connect( a, SIGNAL(triggered()), this, SLOT(slotDevice()) );
+        devicesList.append( a );
+    }
+}
+
+
 
 
 

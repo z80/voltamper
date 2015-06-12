@@ -63,7 +63,19 @@ build/obj/cpu_io.o: src/cpu_io.c src/cpu_io.h \
  ../chibios_2.4.x/os/hal/include/usb.h \
  ../chibios_2.4.x/os/hal/include/mmc_spi.h \
  ../chibios_2.4.x/os/hal/include/serial_usb.h src/led_ctrl.h \
- src/adc_ctrl.h src/relay_ctrl.h
+ src/adc_ctrl.h src/relay_ctrl.h src/hdw_config.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/string.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/_ansi.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/newlib.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/config.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/ieeefp.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/reent.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/_ansi.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/_types.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/_types.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/_default_types.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/lock.h \
+ c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/string.h
 
 src/cpu_io.h:
 
@@ -208,3 +220,29 @@ src/led_ctrl.h:
 src/adc_ctrl.h:
 
 src/relay_ctrl.h:
+
+src/hdw_config.h:
+
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/string.h:
+
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/_ansi.h:
+
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/newlib.h:
+
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/config.h:
+
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/ieeefp.h:
+
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/reent.h:
+
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/_ansi.h:
+
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/_types.h:
+
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/_types.h:
+
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/machine/_default_types.h:
+
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/lock.h:
+
+c:/programs/yagarto/lib/gcc/../../arm-none-eabi/sys-include/sys/string.h:

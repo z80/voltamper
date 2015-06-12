@@ -10,7 +10,7 @@ aux_source_directory( "./src" src )
 
 add_executable( test ${src} )
 target_link_libraries( test libio ${QT_LIBRARIES} )
-
+install( TARGETS test DESTINATION ./ )
 
 
 

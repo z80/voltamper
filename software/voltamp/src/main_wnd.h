@@ -36,7 +36,7 @@ public:
     void loadSettings();
     void saveSettings();
 
-    const QString & deviceName() const;
+    int deviceName() const;
 public slots:
     void slotQuit();
     void slotReopen();
@@ -51,10 +51,13 @@ public slots:
     void slotOutRelay();
 
     void slotCalibration();
+
+    void slotDevice();
 private:
     void setTitle( const QString & stri );
+    void refreshDevicesList();
 
-    QString devName;
+    int devName;
 
     Ui_MainWnd ui;
     VoltampIo  * io;
@@ -70,6 +73,8 @@ private:
     qreal aDacLow, aDacHigh, bDac;
     qreal aAdcAux, bAdcAux, aAdcRef, bAdcRef;
     qreal aAdcI, bAdcI;
+
+    QList<QAction *> devicesList;
 
     static const QString SETTINGS_INI;
 };

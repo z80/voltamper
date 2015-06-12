@@ -8,6 +8,9 @@ include_directories( "./src"
                      ${ROOT}/libio/src
                      ${_3DPARTY}/qwt-6.0.1/src
                      ${CMAKE_CURRENT_BINARY_DIR} )
+if ( WIN32 )
+    include_directories( ${BOOST_PATH} )
+endif ( WIN32 )
 
 file( GLOB src     "./src/*.cpp" )
 file( GLOB headers "./src/*.h" )
@@ -24,6 +27,7 @@ set( src ${src} ${moc_src} )
 
 add_executable( voltamp ${src} )
 target_link_libraries( voltamp libio qwt-6.0.1 ${QT_LIBRARIES} )
+install( TARGETS voltamp DESTINATION ./ )
 
 
 

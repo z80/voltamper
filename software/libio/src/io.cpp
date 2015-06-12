@@ -1,7 +1,7 @@
 
 #include "io.h"
 #include "qextserialport.h"
-
+#include "qextserialenumerator.h"
 
 class Io::PD
 {
@@ -15,6 +15,7 @@ public:
     }
 
     QextSerialPort * ftdi;
+    QStringList portsList;
 
     static const int TIMEOUT;
 };
@@ -32,21 +33,39 @@ Io::~Io()
     delete pd;
 }
 
-/*
-int Io::enumDevices()
+QStringList Io::enumDevices() const
 {
-    return 1;
-}
-*/
+    pd->portsList.clear();
+    QStringList l;
+    QList<QextPortInfo> pl = QextSerialEnumerator::getPorts();
+    foreach( QextPortInfo i, pl )
+    {
+        qDebug() << i.portName;   ///< Port name.
+        qDebug() << i.physName;   ///< Physical name.
+        qDebug() << i.friendName; ///< Friendly name.
+        qDebug() << i.enumName;   ///< Enumerator name.
 
-bool Io::open( const QString & dev )
+        l << i.friendName;
+        pd->portsList << i.portName;
+    }
+    return l;
+}
+
+bool Io::open( int index )
 {
+    if ( index >= pd->portsList.size() )
+    {
+        enumDevices();
+        if ( index >= pd->portsList.size() )
+            return false;
+    }
     if ( pd->ftdi )
     {
         pd->ftdi->deleteLater();
     }
     QextSerialPort * port;
-    port = new QextSerialPort(dev);
+    QString portName = pd->portsList.at( index );
+    port = new QextSerialPort( portName );
     port->setBaudRate(BAUD9600);
     port->setFlowControl(FLOW_OFF);
     port->setParity(PAR_NONE);
@@ -56,6 +75,7 @@ bool Io::open( const QString & dev )
     bool res = port->open( QIODevice::ReadWrite );
     if ( !res )
     {
+        qDebug() << port->errorString();
         port->deleteLater();
         pd->ftdi = 0;
     }
