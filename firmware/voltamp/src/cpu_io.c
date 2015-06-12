@@ -52,22 +52,21 @@ void cpu_io_process( void )
 			//shift = serial_decode_byte( msg, &(buffer[out_index]), &eom );
 			if ( !slash )
 			{
-				if ( v != '\\' )
-					buffer[ out_index++ ] = v;
-				else
-					slash = 1;
-			}
-			else
-			{
-				slash = 0;
 				if ( v == '\0' )
 				{
 					// Execute command
 					process_command( buffer, out_index );
 					out_index = 0;
 				}
-				else
+				else if ( v != '\\' )
 					buffer[ out_index++ ] = v;
+				else
+					slash = 1;
+			}
+			else
+			{
+				slash = 0;	
+				buffer[ out_index++ ] = v;
 			}
 			// Just in case of crazy command
 			out_index = ( out_index < BUFFER_SZ ) ? out_index : BUFFER_SZ;
@@ -237,14 +236,13 @@ static void set_sweep( uint8_t * args )
 
 static void writeResult( uint8_t v )
 {
+	if ( ( v == '\0' ) || ( v == '\\') )
+		sdPut( &SERIAL, '\\' );
 	sdPut( &SERIAL, v );
-	if ( v == '\\' )
-		sdPut( &SERIAL, v );
 }
 
 static void writeEom( void )
 {
-	sdPut( &SERIAL, '\\' );
 	sdPut( &SERIAL, '\0' );
 }
 

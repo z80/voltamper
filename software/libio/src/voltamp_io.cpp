@@ -39,11 +39,11 @@ void VoltampIo::PD::encodeData( quint8 * data, int sz )
     arr.clear();
     for ( int i=0; i<sz; i++ )
     {
-        arr.append( data[i] );
         if ( data[i] == '\\' )
             arr.append( '\\' );
+        else if ( data[i] == '\0' )
+            arr.append( '\\' );
     }
-    arr.append( '\\' );
     arr.append( '\0' );
 }
 
@@ -509,17 +509,17 @@ int VoltampIo::read( quint8 * data, int dataSz, bool & eom )
         {
             if ( one == '\\' )
                 slash = true;
+            else if ( one == '\\' )
+            {
+                eom = true;
+                return ind;
+            }
             else
                 data[ind++] = one;
         }
         else
         {
             if ( one == '\0' )
-            {
-                eom = true;
-                return ind;
-            }
-            else
             {
                 data[ind++] = one;
                 slash = false;
