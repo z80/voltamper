@@ -38,14 +38,12 @@ void cpu_io_init( void )
 
 void cpu_io_process( void )
 {
-	uint8_t slash;
-	int     out_index;
-	out_index = 0;
-	slash     = 0;
+	static uint8_t slash = 0;
+	static int out_index = 0;
 
 	// Try reading serial.
 	msg_t msg;
-	msg = sdGetTimeout( &SERIAL, TIME_IMMEDIATE );
+	msg = sdGetTimeout( &SERIAL, TIME_INFINITE );
 	uint8_t noData = ( ( msg == Q_TIMEOUT ) || ( msg == Q_RESET ) ) ? 1 : 0;
 	if ( !noData )
 	{

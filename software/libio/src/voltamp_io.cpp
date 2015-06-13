@@ -431,10 +431,12 @@ bool VoltampIo::set_sweep_raw( int dacLow1, int dacHigh1, int dacLow2, int dacHi
 
 bool VoltampIo::hardware_version( QString & stri )
 {
+    QMutexLocker lock( &pd->mutex );
+
     quint8 funcInd = 11;
     bool res = execFunc( funcInd );
-    if ( !res )
-        return false;
+    //if ( !res )
+    //    return false;
 
     QByteArray & arr = pd->buffer;
     arr.resize( PD::IN_BUFFER_SZ );
@@ -450,6 +452,8 @@ bool VoltampIo::hardware_version( QString & stri )
 
 bool VoltampIo::firmware_version( QString & stri )
 {
+    QMutexLocker lock( &pd->mutex );
+
     quint8 funcInd = 12;
     bool res = execFunc( funcInd );
     if ( !res )
@@ -492,9 +496,9 @@ bool VoltampIo::execFunc( quint8 funcId )
     arr.clear();
     quint8 cmd = static_cast<quint8>( PD::CMD_EXEC_FUNC );
     arr.append( *reinterpret_cast<char *>( &cmd ) );
-    cmd = static_cast<quint8>( funcId && 0xFF );
+    cmd = static_cast<quint8>( funcId & 0xFF );
     arr.append( cmd );
-    cmd = static_cast<quint8>( (funcId >> 8) && 0xFF );
+    cmd = static_cast<quint8>( (funcId >> 8) & 0xFF );
     arr.append( cmd );
     pd->encodeData( reinterpret_cast<quint8 *>(arr.data()), arr.size() );
     int cnt = write( reinterpret_cast<quint8 *>( pd->buffer.data() ), pd->buffer.size() );
@@ -512,7 +516,7 @@ int VoltampIo::readData( quint8 * data, int dataSz )
 
 int VoltampIo::write( quint8 * data, int dataSz )
 {
-    pd->encodeData( data, dataSz );
+    //pd->encodeData( data, dataSz );
     int cnt = pd->io->write( reinterpret_cast<quint8 *>( pd->buffer.data() ), pd->buffer.size() );
     return cnt;
 }
@@ -542,34 +546,34 @@ int VoltampIo::read( quint8 * data, int dataSz, bool & eom )
     t0.start();
     bool slash = false;
     int ind = 0;
-    while ( ( ind < dataSz ) && ( t0.elapsed() < PD::TIMEOUT ) )
+    do
     {
         int cnt = pd->io->read( &one, 1 );
         if ( cnt < 1 )
         {
             Sleep::msleep( 1 );
         }
-        if ( !slash )
-        {
-            if ( one == '\\' )
-                slash = true;
-            else if ( one == '\\' )
-            {
-                eom = true;
-                return ind;
-            }
-            else
-                data[ind++] = one;
-        }
         else
         {
-            if ( one == '\0' )
+            if ( !slash )
+            {
+                if ( one == '\\' )
+                    slash = true;
+                else if ( one == '\0' )
+                {
+                    eom = true;
+                    return ind;
+                }
+                else
+                    data[ind++] = one;
+            }
+            else
             {
                 data[ind++] = one;
                 slash = false;
             }
         }
-    }
+    } while ( ( ind < dataSz ) && ( t0.elapsed() < PD::TIMEOUT ) );
     eom = false;
     return ind;
 }
