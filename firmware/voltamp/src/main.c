@@ -21,7 +21,6 @@ int main(void)
     while (TRUE)
     {
     	DacCfg dac;
-    	cpu_io_process();
         setLeds( 1 );
     	dac.dac1 = 0;
     	dac.dac2 = 0;
@@ -31,11 +30,13 @@ int main(void)
     	dac.dac1 = 2047;
     	dac.dac2 = 2047;
         dacSet( &dac );
+    	cpu_io_process();
     	chThdSleepMilliseconds( 10 );
         setLeds( 4 );
     	dac.dac1 = 4095;
     	dac.dac2 = 4095;
         dacSet( &dac );
+    	cpu_io_process();
     	chThdSleepMilliseconds( 10 );
     }
     return 0;

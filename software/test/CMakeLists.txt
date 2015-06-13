@@ -4,6 +4,7 @@ include( ${QT_USE_FILE} )
 
 include_directories( "./src"
                      ${ROOT}/libio/src
+                     ${ROOT}/3dparty/qextserialport/src
                      ${CMAKE_CURRENT_BINARY_DIR} )
 
 aux_source_directory( "./src" src )

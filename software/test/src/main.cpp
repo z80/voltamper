@@ -2,12 +2,42 @@
 #include <QtGui>
 #include "voltamp_io.h"
 
+#include "qextserialport.h"
 
 
 int main( int argc, char * argv[] )
 {
     QApplication app( argc, argv );
 
+
+    QextSerialPort * port;
+    port = new QextSerialPort( "COM14" );
+    port->setQueryMode( QextSerialPort::Polling );
+    port->setBaudRate(BAUD9600);
+    port->setFlowControl(FLOW_OFF);
+    port->setParity(PAR_NONE);
+    port->setDataBits(DATA_8);
+    port->setStopBits(STOP_1);
+    bool res = port->open( QIODevice::ReadWrite );
+    if ( !res )
+    {
+        qDebug() << port->errorString();
+        port->deleteLater();
+        return -1;
+    }
+
+    while ( true )
+    {
+        char data[3];
+        data[0] = 1;
+        data[1] = 2;
+        data[2] = 3;
+        int cnt = port->write( const_cast<const char *>( data ), 1 );
+        qDebug() << "Written " << cnt;
+        cnt = port->read( data, 3 );
+        qDebug() << "Read " << cnt;
+    }
+    /*
     VoltampIo io;
     bool res;
     QStringList l = io.enumDevices();
@@ -22,7 +52,7 @@ int main( int argc, char * argv[] )
     res = io.firmware_version( stri );
     qDebug() << stri;
     io.close();
-
+    */
     return 0;
 }
 
