@@ -34,6 +34,10 @@ void cpu_io_init( void )
 {
 	// Initialize serial driver.
 	sdStart( &SERIAL, 0 );
+
+	// Setup pad settings.
+	palSetPadMode( IOPORT1, 9, PAL_MODE_STM32_ALTERNATE_PUSHPULL );
+	palSetPadMode( IOPORT1, 10, PAL_MODE_INPUT );
 }
 
 void cpu_io_process( void )
