@@ -9,7 +9,7 @@ int main( int argc, char * argv[] )
 {
     QApplication app( argc, argv );
 
-
+    /*
     QextSerialPort * port;
     port = new QextSerialPort( "COM14" );
     port->setQueryMode( QextSerialPort::Polling );
@@ -36,8 +36,8 @@ int main( int argc, char * argv[] )
         qDebug() << "Written " << cnt;
         cnt = port->read( data, 3 );
         qDebug() << "Read " << cnt;
-    }
-    /*
+    }*/
+    
     VoltampIo io;
     bool res;
     QStringList l = io.enumDevices();
@@ -51,8 +51,15 @@ int main( int argc, char * argv[] )
     qDebug() << stri;
     res = io.firmware_version( stri );
     qDebug() << stri;
+
+    res = io.set_dac_raw( 1023, 1023 );
+    res = io.set_sc_relay( true );
+    res = io.set_sc_relay( false );
+    res = io.set_out_relay( true );
+    res = io.set_out_relay( false );
+
     io.close();
-    */
+    
     return 0;
 }
 

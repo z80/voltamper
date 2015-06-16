@@ -4,6 +4,7 @@
 
 #include "iwdg.h"
 #include "led_ctrl.h"
+#include "relay_ctrl.h"
 #include "dac.h"
 #include "adc_ctrl.h"
 #include "cpu_io.h"
@@ -16,10 +17,13 @@ int main(void)
     initLed();
     dacInit();
     initAdc();
+    initRelay();
     cpu_io_init();
 
     while (TRUE)
     {
+    	cpu_io_process();
+    	/*
     	DacCfg dac;
         setLeds( 1 );
     	dac.dac1 = 0;
@@ -30,7 +34,6 @@ int main(void)
     	dac.dac1 = 2047;
     	dac.dac2 = 2047;
         dacSet( &dac );
-    	cpu_io_process();
     	chThdSleepMilliseconds( 10 );
         setLeds( 4 );
     	dac.dac1 = 4095;
@@ -38,6 +41,7 @@ int main(void)
         dacSet( &dac );
     	cpu_io_process();
     	chThdSleepMilliseconds( 10 );
+    	*/
     }
     return 0;
 }

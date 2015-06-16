@@ -137,7 +137,9 @@ int Io::read( quint8 * data, int dataSz, bool tillTimeout )
         totalCnt += cnt;
         if ( ( tillTimeout ) && (cnt < 1) )
             Sleep::msleep( 1 );
-    } while ( (cnt > 0) || ( (tillTimeout) && (t0.elapsed() < PD::TIMEOUT) ) );
+    } while ( (totalCnt < dataSz) && 
+              ( (cnt > 0) || 
+              ( (tillTimeout) && (t0.elapsed() < PD::TIMEOUT) ) ) );
     return cnt;
 }
 

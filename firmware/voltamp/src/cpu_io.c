@@ -42,16 +42,20 @@ void cpu_io_init( void )
 
 void cpu_io_process( void )
 {
-	//static uint8_t slash = 0;
-	//static int out_index = 0;
+	static uint8_t slash = 0;
+	static int out_index = 0;
 
 	// Try reading serial.
+	/*
 	msg_t msg;
 	msg = sdGetTimeout( &SERIAL, TIME_INFINITE );
 	sdPut( &SERIAL, msg );
 	return;
+	*/
 
-	/*
+
+	msg_t msg;
+	msg = sdGetTimeout( &SERIAL, TIME_INFINITE );
 	uint8_t noData = ( ( msg == Q_TIMEOUT ) || ( msg == Q_RESET ) ) ? 1 : 0;
 	if ( !noData )
 	{
@@ -78,7 +82,7 @@ void cpu_io_process( void )
 		// Just in case of crazy command
 		out_index = ( out_index < BUFFER_SZ ) ? out_index : BUFFER_SZ;
 	}
-	*/
+
 }
 
 uint8_t * funcArgs( void )
