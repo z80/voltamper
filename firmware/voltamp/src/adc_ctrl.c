@@ -36,13 +36,10 @@ uint8_t     command_queue_buffer[4];
 int oscPeriod = 10000;
 int oscTime   = 0;
 
-typedef void (*TInitMode)( void );
-typedef void (*TProcessMode)( void );
-typedef struct TMode
-{
-	TInitMode    init;
-	TProcessMode process;
-} TMode;
+
+
+void modeProcess( int mode );
+void modeInit( int mode );
 
 static void initDac( void );
 static void processDac( void );
@@ -59,16 +56,6 @@ static void processSweep( void );
 static void initFb( void );
 static void processFb( void );
 
-static TMode modes[] =
-{
-	{ initDac,      processDac },
-	{ initOnePulse, processOnePulse },
-	{ initMeandr,   processMeandr },
-	{ initSweep,    processSweep },
-	{ initFb,       processFb }
-};
-
-
 static void processOsc( adcsample_t * buffer );
 
 uint8_t mode = TDAC;
@@ -81,7 +68,7 @@ static void convAdcReadyCb( ADCDriver * adcp, adcsample_t * buffer, size_t n )
 	toggleLedsI( 4 );
 
 	// Process mode.
-	modes[mode].process();
+	modeProcess( mode );
 
 	// Process oscilloscope regardless of all other conditions.
 	processOsc( buffer );
@@ -98,7 +85,7 @@ static void convAdcReadyCb( ADCDriver * adcp, adcsample_t * buffer, size_t n )
 
 	// Init new mode.
 	if ( newMode )
-		modes[mode].init();
+		modeInit( mode );
 }
 
 #define ADC_NUM_CHANNELS 3
@@ -203,6 +190,50 @@ InputQueue * erefQueue( void )
 InputQueue * iauxQueue( void )
 {
 	return &iaux_queue;
+}
+
+void modeProcess( int mode )
+{
+	switch ( mode )
+	{
+	case 0:
+		processDac();
+		break;
+	case 1:
+		processOnePulse();
+		break;
+	case 2:
+		processMeandr();
+		break;
+	case 3:
+		processSweep();
+		break;
+	case 4:
+		processFb();
+		break;
+	}
+}
+
+void modeInit( int mode )
+{
+	switch ( mode )
+	{
+	case 0:
+		initDac();
+		break;
+	case 1:
+		initOnePulse();
+		break;
+	case 2:
+		initMeandr();
+		break;
+	case 3:
+		initSweep();
+		break;
+	case 4:
+		initFb();
+		break;
+	}
 }
 
 static void initDac( void )
