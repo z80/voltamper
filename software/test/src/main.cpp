@@ -52,11 +52,15 @@ int main( int argc, char * argv[] )
     res = io.firmware_version( stri );
     qDebug() << stri;
 
-    res = io.set_dac_raw( 1023, 1023 );
     res = io.set_sc_relay( true );
-    res = io.set_sc_relay( false );
-    res = io.set_out_relay( true );
-    res = io.set_out_relay( false );
+    //res = io.set_sc_relay( false );
+    //res = io.set_out_relay( true );
+    //res = io.set_out_relay( false );
+
+    res = io.set_dac_raw( 0,  0 );
+    res = io.set_dac_raw( 4095, 4095 );
+    res = io.set_meandr_raw( 0, 0, 100000, 4095, 4095, 100000 );
+    res = io.set_sweep_raw( 0, 0, 4095, 4095, 100000 );
 
     io.close();
     

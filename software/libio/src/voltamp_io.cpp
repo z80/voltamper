@@ -17,6 +17,7 @@ public:
     QMutex mutex;
     Io * io;
     QByteArray buffer_raw;
+    QByteArray buffer_cmd;
     QByteArray buffer;
 
     static const int CMD_SET_ARGS;
@@ -478,7 +479,7 @@ bool VoltampIo::firmware_version( QString & stri )
 
 bool VoltampIo::setArgs( quint8 * data, int dataSz )
 {
-    QByteArray & arr = pd->buffer_raw;
+    QByteArray & arr = pd->buffer_cmd;
     arr.reserve( dataSz + 1 );
     arr.clear();
     quint8 cmd = static_cast<quint8>( PD::CMD_SET_ARGS );
@@ -491,7 +492,7 @@ bool VoltampIo::setArgs( quint8 * data, int dataSz )
 
 bool VoltampIo::execFunc( quint8 funcId )
 {
-    QByteArray & arr = pd->buffer_raw;
+    QByteArray & arr = pd->buffer_cmd;
     arr.reserve( 2 + 1 );
     arr.clear();
     quint8 cmd = static_cast<quint8>( PD::CMD_EXEC_FUNC );
