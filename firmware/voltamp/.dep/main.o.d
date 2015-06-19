@@ -62,7 +62,8 @@ build/obj/main.o: src/main.c ../chibios_2.4.x/os/kernel/include/ch.h \
  ../chibios_2.4.x/os/hal/include/usb.h \
  ../chibios_2.4.x/os/hal/include/mmc_spi.h \
  ../chibios_2.4.x/os/hal/include/serial_usb.h src/iwdg/iwdg.h \
- src/iwdg/iwdg_lld.h src/led_ctrl.h src/dac.h src/adc_ctrl.h src/cpu_io.h
+ src/iwdg/iwdg_lld.h src/led_ctrl.h src/relay_ctrl.h src/dac.h \
+ src/adc_ctrl.h src/cpu_io.h
 
 ../chibios_2.4.x/os/kernel/include/ch.h:
 
@@ -205,6 +206,8 @@ src/iwdg/iwdg.h:
 src/iwdg/iwdg_lld.h:
 
 src/led_ctrl.h:
+
+src/relay_ctrl.h:
 
 src/dac.h:
 
