@@ -46,6 +46,9 @@ MainWnd::MainWnd( QWidget * parent )
     connect( ui.actionMeandr,       SIGNAL(triggered()), this, SLOT(slotMeandr()) );
     connect( ui.actionSweep,        SIGNAL(triggered()), this, SLOT(slotSweep()) );
 
+    connect( ui.actionShort_relay, SIGNAL(triggered()), this, SLOT(slotShortRelay()) );
+    connect( ui.actionOut_relay,   SIGNAL(triggered()), this, SLOT(slotOutRelay()) );
+
     connect( ui.actionCalibration,  SIGNAL(triggered()), this, SLOT(slotCalibration()) );
 }
 
@@ -129,7 +132,7 @@ void MainWnd::loadSettings()
 
     devName  = s.value( "devName",  "0" ).toInt();
 
-    aDacLow  = s.value( "aDacLow",  1.0 ).toDouble();
+    aDacLow  = s.value( "aDacLow",  0.0001 ).toDouble();
     aDacHigh = s.value( "aDacHigh", 1.0 ).toDouble();
     bDac     = s.value( "bDac",     -2047.0 ).toDouble();
     aAdcAux  = s.value( "aAdcAux",  1.0 ).toDouble();
@@ -164,6 +167,7 @@ int MainWnd::deviceName() const
 
 void MainWnd::slotQuit()
 {
+    saveSettings();
     this->deleteLater();
     qApp->quit();
 }
@@ -228,6 +232,11 @@ void MainWnd::slotDevice()
     bool res = io->open( index );
     a->setChecked( res );
     devName = index;
+}
+
+void MainWnd::closeEvent( QCloseEvent * e )
+{
+    slotQuit();
 }
 
 void MainWnd::setTitle( const QString & stri )

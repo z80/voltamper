@@ -53,6 +53,8 @@ public slots:
     void slotCalibration();
 
     void slotDevice();
+protected:
+    void closeEvent( QCloseEvent * e );
 private:
     void setTitle( const QString & stri );
     void refreshDevicesList();

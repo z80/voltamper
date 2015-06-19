@@ -6,6 +6,7 @@ SweepWnd::SweepWnd( QWidget * parent )
 : QWidget( parent )
 {
     ui.setupUi( this );
+    connect( ui.apply, SIGNAL(clicked()), this, SLOT(slotApply()) );
 }
 
 SweepWnd::~SweepWnd()

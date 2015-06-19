@@ -26,7 +26,7 @@ void DcVoltageWnd::setIo( VoltampIo * io, MainWnd * mainWnd )
 void DcVoltageWnd::slotChange()
 {
     QString ss = "background-color: rgb(185, 10, 10);\nborder-color: rgb(185, 10, 10);";
-    setStyleSheet( ss );
+    ui.value->setStyleSheet( ss );
 }
 
 void DcVoltageWnd::slotApply()
@@ -37,7 +37,7 @@ void DcVoltageWnd::slotApply()
     bool res = io->set_dac_raw( dacLow, dacHigh );
 
     QString ss = "background-color: rgb(10, 185, 10);\nborder-color: rgb(10, 185, 10);";
-    setStyleSheet( ss );
+    ui.value->setStyleSheet( ss );
 }
 
 

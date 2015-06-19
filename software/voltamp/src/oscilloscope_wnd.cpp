@@ -335,7 +335,7 @@ void OscilloscopeWnd::curveSizeChanged()
 void OscilloscopeWnd::curvesCntChanged()
 {
     const QColor front( Qt::darkGreen );
-    QColor back( 50, 50, 50 );
+    QColor back( 230, 230, 250 );
     int r1 = front.red();
     int g1 = front.green();
     int b1 = front.blue();
@@ -367,11 +367,13 @@ void OscilloscopeWnd::curvesCntChanged()
         if ( i == 0 )
         {
             pen.setWidth( 3 );
+            pen.setStyle( Qt::SolidLine );
             curves[i].curve->setZ( 100.0 );
         }
         else
         {
             pen.setWidth( 1 );
+            pen.setStyle( Qt::DotLine );
             curves[i].curve->setZ( 90.0 );
         }
         curves[i].curve->setPen( pen );
