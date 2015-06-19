@@ -67,7 +67,7 @@ bool Io::open( int index )
     QString portName = pd->portsList.at( index );
     port = new QextSerialPort( portName );
     port->setQueryMode( QextSerialPort::Polling );
-    port->setBaudRate(BAUD9600);
+    port->setBaudRate(BAUD115200);
     port->setFlowControl(FLOW_OFF);
     port->setParity(PAR_NONE);
     port->setDataBits(DATA_8);

@@ -162,7 +162,7 @@ bool VoltampIo::osc_set_period( qreal secs, int per_pts )
     b.clear();
     b.reserve( 4 );
 
-    quint32 ticks = static_cast<quint32>( secs * 24000000.0 / (3*28.5*8.0) / static_cast<qreal>( per_pts ) );
+    quint32 ticks = static_cast<quint32>( secs * 24000000.0 / (3*239.5*8.0) / static_cast<qreal>( per_pts ) );
 
     quint8 v;
     v = static_cast<quint8>( ticks & 0xFF );

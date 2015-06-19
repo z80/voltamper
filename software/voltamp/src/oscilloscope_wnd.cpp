@@ -61,7 +61,7 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     ui.plot->canvas()->setPalette( pal );
 
     timer = new QTimer( this );
-    timer->setInterval( 10 );
+    timer->setInterval( 1 );
     connect( timer, SIGNAL(timeout()),   this, SLOT(slotTimeout()) );
     connect( this,  SIGNAL(sigReplot()), this, SLOT(slotReplot()) );
     timer->start();

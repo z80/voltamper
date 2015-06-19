@@ -103,7 +103,7 @@ static adcsample_t adcSamples[ ADC_NUM_CHANNELS * ADC_BUF_DEPTH ];
 
 // At 16MHz 3 signals would be measured with frequency 16000 / ( 28.5 * 3 ) = 187kHz.
 // But ADC definitely shouldn't be faster then PWM.
-#define ADC_SAMPLING  ADC_SAMPLE_28P5
+#define ADC_SAMPLING  ADC_SAMPLE_239P5 //ADC_SAMPLE_28P5
 
 static const ADCConversionGroup adcGroup =
 {
@@ -329,11 +329,13 @@ static void processMeandr( void )
 	}
 }
 
-uint32_t sweepPeriod = 1000;
-uint32_t sweepTime   = 0;
+int32_t sweepPeriod = 1000;
+float   sweepPeriodInvf = 0.001f;
+int32_t sweepTime   = 0;
 DacCfg   sweepDac1,
          sweepDac2;
 int8_t   sweepSpeed = 1;
+float dDacf1, dDacf2;
 
 static void initSweep( void )
 {
@@ -347,6 +349,9 @@ static void initSweep( void )
                      ((uint32_t)(args[9]) << 8) +
                      ((uint32_t)(args[10]) << 16) +
                      ((uint32_t)(args[11]) << 24);
+    sweepPeriodInvf = 1.0f/(float)sweepPeriod;
+    dDacf1       = (float)( sweepDac2.dac1 - sweepDac1.dac1 );
+    dDacf2       = (float)( sweepDac2.dac2 - sweepDac1.dac2 );
     sweepTime      = 0;
     sweepSpeed     = 1;
 }
@@ -358,7 +363,7 @@ static void processSweep( void )
     overflow  = ( sweepTime >= sweepPeriod );
     underflow = ( sweepTime <= 0 );
 
-    int time;
+    int32_t time;
     if ( overflow )
         time = sweepPeriod;
     else if ( underflow )
@@ -368,17 +373,16 @@ static void processSweep( void )
     if ( overflow || underflow )
         sweepSpeed = -sweepSpeed;
 
-    int32_t from, to, dac;
+    int from, dac;
     DacCfg writeDac;
+    float timef = (float)time * sweepPeriodInvf;
 
     from = (int32_t)sweepDac1.dac1;
-    to   = (int32_t)sweepDac2.dac1;
-    dac  = from + ( (to - from) * time ) / sweepPeriod;
+    dac  = from + (int)( dDacf1 * timef );
     writeDac.dac1 = (uint16_t)dac;
 
     from = (int32_t)sweepDac1.dac2;
-    to   = (int32_t)sweepDac2.dac2;
-    dac  = from + ( (to - from) * time ) / sweepPeriod;
+    dac  = from + (int)( dDacf2 * timef );
     writeDac.dac2 = (uint16_t)dac;
 
     dacSet( &writeDac );
