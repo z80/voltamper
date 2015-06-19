@@ -54,6 +54,7 @@ MainWnd::MainWnd( QWidget * parent )
 
 MainWnd::~MainWnd()
 {
+    ui.osc->deleteLater();
     delete io;
 }
 

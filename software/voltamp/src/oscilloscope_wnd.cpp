@@ -84,8 +84,7 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
 OscilloscopeWnd::~OscilloscopeWnd()
 {
     timer->stop();
-    while ( future.isRunning() )
-        qApp->processEvents();
+    future.waitForFinished();
 }
 
 bool OscilloscopeWnd::isRunning() const
@@ -115,6 +114,13 @@ void OscilloscopeWnd::slotTimeout()
 
 void OscilloscopeWnd::slotCurveType()
 {
+    do {
+        QMutexLocker lock( &mutex );
+            eaux.clear();
+            eref.clear();
+            iaux.clear();
+    } while ( false );
+
     QAction * a = qobject_cast<QAction *>( this->sender() );
     if ( a == ui.actionE_AUX )
         curveType = EAUX_T;
