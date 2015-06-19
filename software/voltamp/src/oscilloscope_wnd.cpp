@@ -48,8 +48,6 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     g->attach( ui.plot );
 
 
-    //connect( this, SIGNAL(sigReplot()), this, SLOT(replot()), Qt::QueuedConnection );
-
     ui.plot->canvas()->setBorderRadius( 10 );
     ui.plot->plotLayout()->setAlignCanvasToScales( true );
 
@@ -149,14 +147,27 @@ void OscilloscopeWnd::slotCurveType()
 void OscilloscopeWnd::slotPeriod()
 {
     QAction * a = qobject_cast<QAction *>( this->sender() );
+    qreal t = 1.0;
     if ( a == ui.actionT_1s )
+    {
         period = T_1s;
+        t = 1.0;
+    }
     else if ( a == ui.actionT_10s )
+    {
         period = T_10s;
+        t = 10.0;
+    }
     else if ( a == ui.actionT_1m )
+    {
         period = T_1m;
+        t = 60.0;
+    }
     else if ( a == ui.actionT_10m )
+    {
         period = T_10m;
+        t = 600.0;
+    }
     QList<QAction *> l;
     l.append( ui.actionT_1s );
     l.append( ui.actionT_10s );
@@ -170,6 +181,8 @@ void OscilloscopeWnd::slotPeriod()
 
     }
 
+    if ( io->isOpen() )
+        bool res = io->osc_set_period( t, PTS_CNT );
     curveSizeChanged();
     curvesCntChanged();
 }
@@ -315,6 +328,7 @@ void OscilloscopeWnd::curveSizeChanged()
         Curve & c = curves[i];
         c.x.resize( cnt );
         c.y.resize( cnt );
+        c.cnt = 0;
     }
 }
 

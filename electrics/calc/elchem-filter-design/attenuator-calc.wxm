@@ -41,5 +41,29 @@ eq2: (V2-Vmin)/Rin + (V1-Vcc)/Rcc + V2/Rgnd = 0;
 solve( [eq1, eq2], [Rcc, Rin] );
 /* [wxMaxima: input   end   ] */
 
+/* [wxMaxima: comment start ]
+Check amplifier resistors.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+numer: true;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+eq: -3.3/12 - Vmin/40 = 0;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve( [eq], [Vmin] );
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+eq: 3.3/16 + (3.3-Vmax)/40 = 0;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve( [eq], [Vmax] );
+/* [wxMaxima: input   end   ] */
+
 /* Maxima can't load/batch files which end with a comment! */
 "Created with wxMaxima"$
