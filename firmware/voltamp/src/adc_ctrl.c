@@ -65,7 +65,7 @@ static void convAdcReadyCb( ADCDriver * adcp, adcsample_t * buffer, size_t n )
 	(void)adcp;
 	(void)n;
 	// For debugging purposes toggling LED3.
-	toggleLedsI( 4 );
+	//toggleLedsI( 4 );
 
 	// Process mode.
 	modeProcess( mode );

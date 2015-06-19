@@ -86,8 +86,8 @@ int MainWnd::timeToTicks( qreal time )
 
 void MainWnd::setStatus( quint16 eaux, quint16 eref, quint16 iaux )
 {
-    QString stri = QString( "EAUX %1, EREF %2, IAUX %3" ).arg( eaux, eref, iaux );
-    statusLabel->setText( stri );
+    //QString stri = QString( "EAUX %1, EREF %2, IAUX %3" ).arg( eaux, eref, iaux );
+    //statusLabel->setText( stri );
 }
 
 void MainWnd::setRelays( bool shortRelay, bool outRelay )

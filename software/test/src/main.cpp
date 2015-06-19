@@ -57,10 +57,19 @@ int main( int argc, char * argv[] )
     //res = io.set_out_relay( true );
     //res = io.set_out_relay( false );
 
-    res = io.set_dac_raw( 0,  0 );
-    res = io.set_dac_raw( 4095, 4095 );
-    res = io.set_meandr_raw( 0, 0, 100000, 4095, 4095, 100000 );
-    res = io.set_sweep_raw( 0, 0, 4095, 4095, 100000 );
+    //res = io.set_dac_raw( 0,  0 );
+    //res = io.set_dac_raw( 4095, 4095 );
+    //res = io.set_meandr_raw( 0, 0, 100000, 4095, 4095, 100000 );
+    //res = io.set_sweep_raw( 0, 0, 4095, 4095, 100000 );
+    QVector<quint16> a;
+    res = io.osc_eaux( a );
+    qDebug() << a;
+    
+    res = io.osc_eref( a );
+    qDebug() << a;
+
+    res = io.osc_iaux( a );
+    qDebug() << a;
 
     io.close();
     

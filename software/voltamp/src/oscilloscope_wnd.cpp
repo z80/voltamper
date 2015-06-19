@@ -64,7 +64,8 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
 
     timer = new QTimer( this );
     timer->setInterval( 10 );
-    connect( timer, SIGNAL(timeout()), this, SLOT(slotTimeout()) );
+    connect( timer, SIGNAL(timeout()),   this, SLOT(slotTimeout()) );
+    connect( this,  SIGNAL(sigReplot()), this, SLOT(slotReplot()) );
     timer->start();
 
     connect( ui.actionE_AUX, SIGNAL(triggered()), this, SLOT(slotCurveType()) );
@@ -283,7 +284,7 @@ void OscilloscopeWnd::reopen()
 
 void OscilloscopeWnd::curveSizeChanged()
 {
-    int curvesCnt = CURVES_CNT;
+    //int curvesCnt = CURVES_CNT;
     int cnt       = PTS_CNT;
     qreal seconds;
     switch ( period )
@@ -307,6 +308,14 @@ void OscilloscopeWnd::curveSizeChanged()
 
     qreal scale = static_cast<qreal>( seconds ) / static_cast<qreal>( cnt-1 );
     timeScale = scale;
+
+    int curvesCnt = curves.size();
+    for ( int i=0; i<curvesCnt; i++ )
+    {
+        Curve & c = curves[i];
+        c.x.resize( cnt );
+        c.y.resize( cnt );
+    }
 }
 
 void OscilloscopeWnd::curvesCntChanged()
