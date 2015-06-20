@@ -3,6 +3,7 @@
 #define __OSCILLOSCOPE_WND_H_
 
 #include <QtGui>
+#include <QFuture>
 #include "voltamp_io.h"
 #include "ui_oscilloscope_wnd.h"
 #include "curve.h"

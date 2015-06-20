@@ -1,5 +1,6 @@
 
 #include <QtGui>
+#include <QApplication>
 #include "voltamp_io.h"
 
 #include "qextserialport.h"

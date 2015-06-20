@@ -32,5 +32,6 @@ endif ( WIN32 )
 
 add_subdirectory( "./3dparty" )
 add_subdirectory( "./libio" )
+#add_subdirectory( "./lib_lua_machine" )
 add_subdirectory( "./test" )
 add_subdirectory( "./voltamp" )

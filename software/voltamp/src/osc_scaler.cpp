@@ -66,13 +66,13 @@ COscScaler::COscScaler( QwtPlot * plot )
 
     m_pd->xBottom = plot->axisWidget( QwtPlot::xBottom );
     m_pd->xBottom->installEventFilter( this );
-    // Чтобы получать события о перемещении когда мышь не нажата.
+
     //m_pd->xBottom->setMouseTracking( true );
     m_pd->yLeft = plot->axisWidget( QwtPlot::yLeft );
     m_pd->yLeft->installEventFilter( this );
-    // Чтобы получать события о перемещении когда мышь не нажата.
+
     //m_pd->yLeft->setMouseTracking( true );
-    m_pd->canvas = plot->canvas();
+    m_pd->canvas = qobject_cast<QwtPlotCanvas *>( plot->canvas() );
     m_pd->canvas->installEventFilter( this );
 }
 
@@ -177,10 +177,10 @@ bool COscScaler::eventFilter( QObject * obj, QEvent * e )
             m_pd->m_dragX = true;
             me = reinterpret_cast< QMouseEvent * >( e );
             m_pd->m_at = me->pos();
-            m_pd->xMinBase = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom )->lowerBound();
-            m_pd->xMaxBase = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom )->upperBound();
-            m_pd->yMinBase = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft )->lowerBound();
-            m_pd->yMaxBase = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft )->upperBound();
+            m_pd->xMinBase = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom ).lowerBound();
+            m_pd->xMaxBase = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom ).upperBound();
+            m_pd->yMinBase = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft ).lowerBound();
+            m_pd->yMaxBase = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft ).upperBound();
             break;
 
         case QEvent::MouseButtonRelease:
@@ -239,10 +239,10 @@ bool COscScaler::eventFilter( QObject * obj, QEvent * e )
             m_pd->m_dragY = true;
             me = reinterpret_cast< QMouseEvent * >( e );
             m_pd->m_at = me->pos();
-            m_pd->xMinBase = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom )->lowerBound();
-            m_pd->xMaxBase = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom )->upperBound();
-            m_pd->yMinBase = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft )->lowerBound();
-            m_pd->yMaxBase = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft )->upperBound();
+            m_pd->xMinBase = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom ).lowerBound();
+            m_pd->xMaxBase = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom ).upperBound();
+            m_pd->yMinBase = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft ).lowerBound();
+            m_pd->yMaxBase = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft ).upperBound();
             break;
 
         case QEvent::MouseButtonRelease:
@@ -441,8 +441,8 @@ void COscScaler::mouseWheel( QEvent * e )
     QPointF at = QPointF( m_pd->m_plot->invTransform( QwtPlot::xBottom, pt.x() ), 
                           m_pd->m_plot->invTransform( QwtPlot::yLeft,   pt.y() ) );
     // Для оси Ox.
-    qreal boundLow  = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom )->lowerBound() - at.x();
-    qreal boundHigh = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom )->upperBound() - at.x();
+    qreal boundLow  = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom ).lowerBound() - at.x();
+    qreal boundHigh = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom ).upperBound() - at.x();
     if ( m_pd->wheelZoomX )
     {
         boundLow  *= zoom;
@@ -455,8 +455,8 @@ void COscScaler::mouseWheel( QEvent * e )
     // То же для оси Oy.
     if ( m_pd->wheelZoomY )
     {
-        boundLow  = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft )->lowerBound() - at.y();
-        boundHigh = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft )->upperBound() - at.y();
+        boundLow  = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft ).lowerBound() - at.y();
+        boundHigh = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft ).upperBound() - at.y();
         boundLow  *= zoom;
         boundHigh *= zoom;
         qreal yMin = boundLow + at.y();
@@ -471,8 +471,8 @@ void COscScaler::onResizeRescale( const QSize & size, const QSize & oldSize )
 {
     if ( m_pd->m_saveScales )
     {
-        qreal xMinBase = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom )->lowerBound();
-        qreal xMaxBase = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom )->upperBound();
+        qreal xMinBase = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom ).lowerBound();
+        qreal xMaxBase = m_pd->m_plot->axisScaleDiv( QwtPlot::xBottom ).upperBound();
         qreal rel;
         if ( xMinBase < xMaxBase )
         {
@@ -489,8 +489,8 @@ void COscScaler::onResizeRescale( const QSize & size, const QSize & oldSize )
             }
         }
 
-        qreal yMinBase = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft )->lowerBound();
-        qreal yMaxBase = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft )->upperBound();
+        qreal yMinBase = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft ).lowerBound();
+        qreal yMaxBase = m_pd->m_plot->axisScaleDiv( QwtPlot::yLeft ).upperBound();
         if ( yMinBase < yMaxBase )
         {
             if ( ( size.height() > 0 ) && ( oldSize.height() > 0 ) )

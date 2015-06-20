@@ -3,6 +3,7 @@
 #define __MAIN_WND_H_
 
 #include <QtGui>
+#include <QMessageBox>
 #include "ui_main_wnd.h"
 #include "voltamp_io.h"
 #include "oscilloscope_wnd.h"
