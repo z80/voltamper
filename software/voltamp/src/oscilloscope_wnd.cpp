@@ -49,7 +49,7 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     g->attach( ui.plot );
 
 
-    //ui.plot->canvas()->setBorderRadius( 10 );
+    qobject_cast<QwtPlotCanvas *>(ui.plot->canvas())->setBorderRadius( 10 );
     ui.plot->plotLayout()->setAlignCanvasToScales( true );
 
     // Nice background coloration.
