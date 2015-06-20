@@ -398,6 +398,8 @@ static void processFb( void )
 
 }
 
+static uint32_t filtered[3] = { 0, 0, 0 };
+
 static void processOsc( adcsample_t * buffer )
 {
 	oscTime += 1;
@@ -408,24 +410,28 @@ static void processOsc( adcsample_t * buffer )
 			uint16_t v16;
 			uint8_t vLow, vHigh;
 
-			v16 = buffer[0];
-			vLow = (uint8_t)(v16 & 0x00FF);
-			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
-			chIQPutI( &eaux_queue, vLow );
-			chIQPutI( &eaux_queue, vHigh );
+			if ( (chIQGetEmptyI( &eaux_queue ) >= 2) &&
+			     (chIQGetEmptyI( &eref_queue ) >= 2) &&
+			     (chIQGetEmptyI( &iaux_queue ) >= 2) )
+			{
+                v16 = buffer[0];
+                vLow = (uint8_t)(v16 & 0x00FF);
+                vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
+                chIQPutI( &eaux_queue, vLow );
+                chIQPutI( &eaux_queue, vHigh );
 
-			v16 = buffer[1];
-			vLow = (uint8_t)(v16 & 0x00FF);
-			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
-			chIQPutI( &eref_queue, vLow );
-			chIQPutI( &eref_queue, vHigh );
+                v16 = buffer[1];
+                vLow = (uint8_t)(v16 & 0x00FF);
+                vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
+                chIQPutI( &eref_queue, vLow );
+                chIQPutI( &eref_queue, vHigh );
 
-			v16 = buffer[2];
-			vLow = (uint8_t)(v16 & 0x00FF);
-			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
-			chIQPutI( &iaux_queue, vLow );
-			chIQPutI( &iaux_queue, vHigh );
-
+                v16 = buffer[2];
+                vLow = (uint8_t)(v16 & 0x00FF);
+                vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
+                chIQPutI( &iaux_queue, vLow );
+                chIQPutI( &iaux_queue, vHigh );
+			}
 		chSysUnlockFromIsr();
 	}
 }
