@@ -398,11 +398,17 @@ static void processFb( void )
 
 }
 
-static uint32_t filtered[3] = { 0, 0, 0 };
+static uint32_t filtered[3] = { 2047, 2047, 2047 };
 
 static void processOsc( adcsample_t * buffer )
 {
 	oscTime += 1;
+
+	int alpha = (oscPeriod < 65536) ? oscPeriod : 65535;
+	filtered[0] = (filtered[0]*( alpha-1 ) + buffer[0])/alpha;
+	filtered[1] = (filtered[1]*( alpha-1 ) + buffer[1])/alpha;
+	filtered[2] = (filtered[2]*( alpha-1 ) + buffer[2])/alpha;
+
 	if ( oscTime >= oscPeriod )
 	{
 		oscTime -= oscPeriod;
@@ -414,19 +420,19 @@ static void processOsc( adcsample_t * buffer )
 			     (chIQGetEmptyI( &eref_queue ) >= 2) &&
 			     (chIQGetEmptyI( &iaux_queue ) >= 2) )
 			{
-                v16 = buffer[0];
+                v16 = filtered[0];
                 vLow = (uint8_t)(v16 & 0x00FF);
                 vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
                 chIQPutI( &eaux_queue, vLow );
                 chIQPutI( &eaux_queue, vHigh );
 
-                v16 = buffer[1];
+                v16 = filtered[1];
                 vLow = (uint8_t)(v16 & 0x00FF);
                 vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
                 chIQPutI( &eref_queue, vLow );
                 chIQPutI( &eref_queue, vHigh );
 
-                v16 = buffer[2];
+                v16 = filtered[2];
                 vLow = (uint8_t)(v16 & 0x00FF);
                 vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
                 chIQPutI( &iaux_queue, vLow );
