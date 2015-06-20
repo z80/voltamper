@@ -88,6 +88,25 @@ void CalibrationWnd::slotEnable()
 
         setRandomVolt();
     }
+    else
+    {
+        if ( volt.size() >= 3 )
+        {
+            calcDac2Volt();
+            mainWnd->setCalibrationDac( aDacLow, aDacHigh, bDac );
+        }
+        if ( volt.size() >= 2 )
+        {
+            calcAdcAux2Volt();
+            calcAdcRef2Volt();
+            mainWnd->setCalibrationAdcVolt( aAdcAux, bAdcAux, aAdcRef, bAdcRef );
+        }
+        if ( curr.size() >= 2 )
+        {
+            calcAdcI2Curr();
+            mainWnd->setCalibrationAdcCurr( aAdcI, bAdcI );
+        }
+    }
 }
 
 void CalibrationWnd::slotAddVolt()

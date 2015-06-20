@@ -61,7 +61,7 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     ui.plot->canvas()->setPalette( pal );
 
     timer = new QTimer( this );
-    timer->setInterval( 1 );
+    timer->setInterval( 0 );
     connect( timer, SIGNAL(timeout()),   this, SLOT(slotTimeout()) );
     connect( this,  SIGNAL(sigReplot()), this, SLOT(slotReplot()) );
     timer->start();
@@ -100,9 +100,10 @@ void OscilloscopeWnd::setIo( VoltampIo * io, MainWnd * mainWnd )
 
 void OscilloscopeWnd::mostRecentVals( int & eaux, int & eref, int & iaux )
 {
-    eaux = lastEaux;
-    eref = lastEref;
-    iaux = lastIaux;
+    QMutexLocker lock( &mutex );
+        eaux = lastEaux;
+        eref = lastEref;
+        iaux = lastIaux;
 }
 
 void OscilloscopeWnd::slotTimeout()
@@ -201,13 +202,6 @@ void OscilloscopeWnd::slotReplot()
         sz = (sz <= eref.size() ) ? sz : eref.size();
         sz = (sz <= iaux.size() ) ? sz : iaux.size();
 
-        if ( sz > 0 )
-        {
-            lastEaux = eaux.head();
-            lastEref = eref.head();
-            lastIaux = iaux.head();
-        }
-
         if ( curveType == EAUX_T )
             copyData( eaux, paintDataY, sz );
         else if ( curveType == EREF_T )
@@ -286,6 +280,10 @@ void OscilloscopeWnd::measure()
     }
 
     QMutexLocker lock( &mutex );
+        lastEaux = (eaux_m.size() > 0) ? eaux_m.at( eaux_m.size() - 1 ) : 0;
+        lastEref = (eref_m.size() > 0) ? eref_m.at( eref_m.size() - 1 ) : 0;
+        lastIaux = (iaux_m.size() > 0) ? iaux_m.at( iaux_m.size() - 1 ) : 0;
+
         for ( int i=0; i<eaux_m.size(); i++ )
             eaux.enqueue( mainWnd->vAux( eaux_m[i] ) );
         for ( int i=0; i<eref_m.size(); i++ )

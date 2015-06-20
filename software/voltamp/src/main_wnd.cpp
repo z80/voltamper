@@ -76,8 +76,8 @@ qreal MainWnd::iAux( quint16 adc )
 void  MainWnd::dac( qreal v, int & dacLow, int & dacHigh )
 {
     qreal fLow = 2047.0;
-    qreal fHigh = (v - bDac - fLow * aDacLow ) / aDacHigh;
-    fLow = (v - bDac - fHigh*aDacHigh)/aDacLow;
+    qreal fHigh = ceil( (v - bDac - fLow * aDacLow ) / aDacHigh - 0.5 );
+    fLow = ceil( (v - bDac - fHigh*aDacHigh)/aDacLow - 0.5 );
     dacLow  = static_cast<int>( fLow );
     dacHigh = static_cast<int>( fHigh );
 }
