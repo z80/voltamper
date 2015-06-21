@@ -13,6 +13,10 @@
 #include "sweep_wnd.h"
 #include "calibration_wnd.h"
 
+#include <QtLua/State>
+#include <QtLua/Console>
+struct lua_Debug;
+
 class MainWnd: public QMainWindow
 {
     Q_OBJECT
@@ -26,7 +30,7 @@ public:
     void  dac( qreal v, int & dacLow, int & dacHigh );
     int   timeToTicks( qreal time );
 
-    void setStatus( quint16 eaux, quint16 eref, quint16 iaux );
+    void setStatus( qreal eaux, qreal eref, qreal iaux );
 
     void setRelays( bool shortRelay, bool outRelay );
 
@@ -54,11 +58,16 @@ public slots:
     void slotCalibration();
 
     void slotDevice();
+
+    void slotLuaOpen();
 protected:
     void closeEvent( QCloseEvent * e );
 private:
     void setTitle( const QString & stri );
     void refreshDevicesList();
+
+    // Lua state initialization and handling.
+    static void lua_init( lua_State * L );
 
     int devName;
 
@@ -79,7 +88,27 @@ private:
 
     QList<QAction *> devicesList;
 
+    QtLua::State * state;
+
     static const QString SETTINGS_INI;
+
+public:
+    static void lua_hook( lua_State * L, lua_Debug * Ld );
+
+    static int lua_setDc( lua_State * L );
+    static int lua_setMeandr( lua_State * L );
+    static int lua_setSweep( lua_State * L );
+    static int lua_setScRelay( lua_State * L );
+    static int lua_setOutRelay( lua_State * L );
+    static int lua_dataCallbackRegister( lua_State * L );
+    static int lua_eauxCallbackRegister( lua_State * L );
+    static int lua_erefCallbackRegister( lua_State * L );
+    static int lua_iauxCallbackRegister( lua_State * L );
+
+    void lua_invokeCallback( qreal eaux, qreal eref, qreal iaux );
+    void lua_invokeCallbackEaux( const QVector<qreal> & data );
+    void lua_invokeCallbackEref( const QVector<qreal> & data );
+    void lua_invokeCallbackIaux( const QVector<qreal> & data );
 };
 
 #endif

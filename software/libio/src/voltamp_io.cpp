@@ -13,7 +13,8 @@ public:
     {
     }
 
-    void encodeData( quint8 * data, int sz );
+    void    encodeData( quint8 * data, int sz );
+    quint32 msToTicks( qreal ms );
     QMutex mutex;
     Io * io;
     QByteArray buffer_raw;
@@ -45,6 +46,12 @@ void VoltampIo::PD::encodeData( quint8 * data, int sz )
         arr.append( data[i] );
     }
     arr.append( '\0' );
+}
+
+quint32 VoltampIo::PD::msToTicks( qreal ms )
+{
+    quint32 ticks = static_cast<quint32>( ms * 24000.0 / (3*239.5*16.0) );
+    return ticks;
 }
 
 VoltampIo::VoltampIo()
@@ -162,7 +169,7 @@ bool VoltampIo::osc_set_period( qreal secs, int per_pts )
     b.clear();
     b.reserve( 4 );
 
-    quint32 ticks = static_cast<quint32>( secs * 24000000.0 / (3*239.5*16.0) / static_cast<qreal>( per_pts ) );
+    quint32 ticks = pd->msToTicks( secs / static_cast<qreal>( per_pts ) ); //static_cast<quint32>( secs * 24000000.0 / (3*239.5*16.0) / static_cast<qreal>( per_pts ) );
 
     quint8 v;
     v = static_cast<quint8>( ticks & 0xFF );
@@ -278,7 +285,7 @@ bool VoltampIo::set_dac_raw( int dacLow, int dacHigh )
     return true;
 }
 
-bool VoltampIo::set_one_pulse_raw( int dacLow, int dacHigh, int time )
+bool VoltampIo::set_one_pulse_raw( int dacLow, int dacHigh, qreal timeMs )
 {
     QMutexLocker lock( &pd->mutex );
 
@@ -296,7 +303,7 @@ bool VoltampIo::set_one_pulse_raw( int dacLow, int dacHigh, int time )
     v = static_cast<quint8>( (dacHigh >> 8) & 0xFF );
     b.append( *reinterpret_cast<char *>(&v) );
 
-    quint32 t = static_cast<quint32>( time );
+    quint32 t = pd->msToTicks( timeMs );
     v = static_cast<quint8>( t & 0xFF );
     b.append( *reinterpret_cast<char *>(&v) );
     v = static_cast<quint8>( (t >> 8) & 0xFF );
@@ -319,7 +326,7 @@ bool VoltampIo::set_one_pulse_raw( int dacLow, int dacHigh, int time )
     return true;
 }
 
-bool VoltampIo::set_meandr_raw( int dacLow1, int dacHigh1, int time1, int dacLow2, int dacHigh2, int time2 )
+bool VoltampIo::set_meandr_raw( int dacLow1, int dacHigh1, qreal timeMs1, int dacLow2, int dacHigh2, qreal timeMs2 )
 {
     QMutexLocker lock( &pd->mutex );
 
@@ -337,7 +344,7 @@ bool VoltampIo::set_meandr_raw( int dacLow1, int dacHigh1, int time1, int dacLow
     v = static_cast<quint8>( (dacHigh1 >> 8) & 0xFF );
     b.append( *reinterpret_cast<char *>(&v) );
 
-    quint32 t = static_cast<quint32>( time1 );
+    quint32 t = pd->msToTicks( timeMs1 ); //static_cast<quint32>( time1 );
     v = static_cast<quint8>( t & 0xFF );
     b.append( *reinterpret_cast<char *>(&v) );
     v = static_cast<quint8>( (t >> 8) & 0xFF );
@@ -356,7 +363,7 @@ bool VoltampIo::set_meandr_raw( int dacLow1, int dacHigh1, int time1, int dacLow
     v = static_cast<quint8>( (dacHigh2 >> 8) & 0xFF );
     b.append( *reinterpret_cast<char *>(&v) );
 
-    t = static_cast<quint32>( time2 );
+    t = pd->msToTicks( timeMs2 ); //static_cast<quint32>( time2 );
     v = static_cast<quint8>( t & 0xFF );
     b.append( *reinterpret_cast<char *>(&v) );
     v = static_cast<quint8>( (t >> 8) & 0xFF );
@@ -379,7 +386,7 @@ bool VoltampIo::set_meandr_raw( int dacLow1, int dacHigh1, int time1, int dacLow
     return true;
 }
 
-bool VoltampIo::set_sweep_raw( int dacLow1, int dacHigh1, int dacLow2, int dacHigh2, int period )
+bool VoltampIo::set_sweep_raw( int dacLow1, int dacHigh1, int dacLow2, int dacHigh2, qreal periodMs )
 {
     QMutexLocker lock( &pd->mutex );
 
@@ -407,7 +414,7 @@ bool VoltampIo::set_sweep_raw( int dacLow1, int dacHigh1, int dacLow2, int dacHi
     b.append( *reinterpret_cast<char *>(&v) );
 
     quint32 t;
-    t = static_cast<quint32>( period );
+    t = pd->msToTicks( periodMs ); //static_cast<quint32>( period );
     v = static_cast<quint8>( t & 0xFF );
     b.append( *reinterpret_cast<char *>(&v) );
     v = static_cast<quint8>( (t >> 8) & 0xFF );

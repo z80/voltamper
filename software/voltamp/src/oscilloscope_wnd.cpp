@@ -248,7 +248,12 @@ void OscilloscopeWnd::slotReplot()
     // Update plot.
     ui.plot->replot();
 
-    mainWnd->setStatus( lastEaux, lastEref, lastIaux );
+    mutex.lock();
+        qreal leaux = lastEaux;
+        qreal leref = lastEref;
+        qreal liaux = lastIaux;
+    mutex.unlock();
+    mainWnd->setStatus( leaux, leref, liaux );
 }
 
 void OscilloscopeWnd::measure()
@@ -281,9 +286,6 @@ void OscilloscopeWnd::measure()
     }
 
     QMutexLocker lock( &mutex );
-        lastEaux = (eaux_m.size() > 0) ? eaux_m.at( eaux_m.size() - 1 ) : 0;
-        lastEref = (eref_m.size() > 0) ? eref_m.at( eref_m.size() - 1 ) : 0;
-        lastIaux = (iaux_m.size() > 0) ? iaux_m.at( iaux_m.size() - 1 ) : 0;
 
         for ( int i=0; i<eaux_m.size(); i++ )
             eaux.enqueue( mainWnd->vAux( eaux_m[i] ) );
@@ -291,6 +293,9 @@ void OscilloscopeWnd::measure()
             eref.enqueue( mainWnd->vRef( eref_m[i] ) );
         for ( int i=0; i<iaux_m.size(); i++ )
             iaux.enqueue( mainWnd->iAux( iaux_m[i] ) );
+        lastEaux = (eaux.size() > 0) ? eaux.head() : 0.0;
+        lastEref = (eref.size() > 0) ? eref.head() : 0.0;
+        lastIaux = (iaux.size() > 0) ? iaux.head() : 0.0;
     emit sigReplot();
 }
 

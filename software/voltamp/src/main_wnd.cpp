@@ -1,5 +1,8 @@
 
 #include "main_wnd.h"
+#include <QFileDialog>
+#include "lua.hpp"
+
 
 const QString MainWnd::SETTINGS_INI = "./settings.ini";
 
@@ -50,10 +53,34 @@ MainWnd::MainWnd( QWidget * parent )
     connect( ui.actionOut_relay,   SIGNAL(triggered()), this, SLOT(slotOutRelay()) );
 
     connect( ui.actionCalibration,  SIGNAL(triggered()), this, SLOT(slotCalibration()) );
+
+    connect( ui.actionExecLua, SIGNAL(triggered()), this, SLOT(slotLuaOpen()) );
+
+    // Lua State creation.
+    state = new QtLua::State();
+
+    // Console connection.
+    connect( ui.console, SIGNAL(line_validate(const QString&)),
+             state,      SLOT(exec(const QString&)));
+
+    connect( ui.console, SIGNAL(get_completion_list(const QString &, QStringList &, int &)),
+             state,      SLOT(fill_completion_list(const QString &, QStringList &, int &)));
+
+    connect( state, SIGNAL(output(const QString&)),
+             ui.console, SLOT(print(const QString&)));
+
+    lua_State * L = state->get_lua_state();
+    MainWnd * * p = reinterpret_cast< MainWnd * * >( lua_newuserdata( L, sizeof( MainWnd * ) ) );
+    *p = this;
+    lua_pushliteral( L, "MainWnd" );
+    lua_settable( L, LUA_REGISTRYINDEX );
+
+    state->lua_do( MainWnd::lua_init );
 }
 
 MainWnd::~MainWnd()
 {
+    state->deleteLater();
     ui.osc->deleteLater();
     delete io;
 }
@@ -88,8 +115,10 @@ int MainWnd::timeToTicks( qreal time )
     return res;
 }
 
-void MainWnd::setStatus( quint16 eaux, quint16 eref, quint16 iaux )
+void MainWnd::setStatus( qreal eaux, qreal eref, qreal iaux )
 {
+    lua_invokeCallback( eaux, eref, iaux );
+
     //QString stri = QString( "EAUX %1, EREF %2, IAUX %3" ).arg( eaux, eref, iaux );
     //statusLabel->setText( stri );
 }
@@ -224,6 +253,23 @@ void MainWnd::slotCalibration()
     calibrationWnd->show();
 }
 
+void MainWnd::slotLuaOpen()
+{
+    QString fileName = QFileDialog::getOpenFileName( this, tr("Open File"),
+                                                    "./",
+                                                    tr("Lua (*.lua)"));
+    QFile f( fileName );
+    if ( f.open( QIODevice::ReadOnly ) )
+    {
+        try {
+            state->exec_chunk( f );
+        } catch ( QtLua::String & e )
+        {
+            ui.console->print( e );
+        }
+    }
+}
+
 void MainWnd::slotDevice()
 {
     foreach( QAction * a, devicesList )
@@ -260,6 +306,198 @@ void MainWnd::refreshDevicesList()
         devicesList.append( a );
     }
 }
+
+
+
+
+static const struct luaL_reg FUNCTIONS[] = {
+    { "setDc",       MainWnd::lua_setDc },
+    { "setMeandr",   MainWnd::lua_setMeandr },
+    { "setSweep",    MainWnd::lua_setSweep },
+    { "setScRelay",  MainWnd::lua_setScRelay },
+    { "setOutRelay", MainWnd::lua_setOutRelay },
+    { "dataCallbackRegister", MainWnd::lua_dataCallbackRegister },
+    { "eauxCallbackRegister", MainWnd::lua_eauxCallbackRegister },
+    { "erefCallbackRegister", MainWnd::lua_erefCallbackRegister },
+    { "iauxCallbackRegister", MainWnd::lua_iauxCallbackRegister },
+
+    { NULL,            NULL },
+};
+
+static MainWnd * mainWnd( lua_State * L )
+{
+    lua_pushliteral( L, "MainWnd" );
+    lua_gettable( L, LUA_REGISTRYINDEX );
+    MainWnd * mw = *reinterpret_cast<MainWnd * *>( lua_touserdata( L, 1 ) );
+    lua_pop( L, 1 );
+    return mw;
+}
+
+void MainWnd::lua_init( lua_State * L )
+{
+    int top = lua_gettop( L );
+
+    luaL_register( L, "voltamp", FUNCTIONS );
+
+    // Install hook function to prevent software hanging up.
+    lua_sethook( L, MainWnd::lua_hook, LUA_MASKLINE, 0 );
+
+    MainWnd * mw = mainWnd( L );
+
+    // Open all Lua standard libraries.
+    mw->state->openlib( QtLua::AllLibs );
+
+    // Execute initialization file.
+    QFile f( "./init.lua" );
+    if ( f.open( QIODevice::ReadOnly) )
+    {
+        try {
+            mw->state->exec_chunk( f );
+        } catch ( QtLua::String & e )
+        {
+            mw->ui.console->print( e );
+        }
+    }
+}
+
+void MainWnd::lua_invokeCallback( qreal eaux, qreal eref, qreal iaux )
+{
+    lua_State * L = state->get_lua_state();
+    int top = lua_gettop( L );
+
+    lua_pushliteral( L, "cd" );
+    lua_gettable( L, LUA_REGISTRYINDEX );
+    if ( lua_type( L, -1 ) == LUA_TFUNCTION )
+    {
+        lua_pushnumber( L, eaux );
+        lua_pushnumber( L, eref );
+        lua_pushnumber( L, iaux );
+        int res = lua_pcall( L, 3, 0, 0 );
+        if ( res != 0 )
+        {
+            QString stri = lua_tostring( L, -1 );
+            ui.console->print( stri );
+        }
+    }
+    else
+        lua_pop( L, 1 );
+    lua_settop( L, top );
+}
+
+void MainWnd::lua_invokeCallbackEaux( const QVector<qreal> & data )
+{
+
+}
+
+void MainWnd::lua_invokeCallbackEref( const QVector<qreal> & data )
+{
+
+}
+
+void MainWnd::lua_invokeCallbackIaux( const QVector<qreal> & data )
+{
+
+}
+
+
+void MainWnd::lua_hook( lua_State * L, lua_Debug * Ld )
+{
+    //MainWnd * mw = mainWnd( L );
+    qApp->processEvents();
+}
+
+int MainWnd::lua_setDc( lua_State * L )
+{
+    MainWnd * mw = mainWnd( L );
+    qreal volt = static_cast<qreal>( lua_tonumber( L, 1 ) );
+    int low, high;
+    mw->dac( volt, low, high );
+    bool res = mw->io->set_dac_raw( low, high );
+    lua_pushboolean( L, res ? 1 : 0 );
+    return 1;
+}
+
+int MainWnd::lua_setMeandr( lua_State * L )
+{
+    MainWnd * mw = mainWnd( L );
+    qreal volt1 = static_cast<qreal>( lua_tonumber( L, 1 ) );
+    qreal timeMs1 = static_cast<qreal>( lua_tonumber( L, 2 ) );
+    qreal volt2 = static_cast<qreal>( lua_tonumber( L, 3 ) );
+    qreal timeMs2 = static_cast<qreal>( lua_tonumber( L, 4 ) );
+    int low1, high1;
+    mw->dac( volt1, low1, high1 );
+    int low2, high2;
+    mw->dac( volt2, low2, high2 );
+
+    bool res = mw->io->set_meandr_raw( low1, high1, timeMs1, low2, high2, timeMs2 );
+    lua_pushboolean( L, res ? 1 : 0 );
+    return 1;
+}
+
+int MainWnd::lua_setSweep( lua_State * L )
+{
+    MainWnd * mw = mainWnd( L );
+    qreal volt1 = static_cast<qreal>( lua_tonumber( L, 1 ) );
+    qreal volt2 = static_cast<qreal>( lua_tonumber( L, 2 ) );
+    qreal timeMs = static_cast<qreal>( lua_tonumber( L, 3 ) );
+    int low1, high1;
+    mw->dac( volt1, low1, high1 );
+    int low2, high2;
+    mw->dac( volt2, low2, high2 );
+
+    bool res = mw->io->set_sweep_raw( low1, high1, low2, high2, timeMs );
+    lua_pushboolean( L, res ? 1 : 0 );
+    return 1;
+}
+
+int MainWnd::lua_setScRelay( lua_State * L )
+{
+    MainWnd * mw = mainWnd( L );
+    bool en = ( lua_toboolean( L, 1 ) > 0 );
+
+    bool res = mw->io->set_sc_relay( en );
+    lua_pushboolean( L, res ? 1 : 0 );
+    return 1;
+}
+
+int MainWnd::lua_setOutRelay( lua_State * L )
+{
+    MainWnd * mw = mainWnd( L );
+    bool en = ( lua_toboolean( L, 1 ) > 0 );
+
+    bool res = mw->io->set_out_relay( en );
+    lua_pushboolean( L, res ? 1 : 0 );
+    return 1;
+}
+
+int MainWnd::lua_dataCallbackRegister( lua_State * L )
+{
+    lua_pushliteral( L, "dc" );
+    lua_settable( L, LUA_REGISTRYINDEX );
+    return 0;
+}
+
+int MainWnd::lua_eauxCallbackRegister( lua_State * L )
+{
+    lua_pushliteral( L, "eauxdc" );
+    lua_settable( L, LUA_REGISTRYINDEX );
+    return 0;
+}
+
+int MainWnd::lua_erefCallbackRegister( lua_State * L )
+{
+    lua_pushliteral( L, "erefdc" );
+    lua_settable( L, LUA_REGISTRYINDEX );
+    return 0;
+}
+
+int MainWnd::lua_iauxCallbackRegister( lua_State * L )
+{
+    lua_pushliteral( L, "iauxdc" );
+    lua_settable( L, LUA_REGISTRYINDEX );
+    return 0;
+}
+
 
 
 

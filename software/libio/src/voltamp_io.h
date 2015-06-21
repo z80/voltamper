@@ -23,9 +23,9 @@ public:
     bool set_out_relay( bool en );
     bool set_sc_relay( bool en );
     bool set_dac_raw( int dacLow, int dacHigh );
-    bool set_one_pulse_raw( int dacLow, int dacHigh, int time );
-    bool set_meandr_raw( int dacLow1, int dacHigh1, int time1, int dacLow2, int dacHigh2, int time2 );
-    bool set_sweep_raw( int dacLow1, int dacHigh1, int dacLow2, int dacHigh2, int time2 );
+    bool set_one_pulse_raw( int dacLow, int dacHigh, qreal ms );
+    bool set_meandr_raw( int dacLow1, int dacHigh1, qreal timeMs1, int dacLow2, int dacHigh2, qreal timeMs2 );
+    bool set_sweep_raw( int dacLow1, int dacHigh1, int dacLow2, int dacHigh2, qreal timeMs2 );
 
     bool hardware_version( QString & stri );
     bool firmware_version( QString & stri );

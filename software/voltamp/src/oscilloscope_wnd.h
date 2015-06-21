@@ -56,7 +56,7 @@ private:
 
     QVector<Curve>   curves;
 
-    int lastEaux, lastEref, lastIaux;
+    qreal lastEaux, lastEref, lastIaux;
 
     static const int CURVES_CNT;
     static const int PTS_CNT;

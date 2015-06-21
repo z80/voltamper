@@ -140,10 +140,10 @@ void CalibrationWnd::slotAddCurr()
 
 void CalibrationWnd::setRandomVolt()
 {
-    qreal range = static_cast<qreal>( ui.voltRange->value() * 2047 / 100 );
-    qreal a = static_cast<qreal>( qrand() ) / static_cast<qreal>( RAND_MAX );
+    qreal range = static_cast<qreal>( ui.voltRange->value() * 4095 / 100 );
+    qreal a = static_cast<qreal>( qrand() ) / static_cast<qreal>( RAND_MAX ) - 0.5;
     int dacLow  = static_cast<int>( a * range ) + 2047;
-    a = static_cast<qreal>( qrand() ) / static_cast<qreal>( RAND_MAX );
+    a = static_cast<qreal>( qrand() ) / static_cast<qreal>( RAND_MAX ) - 0.5;
     int dacHigh = static_cast<int>( a * range ) + 2047;
 
     bool res = io->set_dac_raw( dacLow, dacHigh );

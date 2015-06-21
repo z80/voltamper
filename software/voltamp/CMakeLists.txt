@@ -14,7 +14,9 @@
 
 include_directories( "./src"
                      ${ROOT}/libio/src
-                     ${ROOT}/lib_lua_machine/src
+                     ${ROOT}/3dparty/lua-5.1.5/src
+                     ${ROOT}/3dparty/lua-5.1.5/etc
+                     ${ROOT}/3dparty/libqtlua-2.0/src
                      ${ROOT}/3dparty/qwt-6.1.2/src
                      ${CMAKE_CURRENT_BINARY_DIR} )
 if ( WIN32 )
@@ -36,5 +38,5 @@ set( src ${src} ${moc_src} )
 
 add_executable( voltamp ${src} )
 qt5_use_modules( voltamp Widgets Core )
-target_link_libraries( voltamp libio qwt-6.1.2 ${QT_LIBRARIES} )
+target_link_libraries( voltamp libio qwt-6.1.2 qtlua ${QT_LIBRARIES} )
 install( TARGETS voltamp DESTINATION ./ )
