@@ -70,9 +70,9 @@ MainWnd::MainWnd( QWidget * parent )
              ui.console, SLOT(print(const QString&)));
 
     lua_State * L = state->get_lua_state();
+    lua_pushliteral( L, "MainWnd" );
     MainWnd * * p = reinterpret_cast< MainWnd * * >( lua_newuserdata( L, sizeof( MainWnd * ) ) );
     *p = this;
-    lua_pushliteral( L, "MainWnd" );
     lua_settable( L, LUA_REGISTRYINDEX );
 
     state->lua_do( MainWnd::lua_init );
@@ -80,7 +80,7 @@ MainWnd::MainWnd( QWidget * parent )
 
 MainWnd::~MainWnd()
 {
-    state->deleteLater();
+    //state->deleteLater();
     ui.osc->deleteLater();
     delete io;
 }
@@ -171,6 +171,8 @@ void MainWnd::loadSettings()
     bAdcRef  = s.value( "bAdcRef",  -2047.0 ).toDouble();
     aAdcI    = s.value( "aAdcI",    1.0 ).toDouble();
     bAdcI    = s.value( "bAdcI",    -2047.0 ).toDouble();
+
+    ui.console->load_history( s );
 }
 
 void MainWnd::saveSettings()
@@ -188,6 +190,8 @@ void MainWnd::saveSettings()
     s.setValue( "bAdcRef",  bAdcRef );
     s.setValue( "aAdcI",    aAdcI );
     s.setValue( "bAdcI",    bAdcI );
+
+    ui.console->save_history( s );
 }
 
 int MainWnd::deviceName() const
@@ -328,7 +332,7 @@ static MainWnd * mainWnd( lua_State * L )
 {
     lua_pushliteral( L, "MainWnd" );
     lua_gettable( L, LUA_REGISTRYINDEX );
-    MainWnd * mw = *reinterpret_cast<MainWnd * *>( lua_touserdata( L, 1 ) );
+    MainWnd * mw = *reinterpret_cast<MainWnd * *>( lua_touserdata( L, -1 ) );
     lua_pop( L, 1 );
     return mw;
 }
@@ -473,6 +477,7 @@ int MainWnd::lua_setOutRelay( lua_State * L )
 int MainWnd::lua_dataCallbackRegister( lua_State * L )
 {
     lua_pushliteral( L, "dc" );
+    lua_pushvalue( L, -2 );
     lua_settable( L, LUA_REGISTRYINDEX );
     return 0;
 }
@@ -480,6 +485,7 @@ int MainWnd::lua_dataCallbackRegister( lua_State * L )
 int MainWnd::lua_eauxCallbackRegister( lua_State * L )
 {
     lua_pushliteral( L, "eauxdc" );
+    lua_pushvalue( L, -2 );
     lua_settable( L, LUA_REGISTRYINDEX );
     return 0;
 }
@@ -487,6 +493,7 @@ int MainWnd::lua_eauxCallbackRegister( lua_State * L )
 int MainWnd::lua_erefCallbackRegister( lua_State * L )
 {
     lua_pushliteral( L, "erefdc" );
+    lua_pushvalue( L, -2 );
     lua_settable( L, LUA_REGISTRYINDEX );
     return 0;
 }
@@ -494,6 +501,7 @@ int MainWnd::lua_erefCallbackRegister( lua_State * L )
 int MainWnd::lua_iauxCallbackRegister( lua_State * L )
 {
     lua_pushliteral( L, "iauxdc" );
+    lua_pushvalue( L, -2 );
     lua_settable( L, LUA_REGISTRYINDEX );
     return 0;
 }
