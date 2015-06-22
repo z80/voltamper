@@ -118,7 +118,7 @@ int MainWnd::timeToTicks( qreal time )
 
 void MainWnd::setStatus( qreal eaux, qreal eref, qreal iaux )
 {
-    QString stri = QString( "Ewrk %2mV,\tIwrk %3mA,\tEaux %1mV" ).arg( eref, iaux, eaux );
+    QString stri = QString( "Eref %2mV,\tI %3mA,\tEaux %1mV" ).arg( eref, iaux, eaux );
     //statusLabel->setText( stri );
     this->setWindowTitle( stri );
 }
@@ -173,6 +173,8 @@ void MainWnd::loadSettings()
     bAdcI    = s.value( "bAdcI",    -2047.0 ).toDouble();
 
     ui.console->load_history( s );
+
+    this->restoreState( s.value( "state", QByteArray() ).toByteArray() );
 }
 
 void MainWnd::saveSettings()
@@ -192,6 +194,8 @@ void MainWnd::saveSettings()
     s.setValue( "bAdcI",    bAdcI );
 
     ui.console->save_history( s );
+
+    s.setValue( "state", this->saveState() );
 }
 
 int MainWnd::deviceName() const
@@ -267,6 +271,7 @@ void MainWnd::slotLuaOpen()
     {
         try {
             state->exec_chunk( f );
+            f.close();
         } catch ( QtLua::String & e )
         {
             ui.console->print( e );
@@ -368,6 +373,7 @@ void MainWnd::lua_init( lua_State * L )
     {
         try {
             mw->state->exec_chunk( f );
+            f.close();
         } catch ( QtLua::String & e )
         {
             mw->ui.console->print( e );

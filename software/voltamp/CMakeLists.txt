@@ -26,6 +26,7 @@ endif ( WIN32 )
 file( GLOB src     "./src/*.cpp" )
 file( GLOB headers "./src/*.h" )
 file( GLOB ui      "./src/*.ui" )
+file( GLOB qrc     "./src/*.qrc" )
 message( STATUS "SRC = ${src}" )
 message( STATUS "HEADERS = ${headers}" )
 message( STATUS "ui = ${ui}" )
@@ -35,6 +36,9 @@ message( STATUS "ui = ${ui}" )
 
 qt5_wrap_ui( moc_src ${ui} )
 set( src ${src} ${moc_src} )
+
+qt5_add_resources( qrc_src ${qrc} )
+set( src ${src} ${qrc_src} )
 
 add_executable( voltamp ${src} )
 qt5_use_modules( voltamp Widgets Core )
