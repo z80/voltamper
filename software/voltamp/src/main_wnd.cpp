@@ -118,7 +118,9 @@ int MainWnd::timeToTicks( qreal time )
 
 void MainWnd::setStatus( qreal eaux, qreal eref, qreal iaux )
 {
-    QString stri = QString( "Eref %1mV,\tI %2mA,\tEaux %3mV" ).arg( eref, 10 ).arg( iaux, 10 ).arg( eaux, 10 );
+    QString stri = QString( "Eref %1mV,     I %2mA,     Eaux %3mV" ).arg( eref, 6, 'g', 1, QChar( '_' ) )
+                                                                    .arg( iaux, 6, 'g', 3, QChar( '_' ) )
+                                                                    .arg( eaux, 6, 'g', 1, QChar( '_' ) );
     //statusLabel->setText( stri );
     this->setWindowTitle( stri );
 }
@@ -395,9 +397,12 @@ void MainWnd::lua_invokeCallback( qreal eaux, qreal eref, qreal iaux )
     lua_State * L = state->get_lua_state();
     int top = lua_gettop( L );
 
-    lua_pushliteral( L, "cd" );
+    lua_pushliteral( L, "dc" );
+    //int top2 = lua_gettop( L );
     lua_gettable( L, LUA_REGISTRYINDEX );
-    if ( lua_type( L, -1 ) == LUA_TFUNCTION )
+    //int top3 = lua_gettop( L );
+    int tp = lua_type( L, -1 );
+    if ( tp == LUA_TFUNCTION )
     {
         lua_pushnumber( L, eaux );
         lua_pushnumber( L, eref );

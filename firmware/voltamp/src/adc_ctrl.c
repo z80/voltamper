@@ -404,7 +404,7 @@ static void processOsc( adcsample_t * buffer )
 {
 	oscTime += 1;
 
-	int timeConst = oscPeriod >> 1;
+	int timeConst = oscPeriod >> 2;
 	int alpha = (timeConst < 65536) ? timeConst : 65535;
 	alpha = ( alpha > 0 ) ? alpha : 1;
 	filtered[0] = (filtered[0]*( alpha-1 ) + ( buffer[0] << 4 ))/alpha;
