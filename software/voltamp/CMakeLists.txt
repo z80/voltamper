@@ -40,6 +40,10 @@ set( src ${src} ${moc_src} )
 qt5_add_resources( qrc_src ${qrc} )
 set( src ${src} ${qrc_src} )
 
+if ( WIN32 )
+    list( APPEND src "src/icon.rc" )
+endif ( WIN32 )
+
 add_executable( voltamp ${src} )
 qt5_use_modules( voltamp Widgets Core )
 target_link_libraries( voltamp libio qwt-6.1.2 qtlua ${QT_LIBRARIES} )
