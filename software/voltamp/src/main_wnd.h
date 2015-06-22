@@ -60,6 +60,7 @@ public slots:
     void slotDevice();
 
     void slotLuaOpen();
+    void slotLuaStop();
 protected:
     void closeEvent( QCloseEvent * e );
 private:
@@ -93,8 +94,10 @@ private:
     static const QString SETTINGS_INI;
 
 public:
+    void lua_setHook( bool set );
     static void lua_hook( lua_State * L, lua_Debug * Ld );
 
+    static int lua_msleep( lua_State * L );
     static int lua_setDc( lua_State * L );
     static int lua_setMeandr( lua_State * L );
     static int lua_setSweep( lua_State * L );

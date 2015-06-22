@@ -253,7 +253,14 @@ void OscilloscopeWnd::slotReplot()
         qreal leref = lastEref;
         qreal liaux = lastIaux;
     mutex.unlock();
+    // Set current values somewhere.
     mainWnd->setStatus( leaux, leref, liaux );
+
+    // Invoke Lua algorithm by processing the data obtained.
+    // When processing callback to speed up turn lua_hook off.
+    mainWnd->lua_setHook( false );
+        mainWnd->lua_invokeCallback( leaux, leref, liaux );
+    mainWnd->lua_setHook( true );
 }
 
 void OscilloscopeWnd::measure()

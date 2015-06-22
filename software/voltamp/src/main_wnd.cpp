@@ -55,6 +55,7 @@ MainWnd::MainWnd( QWidget * parent )
     connect( ui.actionCalibration,  SIGNAL(triggered()), this, SLOT(slotCalibration()) );
 
     connect( ui.actionExecLua, SIGNAL(triggered()), this, SLOT(slotLuaOpen()) );
+    connect( ui.actionStopLua, SIGNAL(triggered()), this, SLOT(slotLuaStop()) );
 
     // Lua State creation.
     state = new QtLua::State();
@@ -117,10 +118,9 @@ int MainWnd::timeToTicks( qreal time )
 
 void MainWnd::setStatus( qreal eaux, qreal eref, qreal iaux )
 {
-    lua_invokeCallback( eaux, eref, iaux );
-
-    //QString stri = QString( "EAUX %1, EREF %2, IAUX %3" ).arg( eaux, eref, iaux );
+    QString stri = QString( "Ewrk %2mV,\tIwrk %3mA,\tEaux %1mV" ).arg( eref, iaux, eaux );
     //statusLabel->setText( stri );
+    this->setWindowTitle( stri );
 }
 
 void MainWnd::setRelays( bool shortRelay, bool outRelay )
@@ -274,6 +274,16 @@ void MainWnd::slotLuaOpen()
     }
 }
 
+void MainWnd::slotLuaStop()
+{
+    try {
+        state->exec_statements( "error( \'Execution was stopped\', 1 )" );
+    } catch ( QtLua::String & e )
+    {
+        ui.console->print( e );
+    }
+}
+
 void MainWnd::slotDevice()
 {
     foreach( QAction * a, devicesList )
@@ -315,6 +325,7 @@ void MainWnd::refreshDevicesList()
 
 
 static const struct luaL_reg FUNCTIONS[] = {
+    { "msleep",      MainWnd::lua_msleep },
     { "setDc",       MainWnd::lua_setDc },
     { "setMeandr",   MainWnd::lua_setMeandr },
     { "setSweep",    MainWnd::lua_setSweep },
@@ -364,6 +375,15 @@ void MainWnd::lua_init( lua_State * L )
     }
 }
 
+void MainWnd::lua_setHook( bool set )
+{
+    lua_State * L = state->get_lua_state();
+    if ( set )
+        lua_sethook( L, MainWnd::lua_hook, LUA_MASKLINE, 0 );
+    else
+        lua_sethook( L, 0, LUA_MASKLINE, 0 );
+}
+
 void MainWnd::lua_invokeCallback( qreal eaux, qreal eref, qreal iaux )
 {
     lua_State * L = state->get_lua_state();
@@ -408,6 +428,16 @@ void MainWnd::lua_hook( lua_State * L, lua_Debug * Ld )
 {
     //MainWnd * mw = mainWnd( L );
     qApp->processEvents();
+}
+
+int MainWnd::lua_msleep( lua_State * L )
+{
+    int ms = static_cast<int>( lua_tonumber( L, 1 ) );
+    QTime t0 = QTime::currentTime();
+    t0.start();
+    while ( t0.elapsed() < ms )
+        qApp->processEvents();
+    return 0;
 }
 
 int MainWnd::lua_setDc( lua_State * L )
