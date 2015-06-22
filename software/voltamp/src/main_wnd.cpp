@@ -118,7 +118,7 @@ int MainWnd::timeToTicks( qreal time )
 
 void MainWnd::setStatus( qreal eaux, qreal eref, qreal iaux )
 {
-    QString stri = QString( "Eref %2mV,\tI %3mA,\tEaux %1mV" ).arg( eref, iaux, eaux );
+    QString stri = QString( "Eref %1mV,\tI %2mA,\tEaux %3mV" ).arg( eref, 10 ).arg( iaux, 10 ).arg( eaux, 10 );
     //statusLabel->setText( stri );
     this->setWindowTitle( stri );
 }

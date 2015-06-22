@@ -23,11 +23,15 @@
 #define QTLUAREF_HH_
 
 #ifndef __GNUC__
-# warning GCC atomic operations are not available, QtLua::Ref will not be thread-safe
+    #ifndef Q_OS_WIN
+        #warning GCC atomic operations are not available, QtLua::Ref will not be thread-safe
+    #endif
 #endif
 
 #include <QtGlobal> // for Q_UNUSED
-#include <stdint.h>
+#ifndef Q_OS_WIN
+    #include <stdint.h>
+#endif
 #include <cassert>
 
 namespace QtLua {

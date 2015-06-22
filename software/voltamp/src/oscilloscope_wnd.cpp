@@ -23,9 +23,13 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     curveType = EREF_T;
     period    = T_10s;
 
-    lastEaux = 2047;
-    lastEref = 2047;
-    lastIaux = 2047;
+    lastEaux = 0.0;
+    lastEref = 0.0;
+    lastIaux = 0.0;
+
+    lastEauxRaw = 2047;
+    lastErefRaw = 2047;
+    lastIauxRaw = 2047;
 
     ui.setupUi( this );
     //ui.plot->show();
@@ -62,7 +66,7 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     ui.plot->canvas()->setPalette( pal );
 
     timer = new QTimer( this );
-    timer->setInterval( 0 );
+    timer->setInterval( 1 );
     connect( timer, SIGNAL(timeout()),   this, SLOT(slotTimeout()) );
     connect( this,  SIGNAL(sigReplot()), this, SLOT(slotReplot()) );
     timer->start();
@@ -99,12 +103,20 @@ void OscilloscopeWnd::setIo( VoltampIo * io, MainWnd * mainWnd )
     this->mainWnd = mainWnd;
 }
 
-void OscilloscopeWnd::mostRecentVals( int & eaux, int & eref, int & iaux )
+void OscilloscopeWnd::mostRecentVals( qreal & eaux, qreal & eref, qreal & iaux )
 {
     QMutexLocker lock( &mutex );
         eaux = lastEaux;
         eref = lastEref;
         iaux = lastIaux;
+}
+
+void OscilloscopeWnd::mostRecentValsRaw( int & eaux, int & eref, int & iaux )
+{
+    QMutexLocker lock( &mutex );
+        eaux = lastEauxRaw;
+        eref = lastErefRaw;
+        iaux = lastIauxRaw;
 }
 
 void OscilloscopeWnd::slotTimeout()
@@ -248,11 +260,8 @@ void OscilloscopeWnd::slotReplot()
     // Update plot.
     ui.plot->replot();
 
-    mutex.lock();
-        qreal leaux = lastEaux;
-        qreal leref = lastEref;
-        qreal liaux = lastIaux;
-    mutex.unlock();
+    qreal leaux, leref, liaux;
+    mostRecentVals( leaux, leref, liaux );
     // Set current values somewhere.
     mainWnd->setStatus( leaux, leref, liaux );
 
@@ -261,6 +270,12 @@ void OscilloscopeWnd::slotReplot()
     mainWnd->lua_setHook( false );
         mainWnd->lua_invokeCallback( leaux, leref, liaux );
     mainWnd->lua_setHook( true );
+
+    mutex.lock();
+        eaux.clear();
+        eref.clear();
+        iaux.clear();
+    mutex.unlock();
 }
 
 void OscilloscopeWnd::measure()
@@ -303,6 +318,9 @@ void OscilloscopeWnd::measure()
         lastEaux = (eaux.size() > 0) ? eaux.head() : 0.0;
         lastEref = (eref.size() > 0) ? eref.head() : 0.0;
         lastIaux = (iaux.size() > 0) ? iaux.head() : 0.0;
+        lastEauxRaw = ( eaux_m.size() > 0 ) ? eaux_m.at( eaux_m.size() - 1 ) : 2047;
+        lastErefRaw = ( eref_m.size() > 0 ) ? eref_m.at( eref_m.size() - 1 ) : 2047;
+        lastIauxRaw = ( iaux_m.size() > 0 ) ? iaux_m.at( iaux_m.size() - 1 ) : 2047;
     emit sigReplot();
 }
 

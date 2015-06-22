@@ -26,12 +26,22 @@
 
 namespace QtLua {
 
-#define QTLUA_PROTECT(...)					\
-  try {								\
-    __VA_ARGS__;						\
-  } catch (const String &e) {					\
-    qDebug() << "TableGridModel::" << __func__ << ": " << e;	\
-  }
+#ifndef Q_OS_WIN
+    #define QTLUA_PROTECT(...)					\
+      try {								\
+        __VA_ARGS__;						\
+      } catch (const String &e) {					\
+            qDebug() << "TableGridModel::" << __func__ << ": " << e;	\
+      }
+#else
+    #define QTLUA_PROTECT(...)					\
+      try {								\
+        __VA_ARGS__;						\
+      } catch (const String &e) {					\
+            qDebug() << "TableGridModel::"  << e;	\
+      }
+#endif
+
 
   void TableGridModel::check_state() const
   {

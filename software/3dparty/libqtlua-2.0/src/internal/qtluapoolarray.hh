@@ -21,7 +21,11 @@
 #ifndef QTLUAPOOLARRAY_HH_
 #define QTLUAPOOLARRAY_HH_
 
-#include <stdint.h>
+#ifdef Q_OS_WIN
+    #include "stdint_win.h"
+#else
+    #include <stdint.h>
+#endif
 
 namespace QtLua {
 

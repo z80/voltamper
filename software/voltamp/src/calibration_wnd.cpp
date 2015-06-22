@@ -115,7 +115,7 @@ void CalibrationWnd::slotAddVolt()
     volt.append( v );
 
     int eaux, eref, iaux;
-    osc->mostRecentVals( eaux, eref, iaux );
+    osc->mostRecentValsRaw( eaux, eref, iaux );
 
     adcAux.append( eaux );
     adcRef.append( eref );
@@ -132,7 +132,7 @@ void CalibrationWnd::slotAddCurr()
     curr.append( v );
 
     int eaux, eref, iaux;
-    osc->mostRecentVals( eaux, eref, iaux );
+    osc->mostRecentValsRaw( eaux, eref, iaux );
     adcI.append( iaux );
 
     setRandomVolt();
@@ -350,7 +350,7 @@ void CalibrationWnd::calcAdcI2Curr()
         for ( int j=0; j<2; j++ )
         {
             QVector<int> * b;
-            if ( i==0 )
+            if ( j==0 )
                 b = &adcI;
             else
                 b = 0;

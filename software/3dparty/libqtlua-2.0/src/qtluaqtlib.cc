@@ -86,15 +86,16 @@ namespace QtLua {
     QMetaObjectTable()
       : QHashProxyRo<qmetaobject_table_t>(_mo_table)
     {
-      for (const meta_object_table_s *me = meta_object_table; me->_mo; me++)
-	{
-	  String name(me->_mo->className());
-	  name.replace(':', '_');
-	  _mo_table.insert(name, QMetaObjectWrapper(me->_mo, me->_creator));
-	}
-
-      _mo_table.insert("Qt", QMetaObjectWrapper(&staticQtMetaObject));
-      _mo_table.insert("QSizePolicy", QMetaObjectWrapper(&QtLua::SizePolicy::staticMetaObject));
+    /*
+        for (const meta_object_table_s *me = meta_object_table; me->_mo; me++)
+	    {
+	        String name(me->_mo->className());
+	        name.replace(':', '_');
+	        _mo_table.insert(name, QMetaObjectWrapper(me->_mo, me->_creator));
+	    }
+        */
+        _mo_table.insert("Qt", QMetaObjectWrapper(&staticQtMetaObject));
+        _mo_table.insert("QSizePolicy", QMetaObjectWrapper(&QtLua::SizePolicy::staticMetaObject));
     }
 
     qmetaobject_table_t _mo_table;
@@ -610,7 +611,7 @@ namespace QtLua {
   QTLUA_FUNCTION(new_action_group, "Create a new QActionGroup and add passed actions.",
 		 "usage: qt.ui.menu.new_action_group( action [, action ...] )\n")
   {
-    QAction *a[args.size()];
+    QVector<QAction *> a( args.size() );
 
     for (int i = 0; i < args.size(); i++)
       a[i] = args[i].to_qobject_cast<QAction>();

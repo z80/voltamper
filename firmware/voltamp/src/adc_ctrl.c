@@ -8,7 +8,7 @@
 #include "cpu_io.h"
 #include "led_ctrl.h"
 
-#define OSC_QUEUE_SZ 	512
+#define OSC_QUEUE_SZ 	384
 
 #define EAUX_IND 0
 #define EREF_IND 1
@@ -404,8 +404,9 @@ static void processOsc( adcsample_t * buffer )
 {
 	oscTime += 1;
 
-	int timeConst = oscPeriod; // * 2;
+	int timeConst = oscPeriod >> 1;
 	int alpha = (timeConst < 65536) ? timeConst : 65535;
+	alpha = ( alpha > 0 ) ? alpha : 1;
 	filtered[0] = (filtered[0]*( alpha-1 ) + ( buffer[0] << 4 ))/alpha;
 	filtered[1] = (filtered[1]*( alpha-1 ) + ( buffer[1] << 4 ))/alpha;
 	filtered[2] = (filtered[2]*( alpha-1 ) + ( buffer[2] << 4 ))/alpha;
