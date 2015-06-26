@@ -405,11 +405,14 @@ static void processOsc( adcsample_t * buffer )
 	oscTime += 1;
 
 	int timeConst = oscPeriod >> 2;
-	int alpha = (timeConst < 65536) ? timeConst : 65535;
+	int alpha = (timeConst < 32768) ? timeConst : 32767;
 	alpha = ( alpha > 0 ) ? alpha : 1;
-	filtered[0] = (filtered[0]*( alpha-1 ) + ( buffer[0] << 4 ))/alpha;
-	filtered[1] = (filtered[1]*( alpha-1 ) + ( buffer[1] << 4 ))/alpha;
-	filtered[2] = (filtered[2]*( alpha-1 ) + ( buffer[2] << 4 ))/alpha;
+	filtered[0] = ( ( (filtered[0]<<1) + 1 )*( alpha-1 ) + ( buffer[0] << 5 ) + 1)/alpha;
+	filtered[0] >>= 1;
+	filtered[1] = ( ( (filtered[1]<<1) + 1 )*( alpha-1 ) + ( buffer[1] << 5 ) + 1)/alpha;
+	filtered[1] >>= 1;
+	filtered[2] = ( ( (filtered[2]<<1) + 1 )*( alpha-1 ) + ( buffer[2] << 5 ) + 1)/alpha;
+	filtered[2] >>= 1;
 
 	if ( oscTime >= oscPeriod )
 	{
