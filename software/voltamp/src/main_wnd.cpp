@@ -225,7 +225,9 @@ void MainWnd::slotReopen()
 
 void MainWnd::slotAbout()
 {
-    QMessageBox::about( this, "Hell", "On Earth!" );
+    QMessageBox::about( this, "About", 
+                        "Arbeit march frei!"
+                       );
 }
 
 void MainWnd::slotDc()
@@ -420,19 +422,80 @@ void MainWnd::lua_invokeCallback( qreal eaux, qreal eref, qreal iaux )
     lua_settop( L, top );
 }
 
+static QString pushTableData( lua_State * L, const QVector<qreal> & data )
+{
+    int sz = data.size();
+    lua_createtable( L, sz, 0 );
+    for ( int i=0; i<sz; i++ )
+    {
+        lua_pushinteger( L, i+1 );
+        lua_pushnumber( L, static_cast<lua_Number>( data.at( i ) ) );
+        lua_settable( L, -3 );
+        int res = lua_pcall( L, -2, 0, 0 );
+        if ( res != 0 )
+        {
+            QString stri = lua_tostring( L, -1 );
+            return stri;
+        }
+    }
+    return QString();
+}
+
 void MainWnd::lua_invokeCallbackEaux( const QVector<qreal> & data )
 {
+    lua_State * L = state->get_lua_state();
+    int top = lua_gettop( L );
 
+    lua_pushliteral( L, "eauxdc" );
+    //int top2 = lua_gettop( L );
+    lua_gettable( L, LUA_REGISTRYINDEX );
+    //int top3 = lua_gettop( L );
+    int tp = lua_type( L, -1 );
+    if ( tp == LUA_TFUNCTION )
+    {
+        QString stri = pushTableData( L, data );
+        if ( stri.size() > 0 )
+            ui.console->print( stri );
+    }
+    lua_settop( L, top );
 }
 
 void MainWnd::lua_invokeCallbackEref( const QVector<qreal> & data )
 {
+    lua_State * L = state->get_lua_state();
+    int top = lua_gettop( L );
 
+    lua_pushliteral( L, "erefdc" );
+    //int top2 = lua_gettop( L );
+    lua_gettable( L, LUA_REGISTRYINDEX );
+    //int top3 = lua_gettop( L );
+    int tp = lua_type( L, -1 );
+    if ( tp == LUA_TFUNCTION )
+    {
+        QString stri = pushTableData( L, data );
+        if ( stri.size() > 0 )
+            ui.console->print( stri );
+    }
+    lua_settop( L, top );
 }
 
 void MainWnd::lua_invokeCallbackIaux( const QVector<qreal> & data )
 {
+    lua_State * L = state->get_lua_state();
+    int top = lua_gettop( L );
 
+    lua_pushliteral( L, "iauxdc" );
+    //int top2 = lua_gettop( L );
+    lua_gettable( L, LUA_REGISTRYINDEX );
+    //int top3 = lua_gettop( L );
+    int tp = lua_type( L, -1 );
+    if ( tp == LUA_TFUNCTION )
+    {
+        QString stri = pushTableData( L, data );
+        if ( stri.size() > 0 )
+            ui.console->print( stri );
+    }
+    lua_settop( L, top );
 }
 
 
