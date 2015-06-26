@@ -208,6 +208,7 @@ int MainWnd::deviceName() const
 void MainWnd::slotQuit()
 {
     saveSettings();
+    osc->stop();
     this->deleteLater();
     qApp->quit();
 }
