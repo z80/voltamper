@@ -65,11 +65,10 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     pal.setBrush( QPalette::Window, QBrush( gr ) );
     ui.plot->canvas()->setPalette( pal );
 
-    timer = new QTimer( this );
-    timer->setInterval( 1 );
-    connect( timer, SIGNAL(timeout()),   this, SLOT(slotTimeout()) );
     connect( this,  SIGNAL(sigReplot()), this, SLOT(slotReplot()) );
-    timer->start();
+    terminate = false;
+    this->io = 0;
+    future = QtConcurrent::run( boost::bind( &OscilloscopeWnd::measure, this ) );
 
     connect( ui.actionE_AUX, SIGNAL(triggered()), this, SLOT(slotCurveType()) );
     connect( ui.actionE_REF, SIGNAL(triggered()), this, SLOT(slotCurveType()) );
@@ -88,8 +87,7 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
 
 OscilloscopeWnd::~OscilloscopeWnd()
 {
-    timer->stop();
-    future.waitForFinished();
+    stop();
 }
 
 bool OscilloscopeWnd::isRunning() const
@@ -99,7 +97,9 @@ bool OscilloscopeWnd::isRunning() const
 
 void OscilloscopeWnd::setIo( VoltampIo * io, MainWnd * mainWnd )
 {
-    this->io      = io;
+    mutex.lock();
+        this->io      = io;
+    mutex.unlock();
     this->mainWnd = mainWnd;
 }
 
@@ -117,6 +117,14 @@ void OscilloscopeWnd::mostRecentValsRaw( int & eaux, int & eref, int & iaux )
         eaux = lastEauxRaw;
         eref = lastErefRaw;
         iaux = lastIauxRaw;
+}
+
+void OscilloscopeWnd::stop()
+{
+    mutex.lock();
+        terminate = true;
+    mutex.unlock();
+    future.waitForFinished();
 }
 
 void OscilloscopeWnd::slotTimeout()
@@ -278,50 +286,87 @@ void OscilloscopeWnd::slotReplot()
     mutex.unlock();
 }
 
+class Msleep: public QThread
+{
+public:
+    static void msleep( int ms )
+    {
+        QThread::msleep( ms );
+    }
+};
+
 void OscilloscopeWnd::measure()
 {
-    if ( !io->isOpen() )
-    {
-        reopen();
-        return;
-    }
-    bool res;
-    res = io->osc_eaux( eaux_m );
-    if ( !res )
-    {
-        reopen();
-        return;
-    }
+    bool term = false;
+    do {
+        VoltampIo * io;
+        mutex.lock();
+            io = this->io;
+        mutex.unlock();
+        if ( io )
+        {
+            if ( !io->isOpen() )
+            {
+                reopen();
+                Msleep::msleep( 100 );
+                continue;
+            }
+            bool res;
+            res = io->osc_eaux( eaux_m );
+            int szEaux = eaux_m.size();
+            if ( !res )
+            {
+                reopen();
+                Msleep::msleep( 100 );
+                continue;
+            }
 
-    res = io->osc_eref( eref_m );
-    if ( !res )
-    {
-        reopen();
-        return;
-    }
+            res = io->osc_eref( eref_m );
+            int szEref = eref_m.size();
+            if ( !res )
+            {
+                reopen();
+                Msleep::msleep( 100 );
+                continue;
+            }
 
-    res = io->osc_iaux( iaux_m );
-    if ( !res )
-    {
-        reopen();
-        return;
-    }
+            res = io->osc_iaux( iaux_m );
+            int szIaux = iaux_m.size();
+            if ( !res )
+            {
+                reopen();
+                Msleep::msleep( 100 );
+                continue;
+            }
 
-    QMutexLocker lock( &mutex );
+            mutex.lock();
+                for ( int i=0; i<eaux_m.size(); i++ )
+                    eaux.enqueue( mainWnd->vAux( eaux_m[i] ) );
+                for ( int i=0; i<eref_m.size(); i++ )
+                    eref.enqueue( mainWnd->vRef( eref_m[i] ) );
+                for ( int i=0; i<iaux_m.size(); i++ )
+                    iaux.enqueue( mainWnd->iAux( iaux_m[i] ) );
+                lastEaux = (eaux.size() > 0) ? eaux.head() : 0.0;
+                lastEref = (eref.size() > 0) ? eref.head() : 0.0;
+                lastIaux = (iaux.size() > 0) ? iaux.head() : 0.0;
+                lastEauxRaw = ( eaux_m.size() > 0 ) ? eaux_m.at( eaux_m.size() - 1 ) : 2047;
+                lastErefRaw = ( eref_m.size() > 0 ) ? eref_m.at( eref_m.size() - 1 ) : 2047;
+                lastIauxRaw = ( iaux_m.size() > 0 ) ? iaux_m.at( iaux_m.size() - 1 ) : 2047;
+                int paintSz = iaux.size() + eref.size() + iaux.size();
+            mutex.unlock();
 
-        for ( int i=0; i<eaux_m.size(); i++ )
-            eaux.enqueue( mainWnd->vAux( eaux_m[i] ) );
-        for ( int i=0; i<eref_m.size(); i++ )
-            eref.enqueue( mainWnd->vRef( eref_m[i] ) );
-        for ( int i=0; i<iaux_m.size(); i++ )
-            iaux.enqueue( mainWnd->iAux( iaux_m[i] ) );
-        lastEaux = (eaux.size() > 0) ? eaux.head() : 0.0;
-        lastEref = (eref.size() > 0) ? eref.head() : 0.0;
-        lastIaux = (iaux.size() > 0) ? iaux.head() : 0.0;
-        lastEauxRaw = ( eaux_m.size() > 0 ) ? eaux_m.at( eaux_m.size() - 1 ) : 2047;
-        lastErefRaw = ( eref_m.size() > 0 ) ? eref_m.at( eref_m.size() - 1 ) : 2047;
-        lastIauxRaw = ( iaux_m.size() > 0 ) ? iaux_m.at( iaux_m.size() - 1 ) : 2047;
-    emit sigReplot();
+            if ( paintSz > 12 )
+                emit sigReplot();
+            int sleepSz = szEaux + szEref + szIaux;
+            if ( sleepSz < 30 )
+                Msleep::msleep( 10 );
+        }
+        else
+            Msleep::msleep( 100 );
+        mutex.lock();
+            term = terminate;
+        mutex.unlock();
+    } while ( !term );
 }
 
 void OscilloscopeWnd::reopen()

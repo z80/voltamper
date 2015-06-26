@@ -22,6 +22,7 @@ public:
     void mostRecentVals( qreal & eaux, qreal & eref, qreal & iaux );
     void mostRecentValsRaw( int & eaux, int & eref, int & iaux );
 
+    void stop();
 signals:
     void sigReplot();
 private slots:
@@ -59,6 +60,7 @@ private:
 
     qreal lastEaux, lastEref, lastIaux;
     int   lastEauxRaw, lastErefRaw, lastIauxRaw;
+    bool  terminate;
 
     static const int CURVES_CNT;
     static const int PTS_CNT;

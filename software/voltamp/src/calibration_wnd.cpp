@@ -5,6 +5,9 @@
 
 #include "matrix2.hpp"
 
+const QString CalibrationWnd::VOLT_FILE = "./volt.txt";
+const QString CalibrationWnd::CURR_FILE = "./curr.txt";
+
 CalibrationWnd::CalibrationWnd( QWidget * parent )
 : QWidget( parent )
 {
@@ -14,6 +17,8 @@ CalibrationWnd::CalibrationWnd( QWidget * parent )
     connect( ui.mode,    SIGNAL(clicked()), this, SLOT(slotEnable()) );
     connect( ui.addVolt, SIGNAL(clicked()), this, SLOT(slotAddVolt()) );
     connect( ui.addCurr, SIGNAL(clicked()), this, SLOT(slotAddCurr()) );
+
+    connect( ui.clearFileBtn, SIGNAL(clicked()), this, SLOT(slotClearFiles()) );
 
     // DEBUG
     /*
@@ -72,17 +77,13 @@ void CalibrationWnd::slotEnable()
 {
     bool en = ui.mode->isChecked();
     ui.panel->setEnabled( en );
+    ui.clearFileBtn->setEnabled( !en );
     if ( en )
     {
-        dacLowV.clear();
-        dacHighV.clear();
-        adcAux.clear();
-        adcRef.clear();
-        adcI.clear();
-        volt.clear();
-        curr.clear();
+        openVoltCalibrationFile();
+        openCurrCalibrationFile();
 
-        QTime t;
+        QTime t = QTime::currentTime();
         int seed = t.msec() + (t.second() + (t.minute() + t.hour() * 24) * 60) * 1000;
         qsrand( seed );
 
@@ -106,6 +107,7 @@ void CalibrationWnd::slotEnable()
             calcAdcI2Curr();
             mainWnd->setCalibrationAdcCurr( aAdcI, bAdcI );
         }
+        closeCalibrationFiles();
     }
 }
 
@@ -123,19 +125,31 @@ void CalibrationWnd::slotAddVolt()
     dacLowV.append( dacLow );
     dacHighV.append( dacHigh );
 
+    QString stri = QString( "%1 %2 %3 %4 %5\n" ).arg( dacLow ).arg( dacHigh ).arg( eaux ).arg( eref ).arg( v );
+    voltStream << stri;
+
     setRandomVolt();
 }
 
 void CalibrationWnd::slotAddCurr()
 {
-    qreal v = ui.currValue->value();
-    curr.append( v );
+    qreal c = ui.currValue->value();
+    curr.append( c );
 
     int eaux, eref, iaux;
     osc->mostRecentValsRaw( eaux, eref, iaux );
     adcI.append( iaux );
 
+    QString stri = QString( "%1 %2\n" ).arg( iaux ).arg( c );
+    voltStream << stri;
+
     setRandomVolt();
+}
+
+void CalibrationWnd::slotClearFiles()
+{
+    QFile::remove( VOLT_FILE );
+    QFile::remove( CURR_FILE );
 }
 
 void CalibrationWnd::setRandomVolt()
@@ -389,5 +403,112 @@ void CalibrationWnd::calcAdcI2Curr()
     aAdcI = A[0];
     bAdcI = A[1];
 }
+
+void CalibrationWnd::openVoltCalibrationFile()
+{
+    dacLowV.clear();
+    dacHighV.clear();
+    adcAux.clear();
+    adcRef.clear();
+    volt.clear();
+
+    voltFile.setFileName( VOLT_FILE );
+    bool open = voltFile.open( QIODevice::ReadOnly );
+    if ( open )
+    {
+        voltStream.setDevice( &voltFile );
+
+        QString stri; 
+        while ( !voltStream.atEnd() )
+        {
+            stri = voltStream.readLine();
+            QRegExp ex( "(\\w+)\\s+(\\w+)\\s+(\\w+)\\s+(\\w+)\\s+(\\w+)" );
+            int index = ex.indexIn( stri );
+            if ( index >= 0 )
+            {
+                QString m;
+                m = ex.cap( 1 );
+                int dl = m.toInt();
+                dacLowV.append( dl );
+
+                m = ex.cap( 2 );
+                int dh = m.toInt();
+                dacHighV.append( dh );
+
+                m = ex.cap( 3 );
+                int au = m.toInt();
+                adcAux.append( au );
+
+                m = ex.cap( 4 );
+                int ar = m.toInt();
+                adcRef.append( au );
+
+                m = ex.cap( 5 );
+                qreal v = m.toDouble();
+                volt.append( v );
+            }
+        }
+        voltFile.close();
+    }
+
+    quint64 sz = voltFile.size();
+    open = voltFile.open( QIODevice::Append );
+    if ( !open )
+    {
+        voltStream.setDevice( 0 );
+        return;
+    }
+    voltStream.setDevice( &voltFile );
+}
+
+void CalibrationWnd::openCurrCalibrationFile()
+{
+    adcI.clear();
+    curr.clear();
+
+    currFile.setFileName( CURR_FILE );
+    bool open = currFile.open( QIODevice::ReadOnly );
+    if ( open )
+    {
+        currStream.setDevice( &currFile );
+
+        QString stri; 
+        while ( !currStream.atEnd() )
+        {
+            stri = currStream.readLine();
+            QRegExp ex( "(\\w+)\\s+(\\w+)" );
+            int index = ex.indexIn( stri );
+            if ( index >= 0 )
+            {
+                QString m;
+                m = ex.cap( 1 );
+                int ai = m.toInt();
+                adcI.append( ai );
+
+                m = ex.cap( 2 );
+                qreal dh = m.toDouble();
+                curr.append( dh );
+            }
+        }
+        currFile.close();
+    }
+
+    quint64 sz = currFile.size();
+    open = currFile.open( QIODevice::Append );
+    currFile.seek( sz );
+    if ( !open )
+    {
+        currStream.setDevice( 0 );
+        return;
+    }
+    currStream.setDevice( &currFile );
+}
+
+void CalibrationWnd::closeCalibrationFiles()
+{
+    voltFile.close();
+    currFile.close();
+}
+
 
 

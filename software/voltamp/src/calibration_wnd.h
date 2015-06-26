@@ -26,12 +26,17 @@ private slots:
     void slotEnable();
     void slotAddVolt();
     void slotAddCurr();
+    void slotClearFiles();
 private:
     void setRandomVolt();
     void calcDac2Volt();
     void calcAdcAux2Volt();
     void calcAdcRef2Volt();
     void calcAdcI2Curr();
+
+    void openVoltCalibrationFile();
+    void openCurrCalibrationFile();
+    void closeCalibrationFiles();
 
     Ui_CalibrationWnd ui;
     MainWnd * mainWnd;
@@ -55,6 +60,11 @@ private:
     qreal aAdcAux, bAdcAux;
     qreal aAdcRef, bAdcRef;
     qreal aAdcI,   bAdcI;
+
+    QFile       voltFile,   currFile;
+    QTextStream voltStream, currStream;
+
+    static const QString VOLT_FILE, CURR_FILE;
 };
 
 
