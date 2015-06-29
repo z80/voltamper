@@ -310,7 +310,8 @@ void OscilloscopeWnd::slotReplot()
     // Invoke Lua algorithm by processing the data obtained.
     // When processing callback to speed up turn lua_hook off.
     mainWnd->lua_setHook( false );
-        mainWnd->lua_invokeCallback( leaux, leref, liaux );
+        mainWnd->lua_invokeCallback( leref, liaux, leaux );
+        mainWnd->lua_invokeCallbackFull( luaEref, luaIaux, luaEaux );
     mainWnd->lua_setHook( true );
 
     mutex.lock();

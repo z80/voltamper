@@ -393,7 +393,7 @@ void MainWnd::lua_setHook( bool set )
         lua_sethook( L, 0, LUA_MASKLINE, 0 );
 }
 
-void MainWnd::lua_invokeCallback( qreal eaux, qreal eref, qreal iaux )
+void MainWnd::lua_invokeCallback( qreal eref, qreal iaux, qreal eaux )
 {
     lua_State * L = state->get_lua_state();
     int top = lua_gettop( L );
@@ -442,12 +442,14 @@ void MainWnd::lua_invokeCallbackFull( const QVector<qreal> & eref, const QVector
     lua_gettable( L, LUA_REGISTRYINDEX );
     //int top3 = lua_gettop( L );
     int tp = lua_type( L, -1 );
+    int top2 = lua_gettop( L );
     if ( tp == LUA_TFUNCTION )
     {
         pushTableData( L, eref );
         pushTableData( L, iref );
         pushTableData( L, eaux );
-        int res = lua_pcall( L, -4, 0, 0 );
+        int top3 = lua_gettop( L );
+        int res = lua_pcall( L, 3, 0, 0 );
         if ( res != 0 )
         {
             QString stri = lua_tostring( L, -1 );
