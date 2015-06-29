@@ -335,16 +335,14 @@ void MainWnd::refreshDevicesList()
 
 
 static const struct luaL_reg FUNCTIONS[] = {
-    { "msleep",      MainWnd::lua_msleep },
-    { "setDc",       MainWnd::lua_setDc },
-    { "setMeandr",   MainWnd::lua_setMeandr },
-    { "setSweep",    MainWnd::lua_setSweep },
-    { "setScRelay",  MainWnd::lua_setScRelay },
-    { "setOutRelay", MainWnd::lua_setOutRelay },
-    { "dataCallbackRegister", MainWnd::lua_dataCallbackRegister },
-    { "eauxCallbackRegister", MainWnd::lua_eauxCallbackRegister },
-    { "erefCallbackRegister", MainWnd::lua_erefCallbackRegister },
-    { "iauxCallbackRegister", MainWnd::lua_iauxCallbackRegister },
+    { "msleep",                   MainWnd::lua_msleep },
+    { "setDc",                    MainWnd::lua_setDc },
+    { "setMeandr",                MainWnd::lua_setMeandr },
+    { "setSweep",                 MainWnd::lua_setSweep },
+    { "setScRelay",               MainWnd::lua_setScRelay },
+    { "setOutRelay",              MainWnd::lua_setOutRelay },
+    { "dataCallbackRegister",     MainWnd::lua_dataCallbackRegister },
+    { "dataCallbackRegisterFull", MainWnd::lua_dataCallbackRegisterFull },
 
     { NULL,            NULL },
 };
@@ -407,9 +405,9 @@ void MainWnd::lua_invokeCallback( qreal eaux, qreal eref, qreal iaux )
     int tp = lua_type( L, -1 );
     if ( tp == LUA_TFUNCTION )
     {
-        lua_pushnumber( L, eaux );
         lua_pushnumber( L, eref );
         lua_pushnumber( L, iaux );
+        lua_pushnumber( L, eaux );
         int res = lua_pcall( L, 3, 0, 0 );
         if ( res != 0 )
         {
@@ -422,7 +420,7 @@ void MainWnd::lua_invokeCallback( qreal eaux, qreal eref, qreal iaux )
     lua_settop( L, top );
 }
 
-static QString pushTableData( lua_State * L, const QVector<qreal> & data )
+static void pushTableData( lua_State * L, const QVector<qreal> & data )
 {
     int sz = data.size();
     lua_createtable( L, sz, 0 );
@@ -431,73 +429,33 @@ static QString pushTableData( lua_State * L, const QVector<qreal> & data )
         lua_pushinteger( L, i+1 );
         lua_pushnumber( L, static_cast<lua_Number>( data.at( i ) ) );
         lua_settable( L, -3 );
-        int res = lua_pcall( L, -2, 0, 0 );
+    }
+}
+
+void MainWnd::lua_invokeCallbackFull( const QVector<qreal> & eref, const QVector<qreal> & iref, const QVector<qreal> & eaux )
+{
+    lua_State * L = state->get_lua_state();
+    int top = lua_gettop( L );
+
+    lua_pushliteral( L, "dcfull" );
+    //int top2 = lua_gettop( L );
+    lua_gettable( L, LUA_REGISTRYINDEX );
+    //int top3 = lua_gettop( L );
+    int tp = lua_type( L, -1 );
+    if ( tp == LUA_TFUNCTION )
+    {
+        pushTableData( L, eref );
+        pushTableData( L, iref );
+        pushTableData( L, eaux );
+        int res = lua_pcall( L, -4, 0, 0 );
         if ( res != 0 )
         {
             QString stri = lua_tostring( L, -1 );
-            return stri;
+            ui.console->print( stri );
         }
     }
-    return QString();
-}
-
-void MainWnd::lua_invokeCallbackEaux( const QVector<qreal> & data )
-{
-    lua_State * L = state->get_lua_state();
-    int top = lua_gettop( L );
-
-    lua_pushliteral( L, "eauxdc" );
-    //int top2 = lua_gettop( L );
-    lua_gettable( L, LUA_REGISTRYINDEX );
-    //int top3 = lua_gettop( L );
-    int tp = lua_type( L, -1 );
-    if ( tp == LUA_TFUNCTION )
-    {
-        QString stri = pushTableData( L, data );
-        if ( stri.size() > 0 )
-            ui.console->print( stri );
-    }
     lua_settop( L, top );
 }
-
-void MainWnd::lua_invokeCallbackEref( const QVector<qreal> & data )
-{
-    lua_State * L = state->get_lua_state();
-    int top = lua_gettop( L );
-
-    lua_pushliteral( L, "erefdc" );
-    //int top2 = lua_gettop( L );
-    lua_gettable( L, LUA_REGISTRYINDEX );
-    //int top3 = lua_gettop( L );
-    int tp = lua_type( L, -1 );
-    if ( tp == LUA_TFUNCTION )
-    {
-        QString stri = pushTableData( L, data );
-        if ( stri.size() > 0 )
-            ui.console->print( stri );
-    }
-    lua_settop( L, top );
-}
-
-void MainWnd::lua_invokeCallbackIaux( const QVector<qreal> & data )
-{
-    lua_State * L = state->get_lua_state();
-    int top = lua_gettop( L );
-
-    lua_pushliteral( L, "iauxdc" );
-    //int top2 = lua_gettop( L );
-    lua_gettable( L, LUA_REGISTRYINDEX );
-    //int top3 = lua_gettop( L );
-    int tp = lua_type( L, -1 );
-    if ( tp == LUA_TFUNCTION )
-    {
-        QString stri = pushTableData( L, data );
-        if ( stri.size() > 0 )
-            ui.console->print( stri );
-    }
-    lua_settop( L, top );
-}
-
 
 void MainWnd::lua_hook( lua_State * L, lua_Debug * Ld )
 {
@@ -587,29 +545,15 @@ int MainWnd::lua_dataCallbackRegister( lua_State * L )
     return 0;
 }
 
-int MainWnd::lua_eauxCallbackRegister( lua_State * L )
+int MainWnd::lua_dataCallbackRegisterFull( lua_State * L )
 {
-    lua_pushliteral( L, "eauxdc" );
+    lua_pushliteral( L, "dcfull" );
     lua_pushvalue( L, -2 );
     lua_settable( L, LUA_REGISTRYINDEX );
     return 0;
 }
 
-int MainWnd::lua_erefCallbackRegister( lua_State * L )
-{
-    lua_pushliteral( L, "erefdc" );
-    lua_pushvalue( L, -2 );
-    lua_settable( L, LUA_REGISTRYINDEX );
-    return 0;
-}
 
-int MainWnd::lua_iauxCallbackRegister( lua_State * L )
-{
-    lua_pushliteral( L, "iauxdc" );
-    lua_pushvalue( L, -2 );
-    lua_settable( L, LUA_REGISTRYINDEX );
-    return 0;
-}
 
 
 

@@ -54,6 +54,7 @@ private:
     QVector<quint16>  data;
     QVector<quint16>  eaux_m, eref_m, iaux_m;
     QQueue<qreal>     eaux,   eref,   iaux;
+    QQueue<qreal>     luaEaux,   luaEref,   luaIaux;
     QQueue<qreal>     paintDataX, paintDataY;
 
     QVector<Curve>   curves;

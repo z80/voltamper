@@ -104,14 +104,10 @@ public:
     static int lua_setScRelay( lua_State * L );
     static int lua_setOutRelay( lua_State * L );
     static int lua_dataCallbackRegister( lua_State * L );
-    static int lua_eauxCallbackRegister( lua_State * L );
-    static int lua_erefCallbackRegister( lua_State * L );
-    static int lua_iauxCallbackRegister( lua_State * L );
+    static int lua_dataCallbackRegisterFull( lua_State * L );
 
     void lua_invokeCallback( qreal eaux, qreal eref, qreal iaux );
-    void lua_invokeCallbackEaux( const QVector<qreal> & data );
-    void lua_invokeCallbackEref( const QVector<qreal> & data );
-    void lua_invokeCallbackIaux( const QVector<qreal> & data );
+    void lua_invokeCallbackFull( const QVector<qreal> & eref, const QVector<qreal> & iref, const QVector<qreal> & eaux );
 };
 
 #endif

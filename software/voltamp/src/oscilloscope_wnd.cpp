@@ -223,6 +223,40 @@ void OscilloscopeWnd::slotReplot()
         sz = (sz <= eref.size() ) ? sz : eref.size();
         sz = (sz <= iaux.size() ) ? sz : iaux.size();
 
+        // Copy to Lua.
+        QQueue<qreal>::const_iterator ci;
+        
+        luaEaux.clear();
+        luaEaux.reserve( sz );
+        luaEref.clear();
+        luaEref.reserve( sz );
+        luaIaux.clear();
+        luaIaux.reserve( sz );
+        int ind = 0;
+        for ( ci=eaux.begin(); ci!=eaux.end(); ci++ )
+        {
+            luaEaux.append( *ci );
+            ind++;
+            if ( ind >= sz )
+            break;
+        }
+        ind = 0;
+        for ( ci=eref.begin(); ci!=eref.end(); ci++ )
+        {
+            luaEref.append( *ci );
+            ind++;
+            if ( ind >= sz )
+            break;
+        }
+        ind = 0;
+        for ( ci=iaux.begin(); ci!=iaux.end(); ci++ )
+        {
+            luaIaux.append( *ci );
+            ind++;
+            if ( ind >= sz )
+            break;
+        }
+
         if ( curveType == EAUX_T )
             copyData( eaux, paintDataY, sz );
         else if ( curveType == EREF_T )
