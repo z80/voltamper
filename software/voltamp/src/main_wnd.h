@@ -61,6 +61,8 @@ public slots:
 
     void slotLuaOpen();
     void slotLuaStop();
+
+    void slotLuaInit();
 protected:
     void closeEvent( QCloseEvent * e );
 private:

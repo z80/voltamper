@@ -76,7 +76,9 @@ MainWnd::MainWnd( QWidget * parent )
     *p = this;
     lua_settable( L, LUA_REGISTRYINDEX );
 
-    state->lua_do( MainWnd::lua_init );
+    // This should be in separate slot in single shot timer.
+    //state->lua_do( MainWnd::lua_init );
+    QTimer::singleShot( 100, this, SLOT(slotLuaInit()) );
 }
 
 MainWnd::~MainWnd()
@@ -292,6 +294,11 @@ void MainWnd::slotLuaStop()
     {
         ui.console->print( e );
     }
+}
+
+void MainWnd::slotLuaInit()
+{
+    state->lua_do( MainWnd::lua_init );
 }
 
 void MainWnd::slotDevice()
