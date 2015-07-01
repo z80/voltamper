@@ -69,7 +69,8 @@ MainWnd::MainWnd( QWidget * parent )
 
     connect( state, SIGNAL(output(const QString&)),
              ui.console, SLOT(print(const QString&)));
-
+             
+    m_luaDoStop = false;
     lua_State * L = state->get_lua_state();
     lua_pushliteral( L, "MainWnd" );
     MainWnd * * p = reinterpret_cast< MainWnd * * >( lua_newuserdata( L, sizeof( MainWnd * ) ) );
@@ -211,6 +212,7 @@ void MainWnd::slotQuit()
 {
     saveSettings();
     osc->stop();
+    slotLuaStop();
     this->deleteLater();
     qApp->quit();
 }
@@ -288,12 +290,15 @@ void MainWnd::slotLuaOpen()
 
 void MainWnd::slotLuaStop()
 {
+    setLuaDoStop( true );
+    /*
     try {
         state->exec_statements( "error( \'Execution was stopped\', 1 )" );
     } catch ( QtLua::String & e )
     {
         ui.console->print( e );
     }
+    */
 }
 
 void MainWnd::slotLuaInit()
@@ -468,8 +473,13 @@ void MainWnd::lua_invokeCallbackFull( const QVector<qreal> & eref, const QVector
 
 void MainWnd::lua_hook( lua_State * L, lua_Debug * Ld )
 {
-    //MainWnd * mw = mainWnd( L );
+    MainWnd * mw = mainWnd( L );
     qApp->processEvents();
+    if ( mw->luaDoStop() )
+    {
+        mw->setLuaDoStop( false );
+        lua_error( L );
+    }
 }
 
 int MainWnd::lua_msleep( lua_State * L )
@@ -561,6 +571,17 @@ int MainWnd::lua_dataCallbackRegisterFull( lua_State * L )
     lua_settable( L, LUA_REGISTRYINDEX );
     return 0;
 }
+
+bool MainWnd::luaDoStop()
+{
+    return m_luaDoStop;
+}
+
+void MainWnd::setLuaDoStop( bool stop )
+{
+    m_luaDoStop = stop;
+}
+
 
 
 

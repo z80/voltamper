@@ -92,6 +92,7 @@ private:
     QList<QAction *> devicesList;
 
     QtLua::State * state;
+    bool m_luaDoStop;
 
     static const QString SETTINGS_INI;
 
@@ -110,6 +111,9 @@ public:
 
     void lua_invokeCallback( qreal eaux, qreal eref, qreal iaux );
     void lua_invokeCallbackFull( const QVector<qreal> & eref, const QVector<qreal> & iref, const QVector<qreal> & eaux );
+
+    bool luaDoStop();
+    void setLuaDoStop( bool stop );
 };
 
 #endif
