@@ -37,6 +37,15 @@ int oscPeriod = 10000;
 int oscTime   = 0;
 
 
+int     bufferPeriod = 10000;
+int     bufferTime = 0;
+uint8_t bufferMask = 1;
+uint8_t bufferEnabled = 0;
+
+#define BUFFER_SZ  4096
+InputQueue buffer_queue;
+uint8_t    buffer_queue_buffer[BUFFER_SZ];
+
 
 void modeProcess( int mode );
 void modeInit( int mode );
@@ -57,6 +66,8 @@ static void initFb( void );
 static void processFb( void );
 
 static void processOsc( adcsample_t * buffer );
+
+static void processBuffer( adcsample_t * buffer );
 
 uint8_t mode = TDAC;
 
@@ -134,6 +145,8 @@ void initAdc( void )
 	chIQInit( &eaux_queue, eaux_queue_buffer, OSC_QUEUE_SZ, 0 );
 	chIQInit( &eref_queue, eref_queue_buffer, OSC_QUEUE_SZ, 0 );
 	chIQInit( &iaux_queue, iaux_queue_buffer, OSC_QUEUE_SZ, 0 );
+	// Buffer queue init;
+	chIQInit( &buffer_queue, buffer_queue_buffer, BUFFER_SZ, 0 );
     // Init ADC pins.
     palSetGroupMode( PORT_ADC, PAL_PORT_BIT( PIN_EAUX ) |
     	                       PAL_PORT_BIT( PIN_EREF ) |
@@ -149,6 +162,16 @@ void initAdc( void )
 void setOscPeriod( uint32_t t )
 {
 	oscPeriod = t;
+}
+
+void setBufferPeriod( uint32_t t )
+{
+    bufferPeriod = t;
+}
+
+void setBufferSigMask( uint8_t mask )
+{
+    bufferMask = mask;
 }
 
 void setFbSetpoint( int sp )
@@ -445,6 +468,30 @@ static void processOsc( adcsample_t * buffer )
 			}
 		chSysUnlockFromIsr();
 	}
+}
+
+static void processBuffer( adcsample_t * buffer )
+{
+    if ( !bufferEnabled )
+    {
+        bufferEnabled = (chIQGetEmptyI( &buffer_queue ) == BUFFER_SZ ) ? 1 : 0;
+        if ( bufferEnabled )
+            // Reset time.
+            bufferTime = 0;
+        return;
+    }
+
+    // Check if it has enough space.
+    int sz = ( (mask & 1) ? 2 : 0 ) + ( (mask & 2) ? 2 : 0 ) + ( (mask & 4) ? 2 : 0 );
+    if ( chIQGetEmptyI( &eaux_queue ) < sz )
+        return;
+
+    // Same as oscilloscope.
+    bufferTimer += 1;
+    if ( bufferTime < bufferPeriod )
+        return;
+
+    // Save data to input queue...
 }
 
 

@@ -14,6 +14,9 @@
 void initAdc( void );
 
 void setOscPeriod( uint32_t t );
+// Oscilloscope replacement for parametric plots.
+void setBufferPeriod( uint32_t t );
+void setBufferSigMask( uint8_t mask );
 
 void setFbSetpoint( int sp );
 void setFbInput( int ind );
@@ -24,7 +27,7 @@ OutputQueue * commandQueue( void );
 InputQueue * eauxQueue( void );
 InputQueue * erefQueue( void );
 InputQueue * iauxQueue( void );
-
+InputQueue * bufferQueue( void );
 
 #endif
 
