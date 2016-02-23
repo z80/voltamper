@@ -41,6 +41,7 @@ int     bufferPeriod = 10000;
 int     bufferTime = 0;
 uint8_t bufferMask = 1;
 uint8_t bufferEnabled = 0;
+uint8_t bufferStoreData = 0;
 
 #define BUFFER_SZ  4096
 InputQueue buffer_queue;
@@ -67,7 +68,8 @@ static void processFb( void );
 
 static void processOsc( adcsample_t * buffer );
 
-static void processBuffer( adcsample_t * buffer );
+static void processBufferI( adcsample_t * buffer );
+static void startBufferI( void ); // For usage inside ISR when new sweep or meands is engaged.
 
 uint8_t mode = TDAC;
 
@@ -83,6 +85,9 @@ static void convAdcReadyCb( ADCDriver * adcp, adcsample_t * buffer, size_t n )
 
 	// Process oscilloscope regardless of all other conditions.
 	processOsc( buffer );
+
+	// Process buffer.
+	processBufferI( buffer );
 
 	// Query for command.
 	chSysLockFromIsr();
@@ -215,6 +220,11 @@ InputQueue * iauxQueue( void )
 	return &iaux_queue;
 }
 
+InputQueue * bufferQueue( void )
+{
+	return &buffer_queue;
+}
+
 void modeProcess( int mode )
 {
 	switch ( mode )
@@ -296,6 +306,9 @@ static void initOnePulse( void )
 			      ((uint32_t)(args[6]) << 16) +
 			      ((uint32_t)(args[7]) << 24);
 	pulseTime = 0;
+
+	// Try to run buffer.
+	startBufferI();
 }
 
 static void processOnePulse( void )
@@ -335,6 +348,9 @@ static void initMeandr( void )
 			           ((uint32_t)(args[15]) << 24);
 	meanderPeriod2 += meanderPeriod1;
 	meanderTime = meanderPeriod2;
+
+	// Try to run buffer.
+	startBufferI();
 }
 
 static void processMeandr( void )
@@ -349,6 +365,9 @@ static void processMeandr( void )
 	{
 		dacSet( &meanderDac1 );
 		meanderTime -= meanderPeriod2;
+
+		// Try to run buffer.
+		startBufferI();
 	}
 }
 
@@ -377,6 +396,9 @@ static void initSweep( void )
     dDacf2       = (float)( sweepDac2.dac2 - sweepDac1.dac2 );
     sweepTime      = 0;
     sweepSpeed     = 1;
+
+	// Try to run buffer.
+	startBufferI();
 }
 
 static void processSweep( void )
@@ -390,7 +412,13 @@ static void processSweep( void )
     if ( overflow )
         time = sweepPeriod;
     else if ( underflow )
+    {
         time = 0;
+
+    	// Try to run buffer.
+    	startBufferI();
+
+    }
     else
         time = sweepTime;
     if ( overflow || underflow )
@@ -470,20 +498,17 @@ static void processOsc( adcsample_t * buffer )
 	}
 }
 
-static void processBuffer( adcsample_t * buffer )
+static void processBufferI( adcsample_t * buffer )
 {
     if ( !bufferEnabled )
-    {
-        bufferEnabled = (chIQGetEmptyI( &buffer_queue ) == BUFFER_SZ ) ? 1 : 0;
-        if ( bufferEnabled )
-            // Reset time.
-            bufferTime = 0;
         return;
-    }
 
     // Check if it has enough space.
     int sz = ( (mask & 1) ? 2 : 0 ) + ( (mask & 2) ? 2 : 0 ) + ( (mask & 4) ? 2 : 0 );
-    if ( chIQGetEmptyI( &eaux_queue ) < sz )
+    chSysLockFromIsr();
+    	int emptySz = chIQGetEmptyI( &eaux_queue );
+    chSysUnlockFromIsr();
+    if ( emptySz < sz )
         return;
 
     // Same as oscilloscope.
@@ -491,7 +516,53 @@ static void processBuffer( adcsample_t * buffer )
     if ( bufferTime < bufferPeriod )
         return;
 
+	uint16_t v16;
+	uint8_t vLow, vHigh;
+
     // Save data to input queue...
+	chSysLockFromIsr();
+		if ( mask & 1 )
+		{
+			v16 = filtered[0];
+			vLow = (uint8_t)(v16 & 0x00FF);
+			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
+			chIQPutI( &eaux_queue, vLow );
+			chIQPutI( &eaux_queue, vHigh );
+		}
+
+		if ( mask & 2 )
+		{
+			v16 = filtered[1];
+			vLow = (uint8_t)(v16 & 0x00FF);
+			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
+			chIQPutI( &eaux_queue, vLow );
+			chIQPutI( &eaux_queue, vHigh );
+
+		}
+
+		if ( mask & 4 )
+		{
+			v16 = filtered[2];
+			vLow = (uint8_t)(v16 & 0x00FF);
+			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
+			chIQPutI( &eaux_queue, vLow );
+			chIQPutI( &eaux_queue, vHigh );
+
+		}
+
+		// Check free size and if less then needed disable buffer.
+		emptySz = chIQGetEmptyI( &eaux_queue );
+		if ( emptySz < sz )
+			bufferEnabled = 0;
+	chSysUnlockFromIsr();
+}
+
+static void startBufferI( void )
+{
+    bufferEnabled = ( chIQGetFullI( &buffer_queue ) == 0 ) ? 1 : 0;
+    if ( bufferEnabled )
+        // Reset time.
+        bufferTime = 0;
 }
 
 

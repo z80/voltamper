@@ -124,6 +124,9 @@ static void set_meandr( uint8_t * args );
 static void set_sweep( uint8_t * args );
 static void hardware_version( uint8_t * args );
 static void firmware_version( uint8_t * args );
+static void buffer_set_period( uint8_t * args );
+static void buffer_set_signals( uint8_t * args );
+static void buffer_data( uint8_t * args );
 
 static TFunc funcs[] =
 {
@@ -139,7 +142,10 @@ static TFunc funcs[] =
 	set_meandr,
 	set_sweep,
 	hardware_version,
-	firmware_version
+	firmware_version,
+	buffer_set_period,
+	buffer_set_signals,
+	buffer_data
 };
 
 static void exec_func( void )
@@ -266,6 +272,22 @@ static void firmware_version( uint8_t * args )
 		writeResult( stri[i] );
 	writeEom();
 }
+
+static void buffer_set_period( uint8_t * args )
+{
+
+}
+
+static void buffer_set_signals( uint8_t * args )
+{
+
+}
+
+static void buffer_data( uint8_t * args )
+{
+
+}
+
 
 
 
