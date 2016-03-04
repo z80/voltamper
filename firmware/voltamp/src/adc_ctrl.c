@@ -43,7 +43,7 @@ uint8_t bufferMask = 1;
 uint8_t bufferEnabled = 0;
 uint8_t bufferStoreData = 0;
 
-#define BUFFER_SZ  4096
+#define BUFFER_SZ  (128*3)
 InputQueue buffer_queue;
 uint8_t    buffer_queue_buffer[BUFFER_SZ];
 
@@ -503,6 +503,9 @@ static void processBufferI( adcsample_t * buffer )
     if ( !bufferEnabled )
         return;
 
+    chSysLockFromIsr();
+    	uint8_t mask = bufferMask;
+    chSysUnlockFromIsr();
     // Check if it has enough space.
     int sz = ( (mask & 1) ? 2 : 0 ) + ( (mask & 2) ? 2 : 0 ) + ( (mask & 4) ? 2 : 0 );
     chSysLockFromIsr();
@@ -512,7 +515,7 @@ static void processBufferI( adcsample_t * buffer )
         return;
 
     // Same as oscilloscope.
-    bufferTimer += 1;
+    bufferTime += 1;
     if ( bufferTime < bufferPeriod )
         return;
 
@@ -523,7 +526,7 @@ static void processBufferI( adcsample_t * buffer )
 	chSysLockFromIsr();
 		if ( mask & 1 )
 		{
-			v16 = filtered[0];
+			v16 = buffer[0];
 			vLow = (uint8_t)(v16 & 0x00FF);
 			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
 			chIQPutI( &eaux_queue, vLow );
@@ -532,7 +535,7 @@ static void processBufferI( adcsample_t * buffer )
 
 		if ( mask & 2 )
 		{
-			v16 = filtered[1];
+			v16 = buffer[1];
 			vLow = (uint8_t)(v16 & 0x00FF);
 			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
 			chIQPutI( &eaux_queue, vLow );
@@ -542,7 +545,7 @@ static void processBufferI( adcsample_t * buffer )
 
 		if ( mask & 4 )
 		{
-			v16 = filtered[2];
+			v16 = buffer[2];
 			vLow = (uint8_t)(v16 & 0x00FF);
 			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
 			chIQPutI( &eaux_queue, vLow );
