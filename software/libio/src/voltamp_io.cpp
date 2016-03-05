@@ -479,6 +479,23 @@ bool VoltampIo::firmware_version( QString & stri )
     return true;
 }
 
+bool VoltampIo::setBufferPeriod( qreal us )
+{
+    return false;
+}
+
+bool VoltampIo::setBufferSignals( bool eRef, bool iAux, bool eAux )
+{
+    return false;
+}
+
+bool VoltampIo::bufferedData( QVector<quint16> & vals )
+{
+    return false;
+}
+
+
+
 
 
 
