@@ -49,6 +49,11 @@ endif ( WIN32 )
 
 add_executable( voltamp ${BLD_TYPE} ${src} )
 qt5_use_modules( voltamp Widgets Core )
-target_link_libraries( voltamp libio qwt-6.1.2 qtlua ${QT_LIBRARIES} Qt5::WinMain )
+
+set( libs libio qwt-6.1.2 qtlua ${QT_LIBRARIES} )
+if ( WIN32 )
+    set( libs ${libs} Qt5::WinMain )
+endif ( WIN32 )
+target_link_libraries( voltamp ${libs} )
 install( TARGETS   voltamp DESTINATION ./ )
 install( DIRECTORY ./lua/ DESTINATION ./ )

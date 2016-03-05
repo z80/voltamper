@@ -512,7 +512,10 @@ static void processBufferI( adcsample_t * buffer )
     	int emptySz = chIQGetEmptyI( &eaux_queue );
     chSysUnlockFromIsr();
     if ( emptySz < sz )
+    {
+        bufferEnabled = 0;
         return;
+    }
 
     // Same as oscilloscope.
     bufferTime += 1;
@@ -552,11 +555,6 @@ static void processBufferI( adcsample_t * buffer )
 			chIQPutI( &eaux_queue, vHigh );
 
 		}
-
-		// Check free size and if less then needed disable buffer.
-		emptySz = chIQGetEmptyI( &eaux_queue );
-		if ( emptySz < sz )
-			bufferEnabled = 0;
 	chSysUnlockFromIsr();
 }
 
