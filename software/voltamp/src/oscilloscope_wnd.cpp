@@ -31,6 +31,8 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     lastErefRaw = 2047;
     lastIauxRaw = 2047;
 
+    bufferEaux = bufferEref = bufferIaux = false;
+
     ui.setupUi( this );
     //ui.plot->show();
 
@@ -165,7 +167,6 @@ void OscilloscopeWnd::slotCurveType()
         QAction * aa = *i;
         if ( aa != a )
             aa->setChecked( false );
-
     }
 
     curveSizeChanged();
@@ -210,7 +211,41 @@ void OscilloscopeWnd::slotPeriod()
     }
 
     if ( io->isOpen() )
-        bool res = io->osc_set_period( t, PTS_CNT );
+    {
+        bool res;
+        if ( ( curveType == EAUX_T ) ||
+             ( curveType == EREF_T ) ||
+             ( curveType == IAUX_T ) )
+        {
+            res = io->osc_set_period( t, PTS_CNT );
+            mutex.lock();
+                bufferEaux = bufferEref = bufferIaux = false;
+            mutex.unlock();
+        }
+        else if ( ( curveType == I_EAUX ) ||
+                  ( curveType == I_EREF ) )
+        {
+            res = io->setBufferPeriod( 1000000.0 * t / PTS_CNT );
+            if ( curveType == I_EAUX )
+            {
+                mutex.lock();
+                    bufferEaux = true;
+                    bufferEref = false;
+                    bufferIaux = true;
+                mutex.unlock();
+                io->setBufferSignals( false, true, true );
+            }
+            else
+            {
+                mutex.lock();
+                    bufferEaux = false;
+                    bufferEref = true;
+                    bufferIaux = true;
+                mutex.unlock();
+                io->setBufferSignals( true, true, false );
+            }
+        }
+    }
     curveSizeChanged();
     curvesCntChanged();
 }
@@ -219,9 +254,18 @@ void OscilloscopeWnd::slotReplot()
 {
     // Choose what data to paint.
     mutex.lock();
-        int sz = eaux.size();
-        sz = (sz <= eref.size() ) ? sz : eref.size();
-        sz = (sz <= iaux.size() ) ? sz : iaux.size();
+        int sz;
+        if ( ( curveType == I_EAUX ) || ( curveType == I_EREF ) )
+        {
+            sz = bufferX.size();
+            sz = (sz <= bufferY.size()) ? sz : bufferY.size();
+        }
+        else
+        {
+            sz = eaux.size();
+            sz = (sz <= eref.size() ) ? sz : eref.size();
+            sz = (sz <= iaux.size() ) ? sz : iaux.size();
+        }
 
         // Copy to Lua.
         QQueue<qreal>::const_iterator ci;
@@ -265,13 +309,13 @@ void OscilloscopeWnd::slotReplot()
             copyData( iaux, paintDataY, sz );
         else if ( curveType == I_EAUX )
         {
-            copyData( iaux, paintDataY, sz );
-            copyData( eaux, paintDataX, sz );
+            copyData( bufferY, paintDataY, sz );
+            copyData( bufferX, paintDataX, sz );
         }
         else if ( curveType == I_EREF )
         {
-            copyData( iaux, paintDataY, sz );
-            copyData( eref, paintDataX, sz );
+            copyData( bufferY, paintDataY, sz );
+            copyData( bufferX, paintDataX, sz );
         }
     mutex.unlock();
 
@@ -318,6 +362,8 @@ void OscilloscopeWnd::slotReplot()
         eaux.clear();
         eref.clear();
         iaux.clear();
+        bufferX.clear();
+        bufferY.clear();
     mutex.unlock();
 }
 
@@ -346,55 +392,63 @@ void OscilloscopeWnd::measure()
                 Msleep::msleep( 100 );
                 continue;
             }
-            bool res;
-            res = io->osc_eaux( eaux_m );
-            int szEaux = eaux_m.size();
-            if ( !res )
-            {
-                reopen();
-                Msleep::msleep( 100 );
-                continue;
-            }
-
-            res = io->osc_eref( eref_m );
-            int szEref = eref_m.size();
-            if ( !res )
-            {
-                reopen();
-                Msleep::msleep( 100 );
-                continue;
-            }
-
-            res = io->osc_iaux( iaux_m );
-            int szIaux = iaux_m.size();
-            if ( !res )
-            {
-                reopen();
-                Msleep::msleep( 100 );
-                continue;
-            }
-
             mutex.lock();
-                for ( int i=0; i<eaux_m.size(); i++ )
-                    eaux.enqueue( mainWnd->vAux( eaux_m[i] ) );
-                for ( int i=0; i<eref_m.size(); i++ )
-                    eref.enqueue( mainWnd->vRef( eref_m[i] ) );
-                for ( int i=0; i<iaux_m.size(); i++ )
-                    iaux.enqueue( mainWnd->iAux( iaux_m[i] ) );
-                lastEaux = (eaux.size() > 0) ? eaux.head() : 0.0;
-                lastEref = (eref.size() > 0) ? eref.head() : 0.0;
-                lastIaux = (iaux.size() > 0) ? iaux.head() : 0.0;
-                lastEauxRaw = ( eaux_m.size() > 0 ) ? eaux_m.at( eaux_m.size() - 1 ) : 2047;
-                lastErefRaw = ( eref_m.size() > 0 ) ? eref_m.at( eref_m.size() - 1 ) : 2047;
-                lastIauxRaw = ( iaux_m.size() > 0 ) ? iaux_m.at( iaux_m.size() - 1 ) : 2047;
-                int paintSz = iaux.size() + eref.size() + iaux.size();
+                CurveType curveType = this->curveType;
             mutex.unlock();
+            if ( ( curveType == I_EAUX ) || ( curveType == I_EREF ) )
+                measureBuffer();
+            else
+            {
+                bool res;
+                res = io->osc_eaux( eaux_m );
+                int szEaux = eaux_m.size();
+                if ( !res )
+                {
+                    reopen();
+                    Msleep::msleep( 100 );
+                    continue;
+                }
 
-            if ( paintSz > 12 )
-                emit sigReplot();
-            int sleepSz = szEaux + szEref + szIaux;
-            if ( sleepSz < 30 )
-                Msleep::msleep( 10 );
+                res = io->osc_eref( eref_m );
+                int szEref = eref_m.size();
+                if ( !res )
+                {
+                    reopen();
+                    Msleep::msleep( 100 );
+                    continue;
+                }
+
+                res = io->osc_iaux( iaux_m );
+                int szIaux = iaux_m.size();
+                if ( !res )
+                {
+                    reopen();
+                    Msleep::msleep( 100 );
+                    continue;
+                }
+
+                mutex.lock();
+                    for ( int i=0; i<eaux_m.size(); i++ )
+                        eaux.enqueue( mainWnd->vAux( eaux_m[i] ) );
+                    for ( int i=0; i<eref_m.size(); i++ )
+                        eref.enqueue( mainWnd->vRef( eref_m[i] ) );
+                    for ( int i=0; i<iaux_m.size(); i++ )
+                        iaux.enqueue( mainWnd->iAux( iaux_m[i] ) );
+                    lastEaux = (eaux.size() > 0) ? eaux.head() : 0.0;
+                    lastEref = (eref.size() > 0) ? eref.head() : 0.0;
+                    lastIaux = (iaux.size() > 0) ? iaux.head() : 0.0;
+                    lastEauxRaw = ( eaux_m.size() > 0 ) ? eaux_m.at( eaux_m.size() - 1 ) : 2047;
+                    lastErefRaw = ( eref_m.size() > 0 ) ? eref_m.at( eref_m.size() - 1 ) : 2047;
+                    lastIauxRaw = ( iaux_m.size() > 0 ) ? iaux_m.at( iaux_m.size() - 1 ) : 2047;
+                    int paintSz = iaux.size() + eref.size() + iaux.size();
+                mutex.unlock();
+
+                if ( paintSz > 12 )
+                    emit sigReplot();
+                int sleepSz = szEaux + szEref + szIaux;
+                if ( sleepSz < 30 )
+                    Msleep::msleep( 10 );
+            }
         }
         else
             Msleep::msleep( 100 );
@@ -402,6 +456,32 @@ void OscilloscopeWnd::measure()
             term = terminate;
         mutex.unlock();
     } while ( !term );
+}
+
+void OscilloscopeWnd::measureBuffer()
+{
+    bool res;
+    res = io->bufferedData( bufferData );
+    int dataSz = bufferData.size() / 2;
+
+    mutex.lock();
+        CurveType curveType = this->curveType;
+        for ( int i=0; i<dataSz; i++ )
+        {
+            if ( curveType == I_EAUX )
+                bufferX.enqueue( mainWnd->vAux( bufferData[2*i] ) );
+            else
+                bufferX.enqueue( mainWnd->vRef( eref_m[2*i] ) );
+            bufferY.enqueue( mainWnd->iAux( iaux_m[2*i+1] ) );
+        }
+        int paintSz = bufferX.size() + bufferY.size();
+    mutex.unlock();
+
+    if ( paintSz > 12 )
+        emit sigReplot();
+    int sleepSz = dataSz;
+    if ( sleepSz < 30 )
+        Msleep::msleep( 10 );
 }
 
 void OscilloscopeWnd::reopen()

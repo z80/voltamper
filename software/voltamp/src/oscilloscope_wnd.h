@@ -33,6 +33,7 @@ private slots:
 private:
 
     void measure();
+    void measureBuffer();
     void reopen();
     void curveSizeChanged();
     void curvesCntChanged();
@@ -56,6 +57,11 @@ private:
     QQueue<qreal>     eaux,    eref,    iaux;
     QVector<qreal>    luaEaux, luaEref, luaIaux;
     QQueue<qreal>     paintDataX, paintDataY;
+
+    // Buffer related stuff.
+    QVector<quint16> bufferData;
+    QQueue<qreal>    bufferX, bufferY;
+    bool bufferEaux, bufferEref, bufferIaux;
 
     QVector<Curve>   curves;
 
