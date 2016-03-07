@@ -31,7 +31,8 @@ void SinglePulseWnd::slotApply()
     mainWnd->dac( volt, dacLow, dacHigh );
     int time = mainWnd->timeToTicks( duration );
 
-    bool res;
+    bool res = io->setBufferPeriod( time/128 );
+
     res = io->set_one_pulse_raw( dacLow, dacHigh, time );
 }
 

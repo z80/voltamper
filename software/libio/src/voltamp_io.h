@@ -27,7 +27,7 @@ public:
     bool set_meandr_raw( int dacLow1, int dacHigh1, qreal timeMs1, int dacLow2, int dacHigh2, qreal timeMs2 );
     bool set_sweep_raw( int dacLow1, int dacHigh1, int dacLow2, int dacHigh2, qreal timeMs2 );
 
-    bool setBufferPeriod( qreal us );
+    bool setBufferPeriod( quint32 timeTicks );
     bool setBufferSignals( bool eRef = true, bool iAux = true, bool eAux = false );
     bool bufferedData( QVector<quint16> & vals );
 

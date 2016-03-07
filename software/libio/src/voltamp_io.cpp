@@ -483,7 +483,7 @@ bool VoltampIo::firmware_version( QString & stri )
     return true;
 }
 
-bool VoltampIo::setBufferPeriod( qreal us )
+bool VoltampIo::setBufferPeriod( quint32 timeTicks )
 {
     QMutexLocker lock( &pd->mutex );
 
@@ -491,7 +491,8 @@ bool VoltampIo::setBufferPeriod( qreal us )
     b.clear();
     b.reserve( 4 );
 
-    quint32 ticks = pd->msToTicks( (us * 0.001) );
+    //quint32 ticks = pd->msToTicks( (us * 0.001) );
+    quint32 ticks = timeTicks;
 
     quint8 v;
     v = static_cast<quint8>( ticks & 0xFF );
