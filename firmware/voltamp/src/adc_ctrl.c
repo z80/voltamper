@@ -61,6 +61,21 @@ static void enableOsc( void );
 
 uint8_t mode = TDAC;
 
+static void enableOsc( void )
+{
+    chSysLockFromIsr();
+        if ( !oscEnabled )
+        {
+            int sz = chIQGetFullI( &eaux_queue ) +
+                     chIQGetFullI( &eref_queue ) +
+                     chIQGetFullI( &iaux_queue );
+            if ( sz == 0 )
+                oscEnabled = 1;
+        }
+    chSysUnlockFromIsr();
+}
+
+
 static void convAdcReadyCb( ADCDriver * adcp, adcsample_t * buffer, size_t n )
 {
 	(void)adcp;
@@ -484,19 +499,6 @@ static void processOsc( adcsample_t * buffer )
 	}
 }
 
-static void enableOsc( void )
-{
-    chSysLockFromIsr();
-        if ( !oscEnabled )
-        {
-            int sz = chIQGetFullI( &eaux_queue ) +
-                     chIQGetFullI( &eref_queue ) +
-                     chIQGetFullI( &iaux_queue );
-            if ( sz < 0 )
-                oscEnabled = 1;
-        }
-    chSysUnlockFromIsr();
-}
 
 /*
 static void startBufferI( void )

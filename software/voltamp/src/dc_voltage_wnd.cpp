@@ -34,10 +34,14 @@ void DcVoltageWnd::slotApply()
     qreal volt = ui.value->value();
     int dacLow, dacHigh;
     mainWnd->dac( volt, dacLow, dacHigh );
-    bool res = io->set_dac_raw( dacLow, dacHigh );
-
-    QString ss = "background-color: rgb(10, 185, 10);\nborder-color: rgb(10, 185, 10);";
-    ui.value->setStyleSheet( ss );
+    if ( io->isOpen() )
+    {
+        bool res = io->set_dac_raw( dacLow, dacHigh );
+        if ( !res )
+            return;
+        QString ss = "background-color: rgb(10, 185, 10);\nborder-color: rgb(10, 185, 10);";
+        ui.value->setStyleSheet( ss );
+    }
 }
 
 

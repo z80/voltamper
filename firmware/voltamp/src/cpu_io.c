@@ -24,7 +24,7 @@
 static uint8_t buffer[ BUFFER_SZ ];
 static uint8_t args[ ARGS_SZ ];
 
-#define USB_FIFO_SZ   384
+#define USB_FIFO_SZ   96
 
 
 static void process_command( uint8_t * buf, int sz );

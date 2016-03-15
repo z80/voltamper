@@ -33,7 +33,8 @@ void SinglePulseWnd::slotApply()
 
     bool res;
 
-    res = io->set_one_pulse_raw( dacLow, dacHigh, time );
+    if ( io->isOpen() )
+        res = io->set_one_pulse_raw( dacLow, dacHigh, time );
 }
 
 

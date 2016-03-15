@@ -22,6 +22,8 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
 {
     curveType = EREF_T;
     period    = T_10s;
+    lastPeriod = 10.0;
+    lastPtsCnt = PTS_CNT;
 
     lastEaux = 0.0;
     lastEref = 0.0;
@@ -138,20 +140,26 @@ void OscilloscopeWnd::updateHdwOsc( qreal sweepT )
          ( curveType == EAUX_T ) || 
          ( curveType == IAUX_T ) )
     {
-        switch ( period )
+        if ( sweepT > 0.0 )
+            t = sweepT;
+        else
         {
-           case T_1s:
-               t = 1.0;
-               break;
-           case T_10s:
-               t = 10.0;
-               break;
-           case T_1m:
-               t = 60.0;
-               break;
-           default:
-               t = 10.0;
+            switch ( period )
+            {
+               case T_1s:
+                   t = 1.0;
+                   break;
+               case T_10s:
+                   t = 10.0;
+                   break;
+               case T_1m:
+                   t = 60.0;
+                   break;
+               default:
+                   t = 10.0;
+            }
         }
+        lastPtsCnt = 128;
     }
     else
     {
@@ -173,12 +181,27 @@ void OscilloscopeWnd::updateHdwOsc( qreal sweepT )
                default:
                    t = 10.0;
             }
-        }            
+        }
+        lastPtsCnt = 128;         
     }
 
-    bool res;
-    res = io->osc_set_period( t, PTS_CNT );
-    res = io->setAutostartOsc( ( sweepT <= 0.0 ) );
+    qreal scale = static_cast<qreal>( t ) / static_cast<qreal>( lastPtsCnt-1 );
+    timeScale = scale;
+
+
+    if ( io->isOpen() )
+    {
+        bool res;
+        res = io->osc_set_period( t, lastPtsCnt );
+        if ( !res )
+            return;
+        res = io->setAutostartOsc( ( sweepT <= 0.0 ) );
+        if ( !res )
+            return;
+    }
+
+    curveSizeChanged();
+    curvesCntChanged();
 }
 
 void OscilloscopeWnd::slotTimeout()
@@ -217,18 +240,17 @@ void OscilloscopeWnd::slotCurveType()
     for ( QList<QAction *>::iterator i=l.begin(); i!=l.end(); i++ )
     {
         QAction * aa = *i;
-        if ( aa != a )
-            aa->setChecked( false );
+        aa->setChecked( aa == a );
     }
 
-    curveSizeChanged();
-    curvesCntChanged();
+    if ( io->isOpen() )
+        updateHdwOsc();
 }
 
 void OscilloscopeWnd::slotPeriod()
 {
     QAction * a = qobject_cast<QAction *>( this->sender() );
-    qreal t = 1.0;
+    qreal t = lastPeriod;
     if ( a == ui.actionT_1s )
     {
         period = T_1s;
@@ -257,15 +279,12 @@ void OscilloscopeWnd::slotPeriod()
     for ( QList<QAction *>::iterator i=l.begin(); i!=l.end(); i++ )
     {
         QAction * aa = *i;
-        if ( aa != a )
-            aa->setChecked( false );
+        aa->setChecked( aa == a );
 
     }
 
     if ( io->isOpen() )
-        updateHdwOsc();
-    curveSizeChanged();
-    curvesCntChanged();
+        updateHdwOsc( t );
 }
 
 void OscilloscopeWnd::slotReplot()
@@ -273,10 +292,15 @@ void OscilloscopeWnd::slotReplot()
     // Choose what data to paint.
     mutex.lock();
         int sz;
-        if ( ( curveType == I_EAUX ) || ( curveType == I_EREF ) )
+        if ( curveType == I_EAUX )
         {
-            sz = bufferX.size();
-            sz = (sz <= bufferY.size()) ? sz : bufferY.size();
+            sz = eaux.size();
+            sz = (sz <= iaux.size() ) ? sz : iaux.size();
+        }
+        else if ( curveType == I_EREF )
+        {
+            sz = eref.size();
+            sz = (sz <= iaux.size() ) ? sz : iaux.size();
         }
         else
         {
@@ -327,13 +351,13 @@ void OscilloscopeWnd::slotReplot()
             copyData( iaux, paintDataY, sz );
         else if ( curveType == I_EAUX )
         {
-            copyData( bufferY, paintDataY, sz );
-            copyData( bufferX, paintDataX, sz );
+            copyData( iaux, paintDataY, sz );
+            copyData( eaux, paintDataX, sz );
         }
         else if ( curveType == I_EREF )
         {
-            copyData( bufferY, paintDataY, sz );
-            copyData( bufferX, paintDataX, sz );
+            copyData( iaux, paintDataY, sz );
+            copyData( eref, paintDataX, sz );
         }
     mutex.unlock();
 
@@ -380,8 +404,6 @@ void OscilloscopeWnd::slotReplot()
         eaux.clear();
         eref.clear();
         iaux.clear();
-        bufferX.clear();
-        bufferY.clear();
     mutex.unlock();
 }
 
@@ -479,30 +501,7 @@ void OscilloscopeWnd::reopen()
 
 void OscilloscopeWnd::curveSizeChanged()
 {
-    //int curvesCnt = CURVES_CNT;
-    int cnt       = PTS_CNT;
-    qreal seconds;
-    switch ( period )
-    {
-    case T_1s:
-        seconds = 1.0;
-        break;
-    case T_10s:
-        seconds = 10.0;
-        break;
-    case T_1m:
-        seconds = 60.0;
-        break;
-    case T_10m:
-        seconds = 600.0;
-        break;
-    default:
-        seconds = 10.0;
-        break;
-    }
-
-    qreal scale = static_cast<qreal>( seconds ) / static_cast<qreal>( cnt-1 );
-    timeScale = scale;
+    int cnt       = lastPtsCnt;
 
     int curvesCnt = curves.size();
     for ( int i=0; i<curvesCnt; i++ )

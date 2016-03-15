@@ -24,6 +24,8 @@ MainWnd::MainWnd( QWidget * parent )
     osc = new OscilloscopeWnd( this );
     bl->addWidget( osc );
     osc->setIo( io, this );
+    osc->updateHdwOsc();
+
 
     dcWnd = new DcVoltageWnd( 0 );
     dcWnd->setIo( io, this );

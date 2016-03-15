@@ -55,6 +55,7 @@ private:
     Period    period;
     qreal     timeScale;
     qreal     lastPeriod;
+    int       lastPtsCnt;
     QVector<quint16>  data;
     QVector<quint16>  eaux_m, eref_m, iaux_m;
     QQueue<qreal>     eaux,    eref,    iaux;
@@ -63,7 +64,7 @@ private:
 
     // Buffer related stuff.
     QVector<quint16> bufferData;
-    QQueue<qreal>    bufferX, bufferY;
+    //QQueue<qreal>    bufferX, bufferY;
     bool bufferEaux, bufferEref, bufferIaux;
 
     QVector<Curve>   curves;
