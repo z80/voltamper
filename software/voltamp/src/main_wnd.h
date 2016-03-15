@@ -114,6 +114,10 @@ public:
 
     bool luaDoStop();
     void setLuaDoStop( bool stop );
+
+    void updateParametric();
+    bool parametricEAux, parametricERef, parametricIAux;
+    int  parametricPeriod;
 };
 
 #endif

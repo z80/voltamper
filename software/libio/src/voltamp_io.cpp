@@ -532,7 +532,7 @@ bool VoltampIo::setBufferSignals( bool eRef, bool iAux, bool eAux )
     pd->iAux = iAux;
 
     bool res;
-    res = setArgs( reinterpret_cast<quint8 *>( b.data() ), b.size() );
+    res = setArgs( reinterpret_cast<quint8 *>( &v ), 1 );
     if ( !res )
         return false;
 

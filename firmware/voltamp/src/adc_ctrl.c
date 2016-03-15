@@ -8,7 +8,7 @@
 #include "cpu_io.h"
 #include "led_ctrl.h"
 
-#define OSC_QUEUE_SZ 	384
+#define OSC_QUEUE_SZ 	256
 
 #define EAUX_IND 0
 #define EREF_IND 1
