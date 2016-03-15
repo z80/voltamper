@@ -487,7 +487,7 @@ bool VoltampIo::setAutostartOsc( bool en )
 {
     QMutexLocker lock( &pd->mutex );
 
-    quint8 & v = en ? 1 : 0;
+    quint8 v = en ? 1 : 0;
 
     bool res;
     res = setArgs( reinterpret_cast<quint8 *>( &v ), 1 );

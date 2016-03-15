@@ -80,11 +80,6 @@ MainWnd::MainWnd( QWidget * parent )
     // This should be in separate slot in single shot timer.
     //state->lua_do( MainWnd::lua_init );
     QTimer::singleShot( 100, this, SLOT(slotLuaInit()) );
-
-    parametricEAux   = false;
-    parametricERef   = true;
-    parametricIAux   = true;
-    parametricPeriod = 128;
 }
 
 MainWnd::~MainWnd()
@@ -211,6 +206,11 @@ void MainWnd::saveSettings()
 int MainWnd::deviceName() const
 {
     return devName;
+}
+
+OscilloscopeWnd * MainWnd::oscWnd()
+{
+    return osc;
 }
 
 void MainWnd::slotQuit()
@@ -587,12 +587,6 @@ void MainWnd::setLuaDoStop( bool stop )
     m_luaDoStop = stop;
 }
 
-void MainWnd::updateParametric()
-{
-    bool res;
-    res = io->setBufferSignals( parametricERef, parametricIAux, parametricEAux );
-    res = io->setBufferPeriod( parametricPeriod ); 
-}
 
 
 

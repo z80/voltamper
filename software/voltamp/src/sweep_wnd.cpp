@@ -37,6 +37,7 @@ void SweepWnd::slotApply()
     bool res;
 
     res = io->set_sweep_raw( dacLow1, dacHigh1, dacLow2, dacHigh2, time );
+    mainWnd->oscWnd()->updateHdwOsc( duration );
 }
 
 

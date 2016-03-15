@@ -42,6 +42,8 @@ public:
     void saveSettings();
 
     int deviceName() const;
+
+    OscilloscopeWnd * oscWnd();
 public slots:
     void slotQuit();
     void slotReopen();
@@ -114,10 +116,6 @@ public:
 
     bool luaDoStop();
     void setLuaDoStop( bool stop );
-
-    void updateParametric();
-    bool parametricEAux, parametricERef, parametricIAux;
-    int  parametricPeriod;
 };
 
 #endif

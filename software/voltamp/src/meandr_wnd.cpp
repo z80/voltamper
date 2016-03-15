@@ -41,6 +41,7 @@ void MeandrWnd::slotApply()
 
     res = io->set_meandr_raw( dacLow1, dacHigh1, time1,
                               dacLow2, dacHigh2, time2 );
+    mainWnd->oscWnd()->updateHdwOsc( ui.lowTime->value() + ui.highTime->value() );
 }
 
 

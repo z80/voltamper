@@ -23,6 +23,9 @@ public:
     void mostRecentValsRaw( int & eaux, int & eref, int & iaux );
 
     void stop();
+
+    // Update oscilloscope parameters in hardware.
+    void updateHdwOsc( qreal sweepT = -1.0 );
 signals:
     void sigReplot();
 private slots:
@@ -51,6 +54,7 @@ private:
     CurveType curveType;
     Period    period;
     qreal     timeScale;
+    qreal     lastPeriod;
     QVector<quint16>  data;
     QVector<quint16>  eaux_m, eref_m, iaux_m;
     QQueue<qreal>     eaux,    eref,    iaux;

@@ -129,6 +129,58 @@ void OscilloscopeWnd::stop()
     future.waitForFinished();
 }
 
+void OscilloscopeWnd::updateHdwOsc( qreal sweepT )
+{
+    if ( sweepT > 0.0 )
+        lastPeriod = sweepT;
+    qreal t;
+    if ( ( curveType == EREF_T ) || 
+         ( curveType == EAUX_T ) || 
+         ( curveType == IAUX_T ) )
+    {
+        switch ( period )
+        {
+           case T_1s:
+               t = 1.0;
+               break;
+           case T_10s:
+               t = 10.0;
+               break;
+           case T_1m:
+               t = 60.0;
+               break;
+           default:
+               t = 10.0;
+        }
+    }
+    else
+    {
+        if ( lastPeriod > 0.0 )
+            t = lastPeriod;
+        else
+        {
+            switch ( period )
+            {
+               case T_1s:
+                   t = 1.0;
+                   break;
+               case T_10s:
+                   t = 10.0;
+                   break;
+               case T_1m:
+                   t = 60.0;
+                   break;
+               default:
+                   t = 10.0;
+            }
+        }            
+    }
+
+    bool res;
+    res = io->osc_set_period( t, PTS_CNT );
+    res = io->setAutostartOsc( ( sweepT <= 0.0 ) );
+}
+
 void OscilloscopeWnd::slotTimeout()
 {
     if ( future.isRunning() )
@@ -211,41 +263,7 @@ void OscilloscopeWnd::slotPeriod()
     }
 
     if ( io->isOpen() )
-    {
-        bool res;
-        if ( ( curveType == EAUX_T ) ||
-             ( curveType == EREF_T ) ||
-             ( curveType == IAUX_T ) )
-        {
-            res = io->osc_set_period( t, PTS_CNT );
-            mutex.lock();
-                bufferEaux = bufferEref = bufferIaux = false;
-            mutex.unlock();
-        }
-        else if ( ( curveType == I_EAUX ) ||
-                  ( curveType == I_EREF ) )
-        {
-            res = io->setBufferPeriod( 1000000.0 * t / PTS_CNT );
-            if ( curveType == I_EAUX )
-            {
-                mutex.lock();
-                    bufferEaux = true;
-                    bufferEref = false;
-                    bufferIaux = true;
-                mutex.unlock();
-                io->setBufferSignals( false, true, true );
-            }
-            else
-            {
-                mutex.lock();
-                    bufferEaux = false;
-                    bufferEref = true;
-                    bufferIaux = true;
-                mutex.unlock();
-                io->setBufferSignals( true, true, false );
-            }
-        }
-    }
+        updateHdwOsc();
     curveSizeChanged();
     curvesCntChanged();
 }
