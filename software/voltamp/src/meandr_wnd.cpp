@@ -37,7 +37,7 @@ void MeandrWnd::slotApply()
     mainWnd->dac( volt, dacLow2, dacHigh2 );
     time2 = mainWnd->timeToTicks( duration );
 
-    bool res = io->setBufferPeriod( (time1+time2)/128 );
+    bool res;
 
     res = io->set_meandr_raw( dacLow1, dacHigh1, time1,
                               dacLow2, dacHigh2, time2 );

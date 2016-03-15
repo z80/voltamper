@@ -483,29 +483,14 @@ bool VoltampIo::firmware_version( QString & stri )
     return true;
 }
 
-bool VoltampIo::setBufferPeriod( quint32 timeTicks )
+bool VoltampIo::setAutostartOsc( bool en )
 {
     QMutexLocker lock( &pd->mutex );
 
-    QByteArray & b = pd->buffer_raw;
-    b.clear();
-    b.reserve( 4 );
-
-    //quint32 ticks = pd->msToTicks( (us * 0.001) );
-    quint32 ticks = timeTicks;
-
-    quint8 v;
-    v = static_cast<quint8>( ticks & 0xFF );
-    b.append( *reinterpret_cast<char *>(&v) );
-    v = static_cast<quint8>( (ticks >> 8) & 0xFF );
-    b.append( *reinterpret_cast<char *>(&v) );
-    v = static_cast<quint8>( (ticks >> 16) & 0xFF );
-    b.append( *reinterpret_cast<char *>(&v) );
-    v = static_cast<quint8>( (ticks >> 24) & 0xFF );
-    b.append( *reinterpret_cast<char *>(&v) );
+    quint8 & v = en ? 1 : 0;
 
     bool res;
-    res = setArgs( reinterpret_cast<quint8 *>( b.data() ), b.size() );
+    res = setArgs( reinterpret_cast<quint8 *>( &v ), 1 );
     if ( !res )
         return false;
 
@@ -517,54 +502,7 @@ bool VoltampIo::setBufferPeriod( quint32 timeTicks )
     return true;
 }
 
-bool VoltampIo::setBufferSignals( bool eRef, bool iAux, bool eAux )
-{
-    QMutexLocker lock( &pd->mutex );
 
-    QByteArray & b = pd->buffer_raw;
-    b.clear();
-    b.reserve( 4 );
-
-    quint8 v = (eRef ? 2 : 0) + (iAux ? 4 : 0) + (eAux ? 1 : 0);
-    // Remember signals.
-    pd->eAux = eAux;
-    pd->eRef = eRef;
-    pd->iAux = iAux;
-
-    bool res;
-    res = setArgs( reinterpret_cast<quint8 *>( &v ), 1 );
-    if ( !res )
-        return false;
-
-    quint8 funcInd = 14;
-    res = execFunc( funcInd );
-    if ( !res )
-        return false;
-
-    return true;
-}
-
-bool VoltampIo::bufferedData( QVector<quint16> & vals )
-{
-    QMutexLocker lock( &pd->mutex );
-
-    quint8 funcInd = 15;
-    bool res = execFunc( funcInd );
-    if ( !res )
-        return false;
-    bool eom;
-    QByteArray & arr = pd->buffer;
-    arr.resize( PD::IN_BUFFER_SZ );
-    int cnt = read( reinterpret_cast<quint8 *>( arr.data() ), arr.size(), eom );
-    if ( !eom )
-        return false;
-    cnt /= 2;
-    vals.resize( cnt );
-    quint8 * b = reinterpret_cast<quint8 *>( arr.data() );
-    for ( int i=0; i<cnt; i++ )
-        vals[i] = static_cast<quint16>( (b[2*i]) ) + ( static_cast<quint16>( (b[2*i+1]) ) << 8 );
-    return true;
-}
 
 
 

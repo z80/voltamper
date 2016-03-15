@@ -8,7 +8,7 @@
 #include "cpu_io.h"
 #include "led_ctrl.h"
 
-#define OSC_QUEUE_SZ 	256
+#define OSC_QUEUE_SZ 	384
 
 #define EAUX_IND 0
 #define EREF_IND 1
@@ -35,18 +35,8 @@ uint8_t     command_queue_buffer[4];
 
 int oscPeriod = 10000;
 int oscTime   = 0;
-
-
-int     bufferPeriod = 10000;
-int     bufferTime = 0;
-uint8_t bufferMask = 1;
-uint8_t bufferEnabled = 0;
-uint8_t bufferStoreData = 0;
-
-#define BUFFER_SZ  (128*3)
-InputQueue buffer_queue;
-uint8_t    buffer_queue_buffer[BUFFER_SZ];
-
+uint8_t oscEnabled = 0;
+uint8_t oscAutostart = 1;
 
 void modeProcess( int mode );
 void modeInit( int mode );
@@ -67,9 +57,7 @@ static void initFb( void );
 static void processFb( void );
 
 static void processOsc( adcsample_t * buffer );
-
-static void processBufferI( adcsample_t * buffer );
-static void startBufferI( void ); // For usage inside ISR when new sweep or meands is engaged.
+static void enableOsc( void );
 
 uint8_t mode = TDAC;
 
@@ -84,10 +72,17 @@ static void convAdcReadyCb( ADCDriver * adcp, adcsample_t * buffer, size_t n )
 	modeProcess( mode );
 
 	// Process oscilloscope regardless of all other conditions.
-	processOsc( buffer );
-
-	// Process buffer.
-	processBufferI( buffer );
+    chSysLockFromIsr();
+        uint8_t oscEn   = oscEnabled;
+        uint8_t autoOsc = oscAutostart;
+    chSysUnlockFromIsr();
+    if ( oscEn )
+        processOsc( buffer );
+    else
+    {
+        if ( autoOsc )
+            enableOsc();
+    }
 
 	// Query for command.
 	chSysLockFromIsr();
@@ -150,8 +145,6 @@ void initAdc( void )
 	chIQInit( &eaux_queue, eaux_queue_buffer, OSC_QUEUE_SZ, 0 );
 	chIQInit( &eref_queue, eref_queue_buffer, OSC_QUEUE_SZ, 0 );
 	chIQInit( &iaux_queue, iaux_queue_buffer, OSC_QUEUE_SZ, 0 );
-	// Buffer queue init;
-	chIQInit( &buffer_queue, buffer_queue_buffer, BUFFER_SZ, 0 );
     // Init ADC pins.
     palSetGroupMode( PORT_ADC, PAL_PORT_BIT( PIN_EAUX ) |
     	                       PAL_PORT_BIT( PIN_EREF ) |
@@ -166,17 +159,16 @@ void initAdc( void )
 
 void setOscPeriod( uint32_t t )
 {
-	oscPeriod = t;
+    chSysLock();
+	    oscPeriod = t;
+	chSysUnlock();
 }
 
-void setBufferPeriod( uint32_t t )
+void setAutostartOsc( uint8_t en )
 {
-    bufferPeriod = t;
-}
-
-void setBufferSigMask( uint8_t mask )
-{
-    bufferMask = mask;
+    chSysLock();
+        oscAutostart = en;
+    chSysUnlock();
 }
 
 void setFbSetpoint( int sp )
@@ -218,11 +210,6 @@ InputQueue * erefQueue( void )
 InputQueue * iauxQueue( void )
 {
 	return &iaux_queue;
-}
-
-InputQueue * bufferQueue( void )
-{
-	return &buffer_queue;
 }
 
 void modeProcess( int mode )
@@ -306,9 +293,6 @@ static void initOnePulse( void )
 			      ((uint32_t)(args[6]) << 16) +
 			      ((uint32_t)(args[7]) << 24);
 	pulseTime = 0;
-
-	// Try to run buffer.
-	startBufferI();
 }
 
 static void processOnePulse( void )
@@ -321,6 +305,7 @@ static void processOnePulse( void )
 		dacHigh = pulseDacSave.dac2;
 		mode = TDAC;
 	}
+	enableOsc();
 }
 
 uint32_t meanderPeriod1 = 1000;
@@ -350,7 +335,7 @@ static void initMeandr( void )
 	meanderTime = meanderPeriod2;
 
 	// Try to run buffer.
-	startBufferI();
+	enableOsc();
 }
 
 static void processMeandr( void )
@@ -367,7 +352,7 @@ static void processMeandr( void )
 		meanderTime -= meanderPeriod2;
 
 		// Try to run buffer.
-		startBufferI();
+		enableOsc();
 	}
 }
 
@@ -398,7 +383,7 @@ static void initSweep( void )
     sweepSpeed     = 1;
 
 	// Try to run buffer.
-	startBufferI();
+    enableOsc();
 }
 
 static void processSweep( void )
@@ -416,8 +401,7 @@ static void processSweep( void )
         time = 0;
 
     	// Try to run buffer.
-    	startBufferI();
-
+        enableOsc();
     }
     else
         time = sweepTime;
@@ -494,70 +478,27 @@ static void processOsc( adcsample_t * buffer )
                 chIQPutI( &iaux_queue, vLow );
                 chIQPutI( &iaux_queue, vHigh );
 			}
+			else
+			    oscEnabled = 0;
 		chSysUnlockFromIsr();
 	}
 }
 
-static void processBufferI( adcsample_t * buffer )
+static void enableOsc( void )
 {
-    if ( !bufferEnabled )
-        return;
-
     chSysLockFromIsr();
-    	uint8_t mask = bufferMask;
+        if ( !oscEnabled )
+        {
+            int sz = chIQGetFullI( &eaux_queue ) +
+                     chIQGetFullI( &eref_queue ) +
+                     chIQGetFullI( &iaux_queue );
+            if ( sz < 0 )
+                oscEnabled = 1;
+        }
     chSysUnlockFromIsr();
-    // Check if it has enough space.
-    int sz = ( (mask & 1) ? 2 : 0 ) + ( (mask & 2) ? 2 : 0 ) + ( (mask & 4) ? 2 : 0 );
-    chSysLockFromIsr();
-    	int emptySz = chIQGetEmptyI( &eaux_queue );
-    chSysUnlockFromIsr();
-    if ( emptySz < sz )
-    {
-        bufferEnabled = 0;
-        return;
-    }
-
-    // Same as oscilloscope.
-    bufferTime += 1;
-    if ( bufferTime < bufferPeriod )
-        return;
-
-	uint16_t v16;
-	uint8_t vLow, vHigh;
-
-    // Save data to input queue...
-	chSysLockFromIsr();
-		if ( mask & 1 )
-		{
-			v16 = buffer[0];
-			vLow = (uint8_t)(v16 & 0x00FF);
-			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
-			chIQPutI( &eaux_queue, vLow );
-			chIQPutI( &eaux_queue, vHigh );
-		}
-
-		if ( mask & 2 )
-		{
-			v16 = buffer[1];
-			vLow = (uint8_t)(v16 & 0x00FF);
-			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
-			chIQPutI( &eaux_queue, vLow );
-			chIQPutI( &eaux_queue, vHigh );
-
-		}
-
-		if ( mask & 4 )
-		{
-			v16 = buffer[2];
-			vLow = (uint8_t)(v16 & 0x00FF);
-			vHigh = (uint8_t)((v16 >> 8) & 0x00FF);
-			chIQPutI( &eaux_queue, vLow );
-			chIQPutI( &eaux_queue, vHigh );
-
-		}
-	chSysUnlockFromIsr();
 }
 
+/*
 static void startBufferI( void )
 {
     bufferEnabled = ( chIQGetFullI( &buffer_queue ) == 0 ) ? 1 : 0;
@@ -565,6 +506,7 @@ static void startBufferI( void )
         // Reset time.
         bufferTime = 0;
 }
+*/
 
 
 

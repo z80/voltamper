@@ -34,7 +34,7 @@ void SweepWnd::slotApply()
     qreal duration = ui.period->value();
     int time = mainWnd->timeToTicks( duration );
 
-    bool res = io->setBufferPeriod( (time+time)/128 );
+    bool res;
 
     res = io->set_sweep_raw( dacLow1, dacHigh1, dacLow2, dacHigh2, time );
 }

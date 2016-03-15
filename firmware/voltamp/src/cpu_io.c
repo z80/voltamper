@@ -126,9 +126,7 @@ static void set_meandr( uint8_t * args );
 static void set_sweep( uint8_t * args );
 static void hardware_version( uint8_t * args );
 static void firmware_version( uint8_t * args );
-static void buffer_set_period( uint8_t * args );
-static void buffer_set_signals( uint8_t * args );
-static void buffer_data( uint8_t * args );
+static void set_autostart_osc( uint8_t * args );
 
 static TFunc funcs[] =
 {
@@ -145,9 +143,7 @@ static TFunc funcs[] =
 	set_sweep,
 	hardware_version,
 	firmware_version,
-	buffer_set_period,
-	buffer_set_signals,
-	buffer_data
+	set_autostart_osc
 };
 
 static void exec_func( void )
@@ -277,30 +273,12 @@ static void firmware_version( uint8_t * args )
 	writeEom();
 }
 
-static void buffer_set_period( uint8_t * args )
-{
-    (void)args;
-    uint32_t period;
-    period = (uint32_t)args[0] +
-             (((uint32_t)args[1]) << 8) +
-             (((uint32_t)args[2]) << 16) +
-             (((uint32_t)args[3]) << 24);
-    setBufferPeriod( period );
-}
-
-static void buffer_set_signals( uint8_t * args )
+static void set_autostart_osc( uint8_t * args )
 {
 	(void)args;
-	uint8_t mask = args[0];
-	setBufferSigMask( mask );
+	setAutostartOsc( args[0] );
 }
 
-static void buffer_data( uint8_t * args )
-{
-	(void)args;
-	InputQueue * q = bufferQueue();
-	writeOscQueue( q );
-}
 
 
 

@@ -33,7 +33,6 @@ private slots:
 private:
 
     void measure();
-    void measureBuffer();
     void reopen();
     void curveSizeChanged();
     void curvesCntChanged();
