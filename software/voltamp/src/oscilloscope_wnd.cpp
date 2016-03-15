@@ -69,7 +69,7 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     pal.setBrush( QPalette::Window, QBrush( gr ) );
     ui.plot->canvas()->setPalette( pal );
 
-    connect( this,  SIGNAL(sigReplot()), this, SLOT(slotReplot()) );
+    connect( this,  SIGNAL(sigReplot()), this, SLOT(slotReplot()), Qt::QueuedConnection );
     terminate = false;
     this->io = 0;
     future = QtConcurrent::run( boost::bind( &OscilloscopeWnd::measure, this ) );
@@ -159,7 +159,7 @@ void OscilloscopeWnd::updateHdwOsc( qreal sweepT )
                    t = 10.0;
             }
         }
-        lastPtsCnt = 128;
+        lastPtsCnt = 256;
     }
     else
     {
@@ -182,7 +182,7 @@ void OscilloscopeWnd::updateHdwOsc( qreal sweepT )
                    t = 10.0;
             }
         }
-        lastPtsCnt = 128;         
+        lastPtsCnt = 256;         
     }
 
     qreal scale = static_cast<qreal>( t ) / static_cast<qreal>( lastPtsCnt-1 );
@@ -372,7 +372,7 @@ void OscilloscopeWnd::slotReplot()
         else
             c.x[c.cnt] = paintDataX.dequeue();
         c.cnt++;
-        if ( c.cnt >= PTS_CNT )
+        if ( c.cnt >= lastPtsCnt )
         {
             for ( int j=(curves.size()-1); j>0; j-- )
                 curves[j] = curves[j-1];
@@ -399,6 +399,7 @@ void OscilloscopeWnd::slotReplot()
         mainWnd->lua_invokeCallback( leref, liaux, leaux );
         mainWnd->lua_invokeCallbackFull( luaEref, luaIaux, luaEaux );
     mainWnd->lua_setHook( true );
+
 
     mutex.lock();
         eaux.clear();
