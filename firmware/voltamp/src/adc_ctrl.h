@@ -15,6 +15,8 @@ void initAdc( void );
 
 void setOscPeriod( uint32_t t );
 void setAutostartOsc( uint8_t en );
+void startOsc( void );
+uint8_t oscStopped( void );
 
 void setFbSetpoint( int sp );
 void setFbInput( int ind );

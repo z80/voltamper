@@ -28,6 +28,8 @@ public:
     bool set_sweep_raw( int dacLow1, int dacHigh1, int dacLow2, int dacHigh2, qreal timeMs2 );
 
     bool setAutostartOsc( bool en );
+    bool startOsc();
+    bool oscStopped( bool & stopped );
 
     bool hardware_version( QString & stri );
     bool firmware_version( QString & stri );

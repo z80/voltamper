@@ -37,6 +37,7 @@ int oscPeriod = 10000;
 int oscTime   = 0;
 uint8_t oscEnabled = 0;
 uint8_t oscAutostart = 1;
+uint8_t oscStart = 0;
 
 void modeProcess( int mode );
 void modeInit( int mode );
@@ -69,8 +70,11 @@ static void enableOsc( void )
             int sz = chIQGetFullI( &eaux_queue ) +
                      chIQGetFullI( &eref_queue ) +
                      chIQGetFullI( &iaux_queue );
-            if ( sz == 0 )
+            if ( ( sz == 0 ) && ( oscStart ) )
+            {
                 oscEnabled = 1;
+                oscStart   = 0;
+            }
         }
     chSysUnlockFromIsr();
 }
@@ -184,6 +188,21 @@ void setAutostartOsc( uint8_t en )
     chSysLock();
         oscAutostart = en;
     chSysUnlock();
+}
+
+void startOsc( void )
+{
+    chSysLock();
+        oscStart = 1;
+    chSysUnlock();
+}
+
+uint8_t oscStopped( void )
+{
+    chSysLock();
+        uint8_t stopped = (oscEnabled > 0) ? 0 : 1;
+    chSysUnlock();
+    return stopped;
 }
 
 void setFbSetpoint( int sp )

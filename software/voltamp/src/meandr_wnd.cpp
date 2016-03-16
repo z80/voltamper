@@ -45,7 +45,7 @@ void MeandrWnd::slotApply()
                                   dacLow2, dacHigh2, time2 );
         if ( !res )
             return;
-        mainWnd->oscWnd()->updateHdwOsc( (ui.lowTime->value() + ui.highTime->value())/1000.0 );
+        mainWnd->oscWnd()->updateHdwOsc( true, (ui.lowTime->value() + ui.highTime->value())/1000.0 );
     }
 }
 

@@ -502,6 +502,43 @@ bool VoltampIo::setAutostartOsc( bool en )
     return true;
 }
 
+bool VoltampIo::startOsc()
+{
+    QMutexLocker lock( &pd->mutex );
+
+    bool res;
+
+    quint8 funcInd = 14;
+    res = execFunc( funcInd );
+    if ( !res )
+        return false;
+
+    return true;
+}
+
+bool VoltampIo::oscStopped( bool & stopped )
+{
+    QMutexLocker lock( &pd->mutex );
+
+    bool res;
+
+    quint8 funcInd = 15;
+    res = execFunc( funcInd );
+    if ( !res )
+        return false;
+
+    QByteArray & arr = pd->buffer;
+    arr.resize( PD::IN_BUFFER_SZ );
+    bool eom;
+    int cnt = read( reinterpret_cast<quint8 *>( arr.data() ), arr.size(), eom );
+    if ( ( !eom ) || ( cnt < 1 ) )
+        return false;
+    
+    stopped = ( arr.at(0) > 0 );
+
+    return true;
+}
+
 
 
 

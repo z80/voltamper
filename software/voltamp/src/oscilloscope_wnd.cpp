@@ -24,6 +24,7 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     period    = T_10s;
     lastPeriod = 10.0;
     lastPtsCnt = PTS_CNT;
+    startNewCurve = false;
 
     lastEaux = 0.0;
     lastEref = 0.0;
@@ -131,8 +132,10 @@ void OscilloscopeWnd::stop()
     future.waitForFinished();
 }
 
-void OscilloscopeWnd::updateHdwOsc( qreal sweepT )
+void OscilloscopeWnd::updateHdwOsc( bool stoppable, qreal sweepT )
 {
+    stoppableOsc = stoppable;
+
     if ( sweepT > 0.0 )
         lastPeriod = sweepT;
     qreal t;
@@ -244,7 +247,12 @@ void OscilloscopeWnd::slotCurveType()
     }
 
     if ( io->isOpen() )
-        updateHdwOsc();
+    {
+        mutex.lock();
+            bool stoppable = stoppableOsc;
+        mutex.unlock();
+        updateHdwOsc( stoppable );
+    }
 }
 
 void OscilloscopeWnd::slotPeriod()
@@ -284,7 +292,7 @@ void OscilloscopeWnd::slotPeriod()
     }
 
     if ( io->isOpen() )
-        updateHdwOsc( t );
+        updateHdwOsc( false, t );
 }
 
 void OscilloscopeWnd::slotReplot()
@@ -359,6 +367,8 @@ void OscilloscopeWnd::slotReplot()
             copyData( iaux, paintDataY, sz );
             copyData( eref, paintDataX, sz );
         }
+
+        bool doStartNewCurve = startNewCurve;
     mutex.unlock();
 
 
@@ -372,12 +382,19 @@ void OscilloscopeWnd::slotReplot()
         else
             c.x[c.cnt] = paintDataX.dequeue();
         c.cnt++;
-        if ( c.cnt >= lastPtsCnt )
+        if ( ( c.cnt >= lastPtsCnt ) || ( doStartNewCurve ) )
         {
             for ( int j=(curves.size()-1); j>0; j-- )
                 curves[j] = curves[j-1];
 
             c.cnt = 0;
+
+            if ( doStartNewCurve )
+            {
+                // Cancel new curve.
+                QMutexLocker lock( &mutex );
+                    startNewCurve = false;
+            }
         }
     }
 
@@ -424,6 +441,7 @@ void OscilloscopeWnd::measure()
         VoltampIo * io;
         mutex.lock();
             io = this->io;
+            bool isStoppableOsc = stoppableOsc;
         mutex.unlock();
         if ( io )
         {
@@ -485,6 +503,20 @@ void OscilloscopeWnd::measure()
             int sleepSz = szEaux + szEref + szIaux;
             if ( sleepSz < 30 )
                 Msleep::msleep( 10 );
+
+            // Detecting curve end.
+
+            if ( isStoppableOsc )
+            {
+                bool stopped;
+                res = io->oscStopped( stopped );
+                if ( res )
+                {
+                    QMutexLocker lock( &mutex );
+                        startNewCurve = stopped;
+                }
+            }
+
         }
         else
             Msleep::msleep( 100 );
