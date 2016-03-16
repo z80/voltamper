@@ -35,7 +35,7 @@ uint8_t     command_queue_buffer[4];
 
 int oscPeriod = 10000;
 int oscTime   = 0;
-uint8_t oscEnabled = 0;
+uint8_t oscEnabled = 1;
 uint8_t oscContinuous = 1;
 uint8_t oscStart = 0;
 

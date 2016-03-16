@@ -11,7 +11,7 @@ Program Header:
     LOAD off    0x00010800 vaddr 0x20000800 paddr 0x08003c00 align 2**15
          filesz 0x00000034 memsz 0x00000034 flags rw-
     LOAD off    0x00010838 vaddr 0x20000838 paddr 0x08003c34 align 2**15
-         filesz 0x00000000 memsz 0x00001624 flags rw-
+         filesz 0x00000000 memsz 0x00001620 flags rw-
     LOAD off    0x00018000 vaddr 0x20000000 paddr 0x20000000 align 2**15
          filesz 0x00000000 memsz 0x00000800 flags rw-
 private flags = 5000002: [Version5 EABI] [has entry point]
@@ -28,7 +28,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   4 .data         00000034  20000800  08003c00  00010800  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  5 .bss          00001624  20000838  08003c34  00010838  2**3
+  5 .bss          00001620  20000838  08003c34  00010838  2**3
                   ALLOC
   6 .debug_abbrev 00006e39  00000000  00000000  00010834  2**0
                   CONTENTS, READONLY, DEBUGGING
@@ -254,7 +254,7 @@ SYMBOL TABLE:
 080005b0 g     F .text	0000004c __fixsfsi
 08000df0 g     F .text	0000004c chSchGoSleepS
 20000e00 g     O .bss	00000058 I2CD1
-20001e5c g       *ABS*	00000000 __heap_base__
+20001e58 g       *ABS*	00000000 __heap_base__
 08003c00 g       *ABS*	00000000 _etext
 08000f90 g     F .text	00000094 chThdCreateI
 080009d0 g     F .text	0000002c dbg_check_enable
@@ -288,7 +288,7 @@ SYMBOL TABLE:
 08000a30 g     F .text	00000034 dbg_check_unlock
 080006f0  w    F .text	00000002 Vector40
 20001c88 g     O .bss	00000004 meanderTime
-20001ad0 g     O .bss	00000001 oscEnabled
+2000081c g     O .data	00000001 oscEnabled
 20001c8c g     O .bss	00000020 iaux_queue
 08000620 g     F .text	000000c8 ResetHandler
 080014d0 g     F .text	00000090 chIQReadTimeout
@@ -299,10 +299,10 @@ SYMBOL TABLE:
 08001da0 g     F .text	000000b6 hal_lld_init
 080010d0 g     F .text	00000050 chThdExitS
 08001840 g     F .text	0000002c adcStartConversion
-20001e38 g     O .bss	00000001 oscStart
-20001ae4 g     O .bss	00000004 pulseDac
+20001ae0 g     O .bss	00000001 oscStart
+20001c84 g     O .bss	00000004 pulseDac
 08001750 g     F .text	00000008 adcInit
-20001ae0 g     O .bss	00000004 dDacf2
+20001adc g     O .bss	00000004 dDacf2
 20000824 g     O .data	00000004 meanderPeriod2
 20000944 g     O .bss	00000408 dbg_trace_buffer
 080020d0 g     F .text	00000060 adc_lld_start
@@ -310,7 +310,7 @@ SYMBOL TABLE:
 080006f0  w    F .text	00000002 PendSVVector
 08000c80 g     F .text	00000068 chVTSetI
 080006f0  w    F .text	00000002 Vector64
-20001e5c g       .bss	00000000 _bss_end
+20001e58 g       .bss	00000000 _bss_end
 080000f8 g     F .text	00000164 __aeabi_fsub
 20000d50 g     O .bss	00000004 dbg_panic_msg
 08000610  w    F .text	00000002 _default_exit
@@ -354,7 +354,7 @@ SYMBOL TABLE:
 08003520 g     F .text	0000002a initRelay
 08002350 g     F .text	0000016c VectorC0
 08000820 g     F .text	00000010 _port_switch
-2000081c g     O .data	00000001 oscContinuous
+2000081d g     O .data	00000001 oscContinuous
 00002000 g       *ABS*	00000000 __ram_size__
 080005b0 g     F .text	0000004c __aeabi_f2iz
 08000720 g     F .text	00000012 SVCallVector
@@ -408,7 +408,7 @@ SYMBOL TABLE:
 20000400 g       .stacks	00000000 __process_stack_base__
 08002130 g     F .text	00000076 adc_lld_start_conversion
 080000f0 g     F .text	0000016c __aeabi_frsub
-20001ad4 g     O .bss	00000004 pulseTime
+20001ad0 g     O .bss	00000004 pulseTime
 08001b30 g     F .text	00000034 Vector70
 08002e80 g     F .text	000000a4 initAdc
 08002690 g     F .text	0000001c VectorD4
@@ -417,7 +417,7 @@ SYMBOL TABLE:
 08002920 g     F .text	0000003e dacInit
 08001880 g     F .text	00000016 i2cObjectInit
 08000310 g     F .text	00000168 __aeabi_fmul
-20001c68 g     O .bss	00000020 eref_queue
+20001c64 g     O .bss	00000020 eref_queue
 20000880 g     O .bss	000000c0 _idle_thread_wa
 08001560 g     F .text	00000018 chOQInit
 08001470 g     F .text	00000060 chIQGetTimeout
@@ -430,13 +430,13 @@ SYMBOL TABLE:
 080006f0  w    F .text	00000002 Vector68
 08001290 g     F .text	00000088 chMtxUnlock
 08000bd0 g     F .text	00000014 _trace_init
-20001ae8 g     O .bss	00000180 iaux_queue_buffer
+20001ae4 g     O .bss	00000180 iaux_queue_buffer
 20000400 g       .stacks	00000000 __main_stack_end__
 08001bb0 g     F .text	00000034 Vector78
 20001e34 g     O .bss	00000004 oscTime
 20002000 g       *ABS*	00000000 __ram_end__
 20000834 g       .data	00000000 _edata
-20001e5c g       *ABS*	00000000 _end
+20001e58 g       *ABS*	00000000 _end
 08000cf0 g     F .text	00000048 chVTResetI
 080006f0 g     F .text	00000002 _unhandled_exception
 08001960 g     F .text	0000004e sdObjectInit
@@ -445,14 +445,14 @@ SYMBOL TABLE:
 0800025c g     F .text	00000024 __floatunsisf
 20001940 g     O .bss	00000180 eaux_queue_buffer
 20000830 g     O .data	00000004 sweepPeriod
-20001adc g     O .bss	00000004 meanderDac2
+20001ad8 g     O .bss	00000004 meanderDac2
 08000bf0 g     F .text	00000044 dbg_trace
 080000ec g       startup	00000000 __init_array_start
 20001910 g     O .bss	00000004 sweepTime
 08003030 g     F .text	0000000a erefQueue
-20001ad8 g     O .bss	00000004 meanderDac1
+20001ad4 g     O .bss	00000004 meanderDac1
 20000e58 g     O .bss	00000454 SD1
-20001e3c g     O .bss	00000020 command_queue
+20001e38 g     O .bss	00000020 command_queue
 08000f40 g     F .text	0000004c _thread_init
 080006f0  w    F .text	00000002 Vector50
 08002f30 g     F .text	00000024 setOscPeriod

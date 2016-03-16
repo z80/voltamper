@@ -25,6 +25,8 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     lastPeriod = 10.0;
     lastPtsCnt = PTS_CNT;
     startNewCurve = false;
+    continuousOsc = true;
+    startOscilloscope = false;
 
     lastEaux = 0.0;
     lastEref = 0.0;
@@ -70,7 +72,8 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     pal.setBrush( QPalette::Window, QBrush( gr ) );
     ui.plot->canvas()->setPalette( pal );
 
-    connect( this,  SIGNAL(sigReplot()), this, SLOT(slotReplot()), Qt::QueuedConnection );
+    connect( this, SIGNAL(sigReplot()),        this, SLOT(slotReplot()),        Qt::QueuedConnection );
+    connect( this, SIGNAL(sigStartNewCurve()), this, SLOT(slotStartNewCurve()), Qt::QueuedConnection );
     terminate = false;
     this->io = 0;
     future = QtConcurrent::run( boost::bind( &OscilloscopeWnd::measure, this ) );
@@ -132,9 +135,9 @@ void OscilloscopeWnd::stop()
     future.waitForFinished();
 }
 
-void OscilloscopeWnd::updateHdwOsc( bool stoppable, qreal sweepT )
+void OscilloscopeWnd::updateHdwOsc( bool continuous, qreal sweepT )
 {
-    stoppableOsc = stoppable;
+    continuousOsc = continuous;
 
     if ( sweepT > 0.0 )
         lastPeriod = sweepT;
@@ -198,9 +201,11 @@ void OscilloscopeWnd::updateHdwOsc( bool stoppable, qreal sweepT )
         res = io->osc_set_period( t, lastPtsCnt );
         if ( !res )
             return;
-        res = io->setAutostartOsc( ( sweepT <= 0.0 ) );
+        res = io->setContinuousOsc( ( sweepT <= 0.0 ) );
         if ( !res )
             return;
+        // Start osc just in case if it was stopped.
+        res = io->startOsc();
     }
 
     curveSizeChanged();
@@ -249,9 +254,9 @@ void OscilloscopeWnd::slotCurveType()
     if ( io->isOpen() )
     {
         mutex.lock();
-            bool stoppable = stoppableOsc;
+            bool continuous = continuousOsc;
         mutex.unlock();
-        updateHdwOsc( stoppable );
+        updateHdwOsc( continuous );
     }
 }
 
@@ -292,7 +297,7 @@ void OscilloscopeWnd::slotPeriod()
     }
 
     if ( io->isOpen() )
-        updateHdwOsc( false, t );
+        updateHdwOsc( true, t );
 }
 
 void OscilloscopeWnd::slotReplot()
@@ -367,8 +372,6 @@ void OscilloscopeWnd::slotReplot()
             copyData( iaux, paintDataY, sz );
             copyData( eref, paintDataX, sz );
         }
-
-        bool doStartNewCurve = startNewCurve;
     mutex.unlock();
 
 
@@ -382,19 +385,12 @@ void OscilloscopeWnd::slotReplot()
         else
             c.x[c.cnt] = paintDataX.dequeue();
         c.cnt++;
-        if ( ( c.cnt >= lastPtsCnt ) || ( doStartNewCurve ) )
+        if ( ( c.cnt >= lastPtsCnt ) || ( startNewCurve ) )
         {
             for ( int j=(curves.size()-1); j>0; j-- )
                 curves[j] = curves[j-1];
 
             c.cnt = 0;
-
-            if ( doStartNewCurve )
-            {
-                // Cancel new curve.
-                QMutexLocker lock( &mutex );
-                    startNewCurve = false;
-            }
         }
     }
 
@@ -422,7 +418,19 @@ void OscilloscopeWnd::slotReplot()
         eaux.clear();
         eref.clear();
         iaux.clear();
+        if ( startNewCurve )
+        {
+            // Cancel new curve.
+            startNewCurve = false;
+            if ( !continuousOsc )
+                startOscilloscope = true;
+        }
     mutex.unlock();
+}
+
+void OscilloscopeWnd::slotStartNewCurve()
+{
+    startNewCurve = true;
 }
 
 class Msleep: public QThread
@@ -441,7 +449,7 @@ void OscilloscopeWnd::measure()
         VoltampIo * io;
         mutex.lock();
             io = this->io;
-            bool isStoppableOsc = stoppableOsc;
+            bool isContinuousOsc = continuousOsc;
         mutex.unlock();
         if ( io )
         {
@@ -506,17 +514,24 @@ void OscilloscopeWnd::measure()
 
             // Detecting curve end.
 
-            if ( isStoppableOsc )
+            if ( !isContinuousOsc )
             {
                 bool stopped;
                 res = io->oscStopped( stopped );
                 if ( res )
-                {
+                    emit sigStartNewCurve();
+
+                bool doStartOsc;
+                do {
                     QMutexLocker lock( &mutex );
-                        startNewCurve = stopped;
+                        doStartOsc = startOscilloscope;
+                        startOscilloscope = false;
+                } while ( false );
+                if ( doStartOsc )
+                {
+                    res = io->startOsc();
                 }
             }
-
         }
         else
             Msleep::msleep( 100 );
@@ -534,7 +549,7 @@ void OscilloscopeWnd::reopen()
 
 void OscilloscopeWnd::curveSizeChanged()
 {
-    int cnt       = lastPtsCnt;
+    int cnt = lastPtsCnt;
 
     int curvesCnt = curves.size();
     for ( int i=0; i<curvesCnt; i++ )
@@ -586,7 +601,7 @@ void OscilloscopeWnd::curvesCntChanged()
         }
         else
         {
-            pen.setWidth( 1 );
+            pen.setWidth( 3 );
             pen.setStyle( Qt::DotLine );
             curves[i].curve->setZ( 90.0 );
         }

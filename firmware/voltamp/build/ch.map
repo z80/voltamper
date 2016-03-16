@@ -905,7 +905,6 @@ Discarded input sections
  .text.setFbGain
                 0x00000000       0x10 build/obj/adc_ctrl.o
  .text.setFbEn  0x00000000       0x10 build/obj/adc_ctrl.o
- .bss.fbEn      0x00000000        0x4 build/obj/adc_ctrl.o
  .data.fbInIndex
                 0x00000000        0x4 build/obj/adc_ctrl.o
  .bss.fbEnPrev  0x00000000        0x4 build/obj/adc_ctrl.o
@@ -913,6 +912,7 @@ Discarded input sections
                 0x00000000        0x4 build/obj/adc_ctrl.o
  .data.fbGainNum
                 0x00000000        0x4 build/obj/adc_ctrl.o
+ .bss.fbEn      0x00000000        0x4 build/obj/adc_ctrl.o
  .data.fbSetpoint
                 0x00000000        0x4 build/obj/adc_ctrl.o
  .text          0x00000000        0x0 build/obj/relay_ctrl.o
@@ -1684,10 +1684,13 @@ destructors     0x080000ec        0x0
                 0x2000080c        0xc build/obj/adc_ctrl.o
  .data.dacHigh  0x20000818        0x4 build/obj/adc_ctrl.o
                 0x20000818                dacHigh
- .data.oscContinuous
+ .data.oscEnabled
                 0x2000081c        0x1 build/obj/adc_ctrl.o
-                0x2000081c                oscContinuous
- *fill*         0x2000081d        0x3 00
+                0x2000081c                oscEnabled
+ .data.oscContinuous
+                0x2000081d        0x1 build/obj/adc_ctrl.o
+                0x2000081d                oscContinuous
+ *fill*         0x2000081e        0x2 00
  .data.meanderPeriod1
                 0x20000820        0x4 build/obj/adc_ctrl.o
                 0x20000820                meanderPeriod1
@@ -1708,7 +1711,7 @@ destructors     0x080000ec        0x0
                 0x20000834                . = ALIGN (0x4)
                 0x20000834                PROVIDE (_edata, .)
 
-.bss            0x20000838     0x1624 load address 0x08003c34
+.bss            0x20000838     0x1620 load address 0x08003c34
                 0x20000838                . = ALIGN (0x4)
                 0x20000838                PROVIDE (_bss_start, .)
  *(.bss)
@@ -1784,29 +1787,28 @@ destructors     0x080000ec        0x0
  *fill*         0x20001ac1        0x3 00
  .bss.adcSamples
                 0x20001ac4        0xc build/obj/adc_ctrl.o
- .bss.oscEnabled
-                0x20001ad0        0x1 build/obj/adc_ctrl.o
-                0x20001ad0                oscEnabled
- *fill*         0x20001ad1        0x3 00
  .bss.pulseTime
-                0x20001ad4        0x4 build/obj/adc_ctrl.o
-                0x20001ad4                pulseTime
+                0x20001ad0        0x4 build/obj/adc_ctrl.o
+                0x20001ad0                pulseTime
  .bss.meanderDac1
-                0x20001ad8        0x4 build/obj/adc_ctrl.o
-                0x20001ad8                meanderDac1
+                0x20001ad4        0x4 build/obj/adc_ctrl.o
+                0x20001ad4                meanderDac1
  .bss.meanderDac2
-                0x20001adc        0x4 build/obj/adc_ctrl.o
-                0x20001adc                meanderDac2
- .bss.dDacf2    0x20001ae0        0x4 build/obj/adc_ctrl.o
-                0x20001ae0                dDacf2
- .bss.pulseDac  0x20001ae4        0x4 build/obj/adc_ctrl.o
-                0x20001ae4                pulseDac
+                0x20001ad8        0x4 build/obj/adc_ctrl.o
+                0x20001ad8                meanderDac2
+ .bss.dDacf2    0x20001adc        0x4 build/obj/adc_ctrl.o
+                0x20001adc                dDacf2
+ .bss.oscStart  0x20001ae0        0x1 build/obj/adc_ctrl.o
+                0x20001ae0                oscStart
+ *fill*         0x20001ae1        0x3 00
  .bss.iaux_queue_buffer
-                0x20001ae8      0x180 build/obj/adc_ctrl.o
-                0x20001ae8                iaux_queue_buffer
+                0x20001ae4      0x180 build/obj/adc_ctrl.o
+                0x20001ae4                iaux_queue_buffer
  .bss.eref_queue
-                0x20001c68       0x20 build/obj/adc_ctrl.o
-                0x20001c68                eref_queue
+                0x20001c64       0x20 build/obj/adc_ctrl.o
+                0x20001c64                eref_queue
+ .bss.pulseDac  0x20001c84        0x4 build/obj/adc_ctrl.o
+                0x20001c84                pulseDac
  .bss.meanderTime
                 0x20001c88        0x4 build/obj/adc_ctrl.o
                 0x20001c88                meanderTime
@@ -1824,19 +1826,16 @@ destructors     0x080000ec        0x0
                 0x20001cb4                eref_queue_buffer
  .bss.oscTime   0x20001e34        0x4 build/obj/adc_ctrl.o
                 0x20001e34                oscTime
- .bss.oscStart  0x20001e38        0x1 build/obj/adc_ctrl.o
-                0x20001e38                oscStart
- *fill*         0x20001e39        0x3 00
  .bss.command_queue
-                0x20001e3c       0x20 build/obj/adc_ctrl.o
-                0x20001e3c                command_queue
-                0x20001e5c                . = ALIGN (0x4)
+                0x20001e38       0x20 build/obj/adc_ctrl.o
+                0x20001e38                command_queue
+                0x20001e58                . = ALIGN (0x4)
  *(COMMON)
-                0x20001e5c                . = ALIGN (0x4)
-                0x20001e5c                PROVIDE (_bss_end, .)
-                0x20001e5c                PROVIDE (end, .)
-                0x20001e5c                _end = .
-                0x20001e5c                __heap_base__ = _end
+                0x20001e58                . = ALIGN (0x4)
+                0x20001e58                PROVIDE (_bss_end, .)
+                0x20001e58                PROVIDE (end, .)
+                0x20001e58                _end = .
+                0x20001e58                __heap_base__ = _end
                 0x20002000                __heap_end__ = __ram_end__
 OUTPUT(build/ch.elf elf32-littlearm)
 

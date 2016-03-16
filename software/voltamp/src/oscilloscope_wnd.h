@@ -25,14 +25,16 @@ public:
     void stop();
 
     // Update oscilloscope parameters in hardware.
-    void updateHdwOsc( bool stoppable = false, qreal sweepT = -1.0 );
+    void updateHdwOsc( bool continuous = true, qreal sweepT = -1.0 );
 signals:
     void sigReplot();
+    void sigStartNewCurve();
 private slots:
     void slotTimeout();
     void slotCurveType();
     void slotPeriod();
     void slotReplot();
+    void slotStartNewCurve();
 private:
 
     void measure();
@@ -56,7 +58,7 @@ private:
     qreal     timeScale;
     qreal     lastPeriod;
     int       lastPtsCnt;
-    bool      stoppableOsc, startNewCurve;
+    bool      continuousOsc, startNewCurve, startOscilloscope;
     QVector<quint16>  data;
     QVector<quint16>  eaux_m, eref_m, iaux_m;
     QQueue<qreal>     eaux,    eref,    iaux;

@@ -27,7 +27,7 @@ public:
     bool set_meandr_raw( int dacLow1, int dacHigh1, qreal timeMs1, int dacLow2, int dacHigh2, qreal timeMs2 );
     bool set_sweep_raw( int dacLow1, int dacHigh1, int dacLow2, int dacHigh2, qreal timeMs2 );
 
-    bool setAutostartOsc( bool en );
+    bool setContinuousOsc( bool en );
     bool startOsc();
     bool oscStopped( bool & stopped );
 
