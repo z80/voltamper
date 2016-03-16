@@ -58,7 +58,7 @@ private:
     qreal     timeScale;
     qreal     lastPeriod;
     int       lastPtsCnt;
-    bool      continuousOsc, startNewCurve, startOscilloscope;
+    bool      continuousOsc, startNewCurve, startOscilloscope, newCurveStarted;
     QVector<quint16>  data;
     QVector<quint16>  eaux_m, eref_m, iaux_m;
     QQueue<qreal>     eaux,    eref,    iaux;

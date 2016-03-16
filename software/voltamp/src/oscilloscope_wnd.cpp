@@ -27,6 +27,7 @@ OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     startNewCurve = false;
     continuousOsc = true;
     startOscilloscope = false;
+    newCurveStarted = false;
 
     lastEaux = 0.0;
     lastEref = 0.0;
@@ -201,7 +202,7 @@ void OscilloscopeWnd::updateHdwOsc( bool continuous, qreal sweepT )
         res = io->osc_set_period( t, lastPtsCnt );
         if ( !res )
             return;
-        res = io->setContinuousOsc( ( sweepT <= 0.0 ) );
+        res = io->setContinuousOsc( continuousOsc );
         if ( !res )
             return;
         // Start osc just in case if it was stopped.
@@ -337,7 +338,7 @@ void OscilloscopeWnd::slotReplot()
             luaEaux.append( *ci );
             ind++;
             if ( ind >= sz )
-            break;
+                break;
         }
         ind = 0;
         for ( ci=eref.begin(); ci!=eref.end(); ci++ )
@@ -345,7 +346,7 @@ void OscilloscopeWnd::slotReplot()
             luaEref.append( *ci );
             ind++;
             if ( ind >= sz )
-            break;
+                break;
         }
         ind = 0;
         for ( ci=iaux.begin(); ci!=iaux.end(); ci++ )
@@ -353,7 +354,7 @@ void OscilloscopeWnd::slotReplot()
             luaIaux.append( *ci );
             ind++;
             if ( ind >= sz )
-            break;
+                break;
         }
 
         if ( curveType == EAUX_T )
@@ -377,6 +378,14 @@ void OscilloscopeWnd::slotReplot()
 
     Curve & c = curves[0];
 
+    if ( startNewCurve )
+    {
+        for ( int j=(curves.size()-1); j>0; j-- )
+            curves[j] = curves[j-1];
+
+        c.cnt = 0;
+    }
+
     for ( int i=0; i<sz; i++ )
     {
         c.y[c.cnt] = paintDataY.dequeue();
@@ -385,7 +394,7 @@ void OscilloscopeWnd::slotReplot()
         else
             c.x[c.cnt] = paintDataX.dequeue();
         c.cnt++;
-        if ( ( c.cnt >= lastPtsCnt ) || ( startNewCurve ) )
+        if ( c.cnt >= lastPtsCnt )
         {
             for ( int j=(curves.size()-1); j>0; j-- )
                 curves[j] = curves[j-1];
@@ -506,20 +515,19 @@ void OscilloscopeWnd::measure()
                 int paintSz = iaux.size() + eref.size() + iaux.size();
             mutex.unlock();
 
-            if ( paintSz > 12 )
-                emit sigReplot();
             int sleepSz = szEaux + szEref + szIaux;
-            if ( sleepSz < 30 )
-                Msleep::msleep( 10 );
 
+            bool stopped = false;
             // Detecting curve end.
-
             if ( !isContinuousOsc )
             {
-                bool stopped;
                 res = io->oscStopped( stopped );
-                if ( res )
+                //qDebug() << "stopped: " << (stopped ? "true" : "false");
+                if ( ( res ) && ( stopped ) && ( sleepSz == 0 ) && ( !newCurveStarted ) )
+                {
                     emit sigStartNewCurve();
+                    newCurveStarted = true;
+                }
 
                 bool doStartOsc;
                 do {
@@ -530,8 +538,15 @@ void OscilloscopeWnd::measure()
                 if ( doStartOsc )
                 {
                     res = io->startOsc();
+                    newCurveStarted = false;
                 }
             }
+
+            if ( ( paintSz > 12 ) || ( stopped && (paintSz > 0)) )
+                emit sigReplot();
+            if ( sleepSz < 30 )
+                Msleep::msleep( 10 );
+
         }
         else
             Msleep::msleep( 100 );
