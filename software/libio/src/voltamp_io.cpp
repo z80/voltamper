@@ -483,7 +483,7 @@ bool VoltampIo::firmware_version( QString & stri )
     return true;
 }
 
-bool VoltampIo::setAutostartOsc( bool en )
+bool VoltampIo::setContinuousOsc( bool en )
 {
     QMutexLocker lock( &pd->mutex );
 

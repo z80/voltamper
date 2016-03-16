@@ -126,7 +126,7 @@ static void set_meandr( uint8_t * args );
 static void set_sweep( uint8_t * args );
 static void hardware_version( uint8_t * args );
 static void firmware_version( uint8_t * args );
-static void set_autostart_osc( uint8_t * args );
+static void set_continuous_osc( uint8_t * args );
 static void start_osc( uint8_t * args );
 static void osc_stopped( uint8_t * args );
 
@@ -145,7 +145,7 @@ static TFunc funcs[] =
 	set_sweep,
 	hardware_version,
 	firmware_version,
-	set_autostart_osc,
+	set_continuous_osc,
 	start_osc,
 	osc_stopped
 };
@@ -277,10 +277,10 @@ static void firmware_version( uint8_t * args )
 	writeEom();
 }
 
-static void set_autostart_osc( uint8_t * args )
+static void set_continuous_osc( uint8_t * args )
 {
 	(void)args;
-	setAutostartOsc( args[0] );
+	setContinuousOsc( args[0] );
 }
 
 static void start_osc( uint8_t * args )

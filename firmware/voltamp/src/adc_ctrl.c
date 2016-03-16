@@ -36,7 +36,7 @@ uint8_t     command_queue_buffer[4];
 int oscPeriod = 10000;
 int oscTime   = 0;
 uint8_t oscEnabled = 0;
-uint8_t oscAutostart = 1;
+uint8_t oscContinuous = 1;
 uint8_t oscStart = 0;
 
 void modeProcess( int mode );
@@ -65,16 +65,23 @@ uint8_t mode = TDAC;
 static void enableOsc( void )
 {
     chSysLockFromIsr();
+    	// If oscilloscope isn't enabled.
         if ( !oscEnabled )
         {
-            int sz = chIQGetFullI( &eaux_queue ) +
-                     chIQGetFullI( &eref_queue ) +
-                     chIQGetFullI( &iaux_queue );
-            if ( ( sz == 0 ) && ( oscStart ) )
+            // Enable only if 1) queues are empty and
+        	//                2) oscStart condition was received from computer.
+            if ( ( oscContinuous ) || ( ( oscStart ) && ( (chIQGetFullI( &eaux_queue ) +
+                    									   chIQGetFullI( &eref_queue ) +
+                    									   chIQGetFullI( &iaux_queue )) == 0 ) ) )
             {
                 oscEnabled = 1;
                 oscStart   = 0;
             }
+        }
+        else
+        {
+        	if ( !oscContinuous )
+        		oscEnabled = 0;
         }
     chSysUnlockFromIsr();
 }
@@ -93,15 +100,9 @@ static void convAdcReadyCb( ADCDriver * adcp, adcsample_t * buffer, size_t n )
 	// Process oscilloscope regardless of all other conditions.
     chSysLockFromIsr();
         uint8_t oscEn   = oscEnabled;
-        uint8_t autoOsc = oscAutostart;
     chSysUnlockFromIsr();
     if ( oscEn )
         processOsc( buffer );
-    else
-    {
-        if ( autoOsc )
-            enableOsc();
-    }
 
 	// Query for command.
 	chSysLockFromIsr();
@@ -183,10 +184,14 @@ void setOscPeriod( uint32_t t )
 	chSysUnlock();
 }
 
-void setAutostartOsc( uint8_t en )
+void setContinuousOsc( uint8_t en )
 {
     chSysLock();
-        oscAutostart = en;
+        oscContinuous = en;
+        // If it isn't periodic function oscilloscope will not start itself
+        // as there is no triggering event to start it.
+        if ( oscStart )
+        	oscEnabled = 1;
     chSysUnlock();
 }
 
@@ -194,6 +199,10 @@ void startOsc( void )
 {
     chSysLock();
         oscStart = 1;
+        // If it isn't periodic function oscilloscope will not start itself
+        // as there is no triggering event to start it.
+        if ( oscContinuous )
+        	oscEnabled = 1;
     chSysUnlock();
 }
 
