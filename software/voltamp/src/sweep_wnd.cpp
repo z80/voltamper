@@ -32,7 +32,7 @@ void SweepWnd::slotApply()
     mainWnd->dac( volt, dacLow2, dacHigh2 );
 
     qreal duration = ui.period->value();
-    int time = mainWnd->timeToTicks( duration );
+    int time = io->msToTicks( duration );
 
     bool res;
 

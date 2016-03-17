@@ -15,6 +15,8 @@ public:
     bool isOpen() const;
     void close();
 
+    int msToTicks( qreal ms );
+
     bool osc_eaux( QVector<quint16> & vals );
     bool osc_eref( QVector<quint16> & vals );
     bool osc_iaux( QVector<quint16> & vals );

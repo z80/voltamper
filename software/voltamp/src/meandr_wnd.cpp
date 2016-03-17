@@ -30,12 +30,12 @@ void MeandrWnd::slotApply()
     qreal volt     = ui.low->value();
     qreal duration = ui.lowTime->value();
     mainWnd->dac( volt, dacLow1, dacHigh1 );
-    time1 = mainWnd->timeToTicks( duration );
+    time1 = io->msToTicks( duration );
 
     volt     = ui.high->value();
     duration = ui.highTime->value();
     mainWnd->dac( volt, dacLow2, dacHigh2 );
-    time2 = mainWnd->timeToTicks( duration );
+    time2 = io->msToTicks( duration );
 
     bool res;
 

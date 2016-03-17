@@ -99,6 +99,11 @@ void VoltampIo::close()
     pd->io->close();
 }
 
+int VoltampIo::msToTicks( qreal ms )
+{
+    return pd->msToTicks( ms );
+}
+
 bool VoltampIo::osc_eaux( QVector<quint16> & vals )
 {
     QMutexLocker lock( &pd->mutex );
