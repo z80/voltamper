@@ -32,13 +32,11 @@ void SweepWnd::slotApply()
     mainWnd->dac( volt, dacLow2, dacHigh2 );
 
     qreal duration = ui.period->value();
-    int time = io->msToTicks( duration );
 
     bool res;
-
     if ( io->isOpen() )
     {
-        res = io->set_sweep_raw( dacLow1, dacHigh1, dacLow2, dacHigh2, time );
+        res = io->set_sweep_raw( dacLow1, dacHigh1, dacLow2, dacHigh2, duration );
         if ( !res )
             return;
         mainWnd->oscWnd()->updateHdwOsc( false, 2.0*duration/1000.0 );

@@ -24,18 +24,18 @@ void MeandrWnd::setIo( VoltampIo * io, MainWnd * mainWnd )
 
 void MeandrWnd::slotApply()
 {
-    int dacLow1, dacHigh1, time1,
-        dacLow2, dacHigh2, time2;
+    int dacLow1, dacHigh1,
+        dacLow2, dacHigh2;
 
     qreal volt     = ui.low->value();
     qreal duration = ui.lowTime->value();
     mainWnd->dac( volt, dacLow1, dacHigh1 );
-    time1 = io->msToTicks( duration );
+    qreal time1 = duration;
 
     volt     = ui.high->value();
     duration = ui.highTime->value();
     mainWnd->dac( volt, dacLow2, dacHigh2 );
-    time2 = io->msToTicks( duration );
+    qreal time2 = duration;
 
     bool res;
 

@@ -29,7 +29,7 @@ void SinglePulseWnd::slotApply()
     int dacLow;
     int dacHigh;
     mainWnd->dac( volt, dacLow, dacHigh );
-    int time = io->msToTicks( duration );
+    qreal time = duration;
 
     bool res;
 
