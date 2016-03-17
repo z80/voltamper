@@ -52,7 +52,7 @@ void VoltampIo::PD::encodeData( quint8 * data, int sz )
 
 quint32 VoltampIo::PD::msToTicks( qreal ms )
 {
-    quint32 ticks = static_cast<quint32>( ms * 24000.0 / (3*239.5*16.0) );
+    quint32 ticks = static_cast<quint32>( ms * 24000.0 / (3*71.5*16.0) );
     return ticks;
 }
 
