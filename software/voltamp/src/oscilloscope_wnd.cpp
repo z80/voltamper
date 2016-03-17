@@ -140,23 +140,6 @@ void OscilloscopeWnd::updateHdwOsc( bool continuous, qreal sweepT )
 
     if ( sweepT > 0.0 )
         lastPeriod = sweepT;
-    else
-    {
-        switch ( period )
-        {
-           case T_1s:
-               lastPeriod = 1.0;
-               break;
-           case T_10s:
-               lastPeriod = 10.0;
-               break;
-           case T_1m:
-               lastPeriod = 60.0;
-               break;
-           default:
-               lastPeriod = 10.0;
-        }
-    }
     lastPtsCnt = PTS_CNT; 
 
     qreal scale = static_cast<qreal>( lastPeriod ) / static_cast<qreal>( lastPtsCnt-1 );
@@ -498,6 +481,9 @@ void OscilloscopeWnd::measurePeriodic(VoltampIo * io)
         eref.clear();
         iaux.clear();
     mutex.unlock();
+
+    if ( lastPeriod < 1.0 )
+        Msleep::msleep( 1000 );
 
     bool res = io->startOsc();
     if ( !res )
