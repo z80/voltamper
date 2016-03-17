@@ -43,6 +43,11 @@ private:
     void curvesCntChanged();
     void copyData( QQueue<qreal> & src, QQueue<qreal> & dest, int cnt );
 
+    void measureContinuous(VoltampIo * io);
+    void measurePeriodic(VoltampIo * io);
+    void replotContinuous();
+    void replotPeriodic();
+
     enum CurveType { EAUX_T=0, EREF_T, IAUX_T, I_EAUX, I_EREF };
     enum Period    { T_1s=0, T_10s, T_1m, T_10m };
 
@@ -58,7 +63,9 @@ private:
     qreal     timeScale;
     qreal     lastPeriod;
     int       lastPtsCnt;
-    bool      continuousOsc, startNewCurve, startOscilloscope, newCurveStarted;
+    bool      continuousOsc, startNewCurve, startOscilloscope;
+    QSemaphore periodicSem;
+
     QVector<quint16>  data;
     QVector<quint16>  eaux_m, eref_m, iaux_m;
     QQueue<qreal>     eaux,    eref,    iaux;
