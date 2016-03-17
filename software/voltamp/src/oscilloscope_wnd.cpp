@@ -288,6 +288,8 @@ void OscilloscopeWnd::slotReplot()
 
 void OscilloscopeWnd::slotStartNewCurve()
 {
+    replotPeriodic();
+
     for ( int j=(curves.size()-1); j>0; j-- )
         curves[j] = curves[j-1];
 
@@ -299,14 +301,6 @@ void OscilloscopeWnd::slotStartNewCurve()
 
     Curve & c = curves[0];
     c.cnt = 0;
-
-    paintDataX.clear();
-    paintDataY.clear();
-    mutex.lock();
-        iaux.clear();
-        eaux.clear();
-        eref.clear();
-    mutex.unlock();
 
     periodicSem.release();
 
@@ -486,6 +480,7 @@ void OscilloscopeWnd::measureContinuous(VoltampIo * io)
 
 void OscilloscopeWnd::measurePeriodic(VoltampIo * io)
 {
+    // Readout remainings if any.
     int sz = 0;
     do {
         bool res;
@@ -495,7 +490,7 @@ void OscilloscopeWnd::measurePeriodic(VoltampIo * io)
         sz = eaux_m.size() + eref_m.size() + iaux_m.size();
     } while ( sz > 0 );
     
-
+    // Clear data queues.
     mutex.lock();
         eaux.clear();
         eref.clear();
@@ -507,6 +502,7 @@ void OscilloscopeWnd::measurePeriodic(VoltampIo * io)
         return;
     qDebug() << "started osc";
 
+    // Init total points quantity.
     int totalQty = 0;
 
     do {
@@ -711,6 +707,9 @@ void OscilloscopeWnd::replotContinuous()
 
 void OscilloscopeWnd::replotPeriodic()
 {
+    // Clear paint data.
+    paintDataY.clear();
+    paintDataX.clear();
     // Choose what data to paint.
     mutex.lock();
         int sz;
@@ -788,16 +787,16 @@ void OscilloscopeWnd::replotPeriodic()
 
     for ( int i=0; i<sz; i++ )
     {
-        if ( c.cnt < lastPtsCnt )
+        if ( i < lastPtsCnt )
         {
-            c.y[c.cnt] = paintDataY.dequeue();
+            c.y[i] = paintDataY.dequeue();
             if ( curveType < I_EAUX )
-                c.x[c.cnt] = timeScale * static_cast<qreal>( c.cnt );
+                c.x[i] = timeScale * static_cast<qreal>( i );
             else
-                c.x[c.cnt] = paintDataX.dequeue();
-            c.cnt++;
+                c.x[i] = paintDataX.dequeue();
         }
     }
+    c.cnt = sz;
 
     // Plot curves.
     for ( int i=0; i<curves.size(); i++ )
@@ -816,12 +815,6 @@ void OscilloscopeWnd::replotPeriodic()
         mainWnd->lua_invokeCallback( leref, liaux, leaux );
         mainWnd->lua_invokeCallbackFull( luaEref, luaIaux, luaEaux );
     mainWnd->lua_setHook( true );
-
-    mutex.lock();
-        eaux.clear();
-        eref.clear();
-        iaux.clear();
-    mutex.unlock();
 
     qDebug() << "replot";
 }
