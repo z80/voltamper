@@ -417,8 +417,10 @@ void OscilloscopeWnd::curvesCntChanged()
 
 void OscilloscopeWnd::copyData( QQueue<qreal> & src, QQueue<qreal> & dest, int cnt )
 {
-    for ( int i=0; i<cnt; i++ )
-        dest.enqueue( src.dequeue() );
+    //for ( int i=0; i<cnt; i++ )
+    //    dest.enqueue( src.dequeue() );
+    for ( QQueue<qreal>::iterator i=src.begin(); i!=src.end(); i++ )
+        dest.enqueue( *i );
 }
 
 void OscilloscopeWnd::measureContinuous(VoltampIo * io)
@@ -785,6 +787,10 @@ void OscilloscopeWnd::replotPeriodic()
 
     Curve & c = curves[0];
 
+    // Limit curve size to it's maximum;
+    sz = (sz <= lastPtsCnt) ? sz : lastPtsCnt;
+
+    // Copy paint data.
     for ( int i=0; i<sz; i++ )
     {
         if ( i < lastPtsCnt )
