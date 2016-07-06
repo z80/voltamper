@@ -39,23 +39,28 @@ uint8_t oscEnabled = 1;
 uint8_t oscContinuous = 1;
 uint8_t oscStart = 0;
 
-void modeProcess( int mode );
-void modeInit( int mode );
+// Current feedback.
+static uint8_t fbEnabled = 0;
+static int     gain      = 16;
+static int     setpoint  = 2047;
 
-static void initDac( void );
-static void processDac( void );
+void modeProcess( int mode, adcsample_t * buffer );
+void modeInit( int mode, adcsample_t * buffer );
 
-static void initOnePulse( void );
-static void processOnePulse( void );
+static void initDac( adcsample_t * buffer );
+static void processDac( adcsample_t * buffer );
 
-static void initMeandr( void );
-static void processMeandr( void );
+static void initOnePulse( adcsample_t * buffer );
+static void processOnePulse( adcsample_t * buffer );
 
-static void initSweep( void );
-static void processSweep( void );
+static void initMeandr( adcsample_t * buffer );
+static void processMeandr( adcsample_t * buffer );
 
-static void initFb( void );
-static void processFb( void );
+static void initSweep( adcsample_t * buffer );
+static void processSweep( adcsample_t * buffer );
+
+static void initFb( adcsample_t * buffer );
+static void processFb( adcsample_t * buffer );
 
 static void processOsc( adcsample_t * buffer );
 static void enableOsc( void );
@@ -95,7 +100,7 @@ static void convAdcReadyCb( ADCDriver * adcp, adcsample_t * buffer, size_t n )
 	//toggleLedsI( 4 );
 
 	// Process mode.
-	modeProcess( mode );
+	modeProcess( mode, buffer );
 
 	// Process oscilloscope regardless of all other conditions.
     chSysLockFromIsr();
@@ -116,7 +121,7 @@ static void convAdcReadyCb( ADCDriver * adcp, adcsample_t * buffer, size_t n )
 
 	// Init new mode.
 	if ( newMode )
-		modeInit( mode );
+		modeInit( mode, buffer );
 }
 
 #define ADC_NUM_CHANNELS 3
@@ -214,27 +219,6 @@ uint8_t oscStopped( void )
     return stopped;
 }
 
-void setFbSetpoint( int sp )
-{
-	(void)sp;
-}
-
-void setFbInput( int ind )
-{
-	(void)ind;
-}
-
-void setFbGain( int num, int den )
-{
-	(void)num;
-	(void)den;
-}
-
-void setFbEn( int en )
-{
-	(void)en;
-}
-
 OutputQueue * commandQueue( void )
 {
     return &command_queue;
@@ -255,59 +239,74 @@ InputQueue * iauxQueue( void )
 	return &iaux_queue;
 }
 
-void modeProcess( int mode )
+void setCurrentGain( int fbgain )
+{
+	gain = fbgain;
+}
+
+void setCurrent( int fbsp )
+{
+	setpoint = fbsp;
+    OutputQueue * q = commandQueue();
+    chOQPut( q, TFEEDBACK );
+}
+
+
+void modeProcess( int mode, adcsample_t * buffer )
 {
 	switch ( mode )
 	{
 	case 0:
-		processDac();
+		processDac( buffer );
 		break;
 	case 1:
-		processOnePulse();
+		processOnePulse( buffer );
 		break;
 	case 2:
-		processMeandr();
+		processMeandr( buffer );
 		break;
 	case 3:
-		processSweep();
+		processSweep( buffer );
 		break;
 	case 4:
-		processFb();
+		processFb( buffer );
 		break;
 	}
 }
 
-void modeInit( int mode )
+void modeInit( int mode, adcsample_t * buffer )
 {
 	switch ( mode )
 	{
 	case 0:
-		initDac();
+		initDac( buffer );
 		break;
 	case 1:
-		initOnePulse();
+		initOnePulse( buffer );
 		break;
 	case 2:
-		initMeandr();
+		initMeandr( buffer );
 		break;
 	case 3:
-		initSweep();
+		initSweep( buffer );
 		break;
 	case 4:
-		initFb();
+		initFb( buffer );
 		break;
 	}
 }
 
-static void initDac( void )
+static void initDac( adcsample_t * buffer )
 {
+	(void)buffer;
 	uint8_t * args = funcArgs();
 	dacLow  = (uint16_t)args[0] + ((uint16_t)(args[1]) << 8);
 	dacHigh = (uint16_t)args[2] + ((uint16_t)(args[3]) << 8);
 }
 
-static void processDac( void )
+static void processDac( adcsample_t * buffer )
 {
+	(void)buffer;
 	DacCfg dacs;
 	dacs.dac1 = dacLow;
 	dacs.dac2 = dacHigh;
@@ -318,8 +317,9 @@ uint32_t pulsePeriod = 1000;
 uint32_t pulseTime   = 0;
 DacCfg   pulseDac, pulseDacSave;
 
-static void initOnePulse( void )
+static void initOnePulse( adcsample_t * buffer )
 {
+	(void)buffer;
 	uint8_t * args = funcArgs();
 	pulseDac.dac1 = (uint16_t)args[0] + ((uint16_t)(args[1]) << 8);
 	pulseDac.dac2 = (uint16_t)args[2] + ((uint16_t)(args[3]) << 8);
@@ -338,8 +338,9 @@ static void initOnePulse( void )
 	pulseTime = 0;
 }
 
-static void processOnePulse( void )
+static void processOnePulse( adcsample_t * buffer )
 {
+	(void)buffer;
 	pulseTime += 1;
 	if ( pulseTime >= pulsePeriod )
 	{
@@ -357,8 +358,11 @@ uint32_t meanderTime   = 0;
 DacCfg   meanderDac1,
 		 meanderDac2;
 
-static void initMeandr( void )
+static void initMeandr( adcsample_t * buffer )
 {
+	(void)buffer;
+	fbEnabled = 0;
+
 	uint8_t * args = funcArgs();
 
 	meanderDac1.dac1 = (uint16_t)args[0] + ((uint16_t)(args[1]) << 8);
@@ -381,8 +385,9 @@ static void initMeandr( void )
 	enableOsc();
 }
 
-static void processMeandr( void )
+static void processMeandr( adcsample_t * buffer )
 {
+	(void)buffer;
 	meanderTime += 1;
 	if ( meanderTime == meanderPeriod1 )
 	{
@@ -407,8 +412,10 @@ DacCfg   sweepDac1,
 int8_t   sweepSpeed = 1;
 float dDacf1, dDacf2;
 
-static void initSweep( void )
+static void initSweep( adcsample_t * buffer )
 {
+	(void)buffer;
+
     uint8_t * args = funcArgs();
 
     sweepDac1.dac1 = (uint16_t)args[0] + ((uint16_t)(args[1]) << 8);
@@ -429,8 +436,10 @@ static void initSweep( void )
     enableOsc();
 }
 
-static void processSweep( void )
+static void processSweep( adcsample_t * buffer )
 {
+	(void)buffer;
+
     sweepTime += sweepSpeed;
     uint8_t overflow, underflow;
     overflow  = ( sweepTime >= sweepPeriod );
@@ -466,13 +475,54 @@ static void processSweep( void )
     dacSet( &writeDac );
 }
 
-static void initFb( void )
+static void initFb( adcsample_t * buffer )
 {
-
+	(void)buffer;
 }
 
-static void processFb( void )
+static void processFb( adcsample_t * buffer )
 {
+	int i = (int)buffer[2];
+	if ( i < setpoint )
+	{
+		dacLow += gain;
+		if ( dacLow > 4095 )
+		{
+			dacLow = 4095;
+			dacHigh += gain;
+			if ( dacHigh > 4095 )
+				dacHigh = 4095;
+		}
+		else if ( dacLow < 0 )
+		{
+			dacLow = 0;
+			dacHigh += gain;
+			if ( dacHigh < 0 )
+				dacHigh = 0;
+		}
+	}
+	else if ( i > setpoint )
+	{
+		dacLow -= gain;
+		if ( dacLow > 4095 )
+		{
+			dacLow = 4095;
+			dacHigh -= gain;
+			if ( dacHigh > 4095 )
+				dacHigh = 4095;
+		}
+		else if ( dacLow < 0 )
+		{
+			dacLow = 0;
+			dacHigh -= gain;
+			if ( dacHigh < 0 )
+				dacHigh = 0;
+		}
+	}
+	DacCfg dacs;
+	dacs.dac1 = dacLow;
+	dacs.dac2 = dacHigh;
+	dacSet( &dacs );
 
 }
 

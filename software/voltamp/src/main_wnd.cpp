@@ -39,6 +39,9 @@ MainWnd::MainWnd( QWidget * parent )
     swWnd = new SweepWnd( 0 );
     swWnd->setIo( io, this );
 
+    dcCurrentWnd = new DcCurrentWnd( 0 );
+    dcCurrentWnd->setIo( io, this );
+
     calibrationWnd = new CalibrationWnd( 0 );
     calibrationWnd->setIo( io, this, osc );
 
@@ -50,6 +53,7 @@ MainWnd::MainWnd( QWidget * parent )
     connect( ui.actionSingle_pulse, SIGNAL(triggered()), this, SLOT(slotSinglePulse()) );
     connect( ui.actionMeandr,       SIGNAL(triggered()), this, SLOT(slotMeandr()) );
     connect( ui.actionSweep,        SIGNAL(triggered()), this, SLOT(slotSweep()) );
+    connect( ui.actionSet_current,  SIGNAL(triggered()), this, SLOT(slotDcCurrent()) );
 
     connect( ui.actionShort_relay, SIGNAL(triggered()), this, SLOT(slotShortRelay()) );
     connect( ui.actionOut_relay,   SIGNAL(triggered()), this, SLOT(slotOutRelay()) );
@@ -113,6 +117,12 @@ void  MainWnd::dac( qreal v, int & dacLow, int & dacHigh )
     fLow = ceil( (v - bDac - fHigh*aDacHigh)/aDacLow - 0.5 );
     dacLow  = static_cast<int>( fLow );
     dacHigh = static_cast<int>( fHigh );
+}
+
+void  MainWnd::iadc( qreal curr, int & adc )
+{
+    qreal fadc = (curr - bAdcI)/aAdcI;
+    adc = static_cast<int>( fadc );
 }
 
 int MainWnd::timeToTicks( qreal time )
@@ -258,6 +268,11 @@ void MainWnd::slotMeandr()
 void MainWnd::slotSweep()
 {
     swWnd->show();
+}
+
+void MainWnd::slotDcCurrent()
+{
+    dcCurrentWnd->show();
 }
 
 void MainWnd::slotShortRelay()

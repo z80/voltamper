@@ -11,6 +11,7 @@
 #include "single_pulse_wnd.h"
 #include "meandr_wnd.h"
 #include "sweep_wnd.h"
+#include "dc_current_wnd.h"
 #include "calibration_wnd.h"
 
 #include <QtLua/State>
@@ -28,6 +29,7 @@ public:
     qreal vRef( quint16 adc );
     qreal iAux( quint16 adc );
     void  dac( qreal v, int & dacLow, int & dacHigh );
+    void  iadc( qreal curr, int & adc );
     int   timeToTicks( qreal time );
 
     void setStatus( qreal eaux, qreal eref, qreal iaux );
@@ -53,6 +55,7 @@ public slots:
     void slotSinglePulse();
     void slotMeandr();
     void slotSweep();
+    void slotDcCurrent();
 
     void slotShortRelay();
     void slotOutRelay();
@@ -83,6 +86,7 @@ private:
     SinglePulseWnd * spWnd;
     MeandrWnd * mrWnd;
     SweepWnd * swWnd;
+    DcCurrentWnd * dcCurrentWnd;
     CalibrationWnd * calibrationWnd;
 
     QLabel * statusLabel;

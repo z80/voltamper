@@ -33,6 +33,9 @@ public:
     bool startOsc();
     bool oscStopped( bool & stopped );
 
+    bool setCurrentGain( int gain );
+    bool setCurrent( int value );
+
     bool hardware_version( QString & stri );
     bool firmware_version( QString & stri );
 

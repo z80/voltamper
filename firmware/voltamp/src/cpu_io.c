@@ -129,6 +129,8 @@ static void firmware_version( uint8_t * args );
 static void set_continuous_osc( uint8_t * args );
 static void start_osc( uint8_t * args );
 static void osc_stopped( uint8_t * args );
+static void set_current_gain( uint8_t * args );
+static void set_current( uint8_t * args );
 
 static TFunc funcs[] =
 {
@@ -147,7 +149,9 @@ static TFunc funcs[] =
 	firmware_version,
 	set_continuous_osc,
 	start_osc,
-	osc_stopped
+	osc_stopped,
+	set_current_gain,
+	set_current
 };
 
 static void exec_func( void )
@@ -295,6 +299,26 @@ static void osc_stopped( uint8_t * args )
 	uint8_t res = oscStopped();
 	writeResult( res );
 	writeEom();
+}
+
+static void set_current_gain( uint8_t * args )
+{
+    int32_t g;
+    g = (int32_t)args[0] |
+        (((int32_t)args[1]) << 8) |
+        (((int32_t)args[2]) << 16) |
+        (((int32_t)args[3]) << 24);
+	setCurrentGain( g );
+}
+
+static void set_current( uint8_t * args )
+{
+    int32_t i;
+    i = (int32_t)args[0] |
+        (((int32_t)args[1]) << 8) |
+        (((int32_t)args[2]) << 16) |
+        (((int32_t)args[3]) << 24);
+    setCurrent( i );
 }
 
 

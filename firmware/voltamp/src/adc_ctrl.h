@@ -18,15 +18,13 @@ void setContinuousOsc( uint8_t en );
 void startOsc( void );
 uint8_t oscStopped( void );
 
-void setFbSetpoint( int sp );
-void setFbInput( int ind );
-void setFbGain( int num, int den );
-void setFbEn( int en );
-
 OutputQueue * commandQueue( void );
 InputQueue * eauxQueue( void );
 InputQueue * erefQueue( void );
 InputQueue * iauxQueue( void );
+
+void setCurrentGain( int fbgain );
+void setCurrent( int fbsp );
 
 #endif
 

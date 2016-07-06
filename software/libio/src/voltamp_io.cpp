@@ -544,6 +544,72 @@ bool VoltampIo::oscStopped( bool & stopped )
     return true;
 }
 
+bool VoltampIo::setCurrentGain( int gain )
+{
+    QMutexLocker lock( &pd->mutex );
+
+    QByteArray & b = pd->buffer_raw;
+    b.clear();
+    b.reserve( 4 );
+
+    quint8 v;
+    v = static_cast<quint8>( gain & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (gain >> 8) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (gain >> 16) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (gain >> 24) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+
+    bool res;
+    res = setArgs( reinterpret_cast<quint8 *>( b.data() ), b.size() );
+    if ( !res )
+        return false;
+
+    quint8 funcInd = 16;
+    res = execFunc( funcInd );
+    if ( !res )
+        return false;
+
+    return true;
+}
+
+bool VoltampIo::setCurrent( int value )
+{
+    QMutexLocker lock( &pd->mutex );
+
+    QByteArray & b = pd->buffer_raw;
+    b.clear();
+    b.reserve( 4 );
+
+    value = value / 16;
+
+    quint8 v;
+    v = static_cast<quint8>( value & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (value >> 8) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (value >> 16) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+    v = static_cast<quint8>( (value >> 24) & 0xFF );
+    b.append( *reinterpret_cast<char *>(&v) );
+
+    bool res;
+    res = setArgs( reinterpret_cast<quint8 *>( b.data() ), b.size() );
+    if ( !res )
+        return false;
+
+    quint8 funcInd = 17;
+    res = execFunc( funcInd );
+    if ( !res )
+        return false;
+
+    return true;
+}
+
+
+
 
 
 

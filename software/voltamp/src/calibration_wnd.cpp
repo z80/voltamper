@@ -141,7 +141,7 @@ void CalibrationWnd::slotAddCurr()
     adcI.append( iaux );
 
     QString stri = QString( "%1 %2\n" ).arg( iaux ).arg( c );
-    voltStream << stri;
+    currStream << stri;
 
     setRandomVolt();
 }
