@@ -21,6 +21,8 @@ public:
     void setIo( VoltampIo * io, MainWnd * mainWnd );
     void mostRecentVals( qreal & eaux, qreal & eref, qreal & iaux );
     void mostRecentValsRaw( int & eaux, int & eref, int & iaux );
+    void clearCharge();
+    qreal charge();
 
     void stop();
 
@@ -79,7 +81,7 @@ private:
 
     QVector<Curve>   curves;
 
-    qreal lastEaux, lastEref, lastIaux;
+    qreal lastEaux, lastEref, lastIaux, integralCharge;
     int   lastEauxRaw, lastErefRaw, lastIauxRaw;
     bool  terminate;
 

@@ -19,7 +19,8 @@ const int OscilloscopeWnd::PTS_CNT = 128;
 
 OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     : QMainWindow( parent ), 
-    periodicSem( 1 )
+    periodicSem( 1 ), 
+    integralCharge( 0.0 )
 {
     curveType = EREF_T;
     period    = T_10s;
@@ -126,6 +127,22 @@ void OscilloscopeWnd::mostRecentValsRaw( int & eaux, int & eref, int & iaux )
         iaux = lastIauxRaw;
 }
 
+void OscilloscopeWnd::clearCharge()
+{
+    QMutexLocker lock( &mutex );
+        integralCharge = 0.0;
+}
+
+qreal OscilloscopeWnd::charge()
+{
+    qreal q;
+    do {
+    QMutexLocker lock( &mutex );
+        q = integralCharge;
+    } while ( false );
+    return q;
+}
+
 void OscilloscopeWnd::stop()
 {
     mutex.lock();
@@ -143,7 +160,10 @@ void OscilloscopeWnd::updateHdwOsc( bool continuous, qreal sweepT )
     lastPtsCnt = PTS_CNT; 
 
     qreal scale = static_cast<qreal>( lastPeriod ) / static_cast<qreal>( lastPtsCnt-1 );
-    timeScale = scale;
+    do {
+        QMutexLocker lock( &mutex );
+            timeScale = scale;
+    } while ( false );
 
     if ( io->isOpen() )
     {
@@ -440,12 +460,17 @@ void OscilloscopeWnd::measureContinuous(VoltampIo * io)
     }
 
     mutex.lock();
+        qreal dt = timeScale;
         for ( int i=0; i<eaux_m.size(); i++ )
             eaux.enqueue( mainWnd->vAux( eaux_m[i] ) );
         for ( int i=0; i<eref_m.size(); i++ )
             eref.enqueue( mainWnd->vRef( eref_m[i] ) );
         for ( int i=0; i<iaux_m.size(); i++ )
-            iaux.enqueue( mainWnd->iAux( iaux_m[i] ) );
+        {
+            qreal I = mainWnd->iAux( iaux_m[i] );
+            integralCharge += I * dt;
+            iaux.enqueue( I );
+        }
         lastEaux = (eaux.size() > 0) ? eaux.head() : 0.0;
         lastEref = (eref.size() > 0) ? eref.head() : 0.0;
         lastIaux = (iaux.size() > 0) ? iaux.head() : 0.0;
@@ -526,12 +551,17 @@ void OscilloscopeWnd::measurePeriodic(VoltampIo * io)
         }
 
         mutex.lock();
+            qreal dt = timeScale;
             for ( int i=0; i<eaux_m.size(); i++ )
                 eaux.enqueue( mainWnd->vAux( eaux_m[i] ) );
             for ( int i=0; i<eref_m.size(); i++ )
                 eref.enqueue( mainWnd->vRef( eref_m[i] ) );
             for ( int i=0; i<iaux_m.size(); i++ )
-                iaux.enqueue( mainWnd->iAux( iaux_m[i] ) );
+            {
+                qreal I = mainWnd->iAux( iaux_m[i] );
+                integralCharge += I * dt;
+                iaux.enqueue( I );
+            }
             lastEaux = (eaux.size() > 0) ? eaux.head() : 0.0;
             lastEref = (eref.size() > 0) ? eref.head() : 0.0;
             lastIaux = (iaux.size() > 0) ? iaux.head() : 0.0;
@@ -677,7 +707,7 @@ void OscilloscopeWnd::replotContinuous()
     qreal leaux, leref, liaux;
     mostRecentVals( leaux, leref, liaux );
     // Set current values somewhere.
-    mainWnd->setStatus( leaux, leref, liaux );
+    mainWnd->setStatus( leaux, leref, liaux, charge() );
 
     // Invoke Lua algorithm by processing the data obtained.
     // When processing callback to speed up turn lua_hook off.
@@ -799,7 +829,7 @@ void OscilloscopeWnd::replotPeriodic()
     qreal leaux, leref, liaux;
     mostRecentVals( leaux, leref, liaux );
     // Set current values somewhere.
-    mainWnd->setStatus( leaux, leref, liaux );
+    mainWnd->setStatus( leaux, leref, liaux, charge() );
 
     // Invoke Lua algorithm by processing the data obtained.
     // When processing callback to speed up turn lua_hook off.

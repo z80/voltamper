@@ -30,7 +30,7 @@ void DcCurrentWnd::setIo( VoltampIo * io, MainWnd * mainWnd )
 
 void DcCurrentWnd::slotChange()
 {
-    QString ss = "background-color: rgb(185, 10, 10);\nborder-color: rgb(185, 10, 10);";
+    QString ss = "background-color: rgb(185, 10, 10);\nfont: 75 22pt \"MS Shell Dlg 2\";\nborder-color: rgb(185, 10, 10);";
     ui.value->setStyleSheet( ss );
 }
 
@@ -44,7 +44,7 @@ void DcCurrentWnd::slotApply()
         bool res = io->setCurrent( adc );
         if ( !res )
             return;
-        QString ss = "background-color: rgb(10, 185, 10);\nborder-color: rgb(10, 185, 10);";
+        QString ss = "background-color: rgb(10, 185, 10);\nfont: 75 22pt \"MS Shell Dlg 2\";\nborder-color: rgb(10, 185, 10);";
         ui.value->setStyleSheet( ss );
     }
 }

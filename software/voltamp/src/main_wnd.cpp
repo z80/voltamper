@@ -1,4 +1,4 @@
-
+﻿
 #include "main_wnd.h"
 #include <QFileDialog>
 #include "lua.hpp"
@@ -54,6 +54,7 @@ MainWnd::MainWnd( QWidget * parent )
     connect( ui.actionMeandr,       SIGNAL(triggered()), this, SLOT(slotMeandr()) );
     connect( ui.actionSweep,        SIGNAL(triggered()), this, SLOT(slotSweep()) );
     connect( ui.actionSet_current,  SIGNAL(triggered()), this, SLOT(slotDcCurrent()) );
+    connect( ui.actionCharge,       SIGNAL(triggered()), this, SLOT(slotClearCharge()) );
 
     connect( ui.actionShort_relay, SIGNAL(triggered()), this, SLOT(slotShortRelay()) );
     connect( ui.actionOut_relay,   SIGNAL(triggered()), this, SLOT(slotOutRelay()) );
@@ -131,13 +132,16 @@ int MainWnd::timeToTicks( qreal time )
     return res;
 }
 
-void MainWnd::setStatus( qreal eaux, qreal eref, qreal iaux )
+void MainWnd::setStatus( qreal eaux, qreal eref, qreal iaux, qreal charge )
 {
     QString stri = QString( "Eref %1mV,     I %2mA,     Eaux %3mV" ).arg( eref, 6, 'g', 1, QChar( '_' ) )
                                                                     .arg( iaux, 6, 'g', 3, QChar( '_' ) )
                                                                     .arg( eaux, 6, 'g', 1, QChar( '_' ) );
     //statusLabel->setText( stri );
     this->setWindowTitle( stri );
+
+    stri.sprintf( "Q = %6.5f[C]", charge );
+    statusLabel->setText( stri );
 }
 
 void MainWnd::setRelays( bool shortRelay, bool outRelay )
@@ -273,6 +277,11 @@ void MainWnd::slotSweep()
 void MainWnd::slotDcCurrent()
 {
     dcCurrentWnd->show();
+}
+
+void MainWnd::slotClearCharge()
+{
+    osc->clearCharge();
 }
 
 void MainWnd::slotShortRelay()

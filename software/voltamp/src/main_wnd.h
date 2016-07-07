@@ -32,7 +32,7 @@ public:
     void  iadc( qreal curr, int & adc );
     int   timeToTicks( qreal time );
 
-    void setStatus( qreal eaux, qreal eref, qreal iaux );
+    void setStatus( qreal eaux, qreal eref, qreal iaux, qreal charge );
 
     void setRelays( bool shortRelay, bool outRelay );
 
@@ -56,6 +56,7 @@ public slots:
     void slotMeandr();
     void slotSweep();
     void slotDcCurrent();
+    void slotClearCharge();
 
     void slotShortRelay();
     void slotOutRelay();
