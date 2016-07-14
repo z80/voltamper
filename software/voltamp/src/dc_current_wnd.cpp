@@ -69,7 +69,8 @@ void DcCurrentWnd::slotApply()
         {
             mainWnd->osc->mostRecentValsRaw( eaux, eref, iaux );
             I += static_cast<qreal>( iaux );
-            Sleep::msleep( 1 );
+            qApp->processEvents();
+            Sleep::msleep( 10 );
         }
         I /= static_cast<qreal>( N );
         // Adjust current calibration.
