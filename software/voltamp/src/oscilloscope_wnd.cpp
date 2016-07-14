@@ -138,7 +138,7 @@ qreal OscilloscopeWnd::charge()
     qreal q;
     do {
     QMutexLocker lock( &mutex );
-        q = integralCharge;
+        q = integralCharge / 1000.0;
     } while ( false );
     return q;
 }

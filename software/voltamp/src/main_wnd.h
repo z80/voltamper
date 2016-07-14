@@ -71,9 +71,10 @@ public slots:
     void slotLuaInit();
 protected:
     void closeEvent( QCloseEvent * e );
-private:
+protected:
     void setTitle( const QString & stri );
     void refreshDevicesList();
+    void setVisualRelays( bool shortCircuit, bool outRelay );
 
     // Lua state initialization and handling.
     static void lua_init( lua_State * L );
@@ -121,6 +122,8 @@ public:
 
     bool luaDoStop();
     void setLuaDoStop( bool stop );
+
+    friend class DcCurrentWnd;
 };
 
 #endif

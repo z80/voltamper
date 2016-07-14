@@ -33,7 +33,7 @@ uint8_t     eaux_queue_buffer[OSC_QUEUE_SZ],
 OutputQueue command_queue;
 uint8_t     command_queue_buffer[4];
 
-int oscPeriod = 10000;
+int oscPeriod = 1000;
 int oscTime   = 0;
 uint8_t oscEnabled = 1;
 uint8_t oscContinuous = 1;
@@ -41,7 +41,7 @@ uint8_t oscStart = 0;
 
 // Current feedback.
 static uint8_t fbEnabled = 0;
-static int     gain      = 16;
+static int     gain      = 1;
 static int     setpoint  = 2047;
 
 void modeProcess( int mode, adcsample_t * buffer );
@@ -532,8 +532,8 @@ static void processOsc( adcsample_t * buffer )
 {
 	oscTime += 1;
 
-	int timeConst = oscPeriod >> 2;
-	int alpha = (timeConst < 32768) ? timeConst : 32767;
+	int timeConst = oscPeriod;
+	int alpha = (timeConst < 128) ? timeConst : 128;
 	alpha = ( alpha > 0 ) ? alpha : 1;
 	filtered[0] = ( ( (filtered[0]<<1) + 1 )*( alpha-1 ) + ( buffer[0] << 5 ) + 1)/alpha;
 	filtered[0] >>= 1;

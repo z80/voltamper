@@ -134,9 +134,8 @@ int MainWnd::timeToTicks( qreal time )
 
 void MainWnd::setStatus( qreal eaux, qreal eref, qreal iaux, qreal charge )
 {
-    QString stri = QString( "Eref %1mV,     I %2mA,     Eaux %3mV" ).arg( eref, 6, 'g', 1, QChar( '_' ) )
-                                                                    .arg( iaux, 6, 'g', 3, QChar( '_' ) )
-                                                                    .arg( eaux, 6, 'g', 1, QChar( '_' ) );
+    QString stri;
+    stri.sprintf( " Eref: %5.4f, I: %5.4f, Eaux: %5.4f", eref, iaux, eaux );
     //statusLabel->setText( stri );
     this->setWindowTitle( stri );
 
@@ -356,6 +355,12 @@ void MainWnd::closeEvent( QCloseEvent * e )
 void MainWnd::setTitle( const QString & stri )
 {
     setWindowTitle( QString( "Potentiostat: %1" ).arg( stri ) );
+}
+
+void MainWnd::setVisualRelays( bool shortCircuit, bool outRelay )
+{
+    ui.actionShort_relay->setChecked( shortCircuit );
+    ui.actionOut_relay->setChecked( outRelay );
 }
 
 void MainWnd::refreshDevicesList()

@@ -1,5 +1,4 @@
 EESchema Schematic File Version 2
-LIBS:voltamper-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -29,25 +28,12 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:stm32f100rct6b
-LIBS:cp2102
-LIBS:micro-usb-b
-LIBS:crystal-4pin
-LIBS:mcp1703t-3302e
-LIBS:ncp3063
-LIBS:my_comps
-LIBS:tda2030a
-LIBS:spartan-sip-9007
-LIBS:ad825
-LIBS:opa551
-LIBS:lm258a
-LIBS:ada4000
 LIBS:voltamper-cache
 EELAYER 25 0
 EELAYER END
 $Descr A1 33110 23386
 encoding utf-8
-Sheet 1 1
+Sheet 1 2
 Title ""
 Date "12 jan 2015"
 Rev ""
@@ -4295,4 +4281,10 @@ Text Notes 16650 10700 0    60   ~ 0
 Better make it 16k.
 Text Notes 15700 9450 0    60   ~ 0
 These changes would give a result \nrange of approximately -11V..11V.\nAnd now it is from -13.4V to 43V.
+$Sheet
+S 34850 5300 2400 2725
+U 577EA4D3
+F0 "Sheet577EA4D2" 60
+F1 "file577EA4D2.sch" 60
+$EndSheet
 $EndSCHEMATC

@@ -8,10 +8,13 @@
 
 void initRelay( void )
 {
+	// Default off.
     palClearPad( OUT_RELAY_PORT, OUT_RELAY_PIN );
-    palClearPad( SC_RELAY_PORT,  SC_RELAY_PIN );
+    // Default on.
+    palSetPad( SC_RELAY_PORT,  SC_RELAY_PIN );
     palSetPadMode( OUT_RELAY_PORT, OUT_RELAY_PIN, PAL_MODE_OUTPUT_PUSHPULL );
     palSetPadMode( SC_RELAY_PORT, SC_RELAY_PIN, PAL_MODE_OUTPUT_PUSHPULL );
+
 }
 
 void setOutRelay( uint8_t en )
