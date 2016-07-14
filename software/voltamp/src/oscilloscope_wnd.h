@@ -24,6 +24,9 @@ public:
     void clearCharge();
     qreal charge();
 
+    void clear();
+    void reopen();
+
     void stop();
 
     // Update oscilloscope parameters in hardware.
@@ -40,7 +43,6 @@ private slots:
 private:
 
     void measure();
-    void reopen();
     void curveSizeChanged();
     void curvesCntChanged();
     void copyData( QQueue<qreal> & src, QQueue<qreal> & dest, int cnt );
@@ -87,6 +89,8 @@ private:
 
     static const int CURVES_CNT;
     static const int PTS_CNT;
+
+    int queueSz;
 };
 
 #endif

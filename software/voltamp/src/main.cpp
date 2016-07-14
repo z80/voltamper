@@ -14,7 +14,7 @@ int main( int argc, char * argv[])
     QApplication app( argc, argv );
 
     MainWnd * mw = new MainWnd( 0 );
-    mw->show();
+    mw->QWidget::show();
 
     int res = app.exec();
     return res;

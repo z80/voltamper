@@ -8,6 +8,8 @@ SinglePulseWnd::SinglePulseWnd( QWidget * parent )
     ui.setupUi( this );
     io = 0;
     connect( ui.apply, SIGNAL(clicked()), this, SLOT(slotApply()) );
+
+    setWindowFlags( Qt::Tool | Qt::WindowStaysOnTopHint );
 }
 
 SinglePulseWnd::~SinglePulseWnd()
@@ -35,6 +37,7 @@ void SinglePulseWnd::slotApply()
 
     if ( io->isOpen() )
         res = io->set_one_pulse_raw( dacLow, dacHigh, time );
+    //mainWnd->oscWnd()->updateHdwOsc( true );
 }
 
 

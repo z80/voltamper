@@ -46,6 +46,7 @@ public:
     int deviceName() const;
 
     OscilloscopeWnd * oscWnd();
+    void show( QWidget * w );
 public slots:
     void slotQuit();
     void slotReopen();
@@ -101,6 +102,7 @@ protected:
 
     QtLua::State * state;
     bool m_luaDoStop;
+    bool luaRunning;
 
     static const QString SETTINGS_INI;
 
@@ -124,6 +126,7 @@ public:
     void setLuaDoStop( bool stop );
 
     friend class DcCurrentWnd;
+    friend class DcVoltageWnd;
 };
 
 #endif

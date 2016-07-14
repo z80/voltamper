@@ -9,6 +9,8 @@ MeandrWnd::MeandrWnd( QWidget * parent )
     io = 0;
 
     connect( ui.apply, SIGNAL(clicked()), this, SLOT(slotApply()) );
+
+    setWindowFlags( Qt::Tool | Qt::WindowStaysOnTopHint );
 }
 
 MeandrWnd::~MeandrWnd()

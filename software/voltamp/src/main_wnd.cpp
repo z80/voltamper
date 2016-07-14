@@ -9,6 +9,7 @@ const QString MainWnd::SETTINGS_INI = "./settings.ini";
 MainWnd::MainWnd( QWidget * parent )
     : QMainWindow( parent )
 {
+    luaRunning = false;
     ui.setupUi( this );
     //ui.osc->show();
 
@@ -24,6 +25,7 @@ MainWnd::MainWnd( QWidget * parent )
     osc = new OscilloscopeWnd( this );
     bl->addWidget( osc );
     osc->setIo( io, this );
+    osc->reopen();
     osc->updateHdwOsc();
 
 
@@ -228,11 +230,25 @@ OscilloscopeWnd * MainWnd::oscWnd()
     return osc;
 }
 
+void MainWnd::show( QWidget * w )
+{
+    dcWnd->hide();
+    spWnd->hide();
+    mrWnd->hide();
+    swWnd->hide();
+    dcCurrentWnd->hide();
+
+    w->show();
+}
+
 void MainWnd::slotQuit()
 {
     saveSettings();
     osc->stop();
     slotLuaStop();
+
+    qApp->processEvents(); // For stop to take effect.
+
     this->deleteLater();
     qApp->quit();
 }
@@ -256,26 +272,26 @@ void MainWnd::slotAbout()
 
 void MainWnd::slotDc()
 {
-    dcWnd->show();
+    show( dcWnd );
 }
 void MainWnd::slotSinglePulse()
 {
-    spWnd->show();
+    show( spWnd );
 }
 
 void MainWnd::slotMeandr()
 {
-    mrWnd->show();
+    show( mrWnd );
 }
 
 void MainWnd::slotSweep()
 {
-    swWnd->show();
+    show( swWnd );
 }
 
 void MainWnd::slotDcCurrent()
 {
-    dcCurrentWnd->show();
+    show( dcCurrentWnd );
 }
 
 void MainWnd::slotClearCharge()
@@ -306,6 +322,7 @@ void MainWnd::slotLuaOpen()
                                                     "./",
                                                     tr("Lua (*.lua)"));
     QFile f( fileName );
+    luaRunning = true;
     if ( f.open( QIODevice::ReadOnly ) )
     {
         try {
@@ -316,6 +333,7 @@ void MainWnd::slotLuaOpen()
             ui.console->print( e );
         }
     }
+    luaRunning = false;
 }
 
 void MainWnd::slotLuaStop()
@@ -333,7 +351,13 @@ void MainWnd::slotLuaStop()
 
 void MainWnd::slotLuaInit()
 {
-    state->lua_do( MainWnd::lua_init );
+    //luaRunning = true;
+    //state->lua_do( MainWnd::lua_init );
+    //luaRunning = false;
+
+    ui.dockWidget->setVisible( false );
+    ui.console->setVisible( false );
+
 }
 
 void MainWnd::slotDevice()
@@ -428,6 +452,10 @@ void MainWnd::lua_init( lua_State * L )
         } catch ( QtLua::String & e )
         {
             mw->ui.console->print( e );
+        }
+         catch ( ... )
+        {
+            mw->ui.console->print( "Unhandled exception" );
         }
     }
 }

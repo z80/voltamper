@@ -7,6 +7,8 @@ SweepWnd::SweepWnd( QWidget * parent )
 {
     ui.setupUi( this );
     connect( ui.apply, SIGNAL(clicked()), this, SLOT(slotApply()) );
+
+    setWindowFlags( Qt::Tool | Qt::WindowStaysOnTopHint );
 }
 
 SweepWnd::~SweepWnd()

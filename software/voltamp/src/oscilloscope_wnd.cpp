@@ -15,12 +15,14 @@
 #include <boost/bind/placeholders.hpp>
 
 const int OscilloscopeWnd::CURVES_CNT = 10;
-const int OscilloscopeWnd::PTS_CNT = 128;
+const int OscilloscopeWnd::PTS_CNT = 512;
 
 OscilloscopeWnd::OscilloscopeWnd( QWidget * parent )
     : QMainWindow( parent ), 
     periodicSem( 1 ), 
-    integralCharge( 0.0 )
+    integralCharge( 0.0 ), 
+
+    queueSz( 0 )
 {
     curveType = EREF_T;
     period    = T_10s;
@@ -143,6 +145,17 @@ qreal OscilloscopeWnd::charge()
     return q;
 }
 
+void OscilloscopeWnd::clear()
+{
+    paintDataX.clear();
+    paintDataY.clear();
+
+    QMutexLocker lock( &mutex );
+        eaux.clear();
+        eref.clear();
+        iaux.clear();
+}
+
 void OscilloscopeWnd::stop()
 {
     mutex.lock();
@@ -165,6 +178,8 @@ void OscilloscopeWnd::updateHdwOsc( bool continuous, qreal sweepT )
             timeScale = scale;
     } while ( false );
 
+    if ( !io->isOpen() )
+        io->open();
     if ( io->isOpen() )
     {
         bool res;
@@ -422,8 +437,14 @@ void OscilloscopeWnd::copyData( QQueue<qreal> & src, QQueue<qreal> & dest, int c
 {
     //for ( int i=0; i<cnt; i++ )
     //    dest.enqueue( src.dequeue() );
+    int ind=0;
     for ( QQueue<qreal>::iterator i=src.begin(); i!=src.end(); i++ )
+    {
         dest.enqueue( *i );
+        ind++;
+        if ( ind >= cnt )
+            break;
+    }
 }
 
 void OscilloscopeWnd::measureContinuous(VoltampIo * io)
@@ -480,10 +501,17 @@ void OscilloscopeWnd::measureContinuous(VoltampIo * io)
         int paintSz = iaux.size() + eref.size() + iaux.size();
     mutex.unlock();
 
+    //qDebug() << "paintSz: " << paintSz;
+
     int sleepSz = szEaux + szEref + szIaux;
 
     if ( paintSz > 12 )
+    {
+        mutex.lock();
+            queueSz++;
+        mutex.unlock();
         emit sigReplot();
+    }
     if ( sleepSz < 30 )
         Msleep::msleep( 10 );
 }
@@ -584,7 +612,7 @@ void OscilloscopeWnd::measurePeriodic(VoltampIo * io)
 
         if ( ( res ) && ( stopped ) && ( sleepSz == 0 ) && (totalQty > 0) )
         {
-            qDebug() << "Total Qty: " << totalQty;
+            //qDebug() << "Total Qty: " << totalQty;
             break;
         }
 
@@ -606,6 +634,10 @@ void OscilloscopeWnd::measurePeriodic(VoltampIo * io)
 
 void OscilloscopeWnd::replotContinuous()
 {
+    // Clear paint data.
+    paintDataX.clear();
+    paintDataY.clear();
+
     // Choose what data to paint.
     mutex.lock();
         int sz;
@@ -625,6 +657,7 @@ void OscilloscopeWnd::replotContinuous()
             sz = (sz <= eref.size() ) ? sz : eref.size();
             sz = (sz <= iaux.size() ) ? sz : iaux.size();
         }
+
 
         // Copy to Lua.
         QQueue<qreal>::const_iterator ci;
@@ -660,6 +693,7 @@ void OscilloscopeWnd::replotContinuous()
                 break;
         }
 
+
         if ( curveType == EAUX_T )
             copyData( eaux, paintDataY, sz );
         else if ( curveType == EREF_T )
@@ -676,7 +710,17 @@ void OscilloscopeWnd::replotContinuous()
             copyData( iaux, paintDataY, sz );
             copyData( eref, paintDataX, sz );
         }
+
+        // For debugging movef here.
+        eaux.clear();
+        eref.clear();
+        iaux.clear();
+
+        queueSz--;
+        int queueSize = queueSz;
+        int remainingSz = eaux.size() + eref.size() + iaux.size();
     mutex.unlock();
+
 
 
     Curve & c = curves[0];
@@ -698,6 +742,8 @@ void OscilloscopeWnd::replotContinuous()
         }
     }
 
+    //qDebug() << "Queue size: " << queueSize << ", remainingSz: " << remainingSz << " paintDataSize: " << paintDataY.size();
+
     // Plot curves.
     for ( int i=0; i<curves.size(); i++ )
         curves[i].prepare();
@@ -716,11 +762,6 @@ void OscilloscopeWnd::replotContinuous()
         mainWnd->lua_invokeCallbackFull( luaEref, luaIaux, luaEaux );
     mainWnd->lua_setHook( true );
 
-    mutex.lock();
-        eaux.clear();
-        eref.clear();
-        iaux.clear();
-    mutex.unlock();
 }
 
 void OscilloscopeWnd::replotPeriodic()
@@ -800,7 +841,6 @@ void OscilloscopeWnd::replotPeriodic()
         }
     mutex.unlock();
 
-
     Curve & c = curves[0];
 
     // Limit curve size to it's maximum;
@@ -838,7 +878,7 @@ void OscilloscopeWnd::replotPeriodic()
         mainWnd->lua_invokeCallbackFull( luaEref, luaIaux, luaEaux );
     mainWnd->lua_setHook( true );
 
-    qDebug() << "replot";
+    //qDebug() << "replot";
 }
 
 
